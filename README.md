@@ -1,0 +1,2 @@
+# RIDALOT
+Waste Transportation App

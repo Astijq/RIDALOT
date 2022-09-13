@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mommy\\Desktop\\inzinerija\\BlazorApp2\\BlazorApp2\\BlazorApp2.csproj": {}
+    "C:\\Users\\User\\OneDrive\\Stalinis kompiuteris\\PS INZ\\RIDALOT\\BlazorApp2\\BlazorApp2\\BlazorApp2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mommy\\Desktop\\inzinerija\\BlazorApp2\\BlazorApp2\\BlazorApp2.csproj": {
+    "C:\\Users\\User\\OneDrive\\Stalinis kompiuteris\\PS INZ\\RIDALOT\\BlazorApp2\\BlazorApp2\\BlazorApp2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mommy\\Desktop\\inzinerija\\BlazorApp2\\BlazorApp2\\BlazorApp2.csproj",
+        "projectUniqueName": "C:\\Users\\User\\OneDrive\\Stalinis kompiuteris\\PS INZ\\RIDALOT\\BlazorApp2\\BlazorApp2\\BlazorApp2.csproj",
         "projectName": "BlazorApp2",
-        "projectPath": "C:\\Users\\mommy\\Desktop\\inzinerija\\BlazorApp2\\BlazorApp2\\BlazorApp2.csproj",
-        "packagesPath": "C:\\Users\\mommy\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mommy\\Desktop\\inzinerija\\BlazorApp2\\BlazorApp2\\obj\\",
+        "projectPath": "C:\\Users\\User\\OneDrive\\Stalinis kompiuteris\\PS INZ\\RIDALOT\\BlazorApp2\\BlazorApp2\\BlazorApp2.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\OneDrive\\Stalinis kompiuteris\\PS INZ\\RIDALOT\\BlazorApp2\\BlazorApp2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\mommy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

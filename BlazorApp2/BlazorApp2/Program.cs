@@ -11,7 +11,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline. //Im making a change(Astijus)
+// Configure the HTTP request pipeline. //Im making a change(Astijus) // trying single file
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

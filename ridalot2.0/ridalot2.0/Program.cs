@@ -11,7 +11,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline. / /asdasikdiasfuasfi
+// Configure the HTTP request pipeline. / /asdasikdiasfuasfi //kas skaitys tas gaidys
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

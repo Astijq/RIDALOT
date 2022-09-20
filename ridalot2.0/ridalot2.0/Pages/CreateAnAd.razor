@@ -1,0 +1,77 @@
+﻿@page "/createad"
+@using Microsoft.Extensions.Logging
+@inject ILogger<CreateAnAd> Logger
+
+<h3>Create an Ad</h3>
+
+<p>
+ <label>
+        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
+        <InputFile OnChange="@LoadFiles" multiple />
+    </label>
+</p>
+
+@foreach (var file in loadedFiles)
+{
+    <img src=file />
+    <label>
+        name: @file.Name
+    </label>
+}
+
+<p>
+    Description:
+</p>
+
+<p>
+    <label>
+        <textarea type="text" style=" min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;" @bind="description" />
+    </label>
+</p>
+
+<p>
+    Height (cm):
+    <input type="number" @bind="height" />
+</p>
+<p>
+    Width (cm):  
+    <input type="number" @bind="width" />
+</p>
+<p>
+    Length (cm):
+    <input type="number" @bind="length" />
+</p>
+<p>
+    Weight (kg):
+    <input type="number" @bind="weight" />
+</p>
+        
+        
+@code {
+    private List<IBrowserFile> loadedFiles = new();
+    private long maxFileSize = 1024 * 15;
+    private int maxAllowedFiles = 3, height, width, length, weight;
+    private bool isLoading;
+    private String description = "write here", path;
+
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+        loadedFiles.Clear();
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                loadedFiles.Add(file);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("File: {Filename} Error: {Error}",
+                    file.Name, ex.Message);
+            }
+        }
+
+        isLoading = false;
+    }
+}

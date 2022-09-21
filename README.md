@@ -8,3 +8,11 @@ RIDALOT is a web app which helps users find people, who will transport big objec
 - Add multiple tasks to increase earnings.
 - User ratings & reviews.
 - Free registration.
+
+
+2022-09-21
+|     | A.K | N.M | U.M |   |
+|-----|-----|-----|-----|---|
+| A.K | 4   | 4   | 4   |   |
+| N.M | 4   | 4   | 4   |   |
+| U.M | 2   | 2   | 2   |   |

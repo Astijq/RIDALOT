@@ -4,7 +4,7 @@
 @inject HttpClient Http
 @if (User.Identity.Name != null)
 {
-    <img src="@Avatar" />
+    <img src="@Avatar" style="height:50px;max-width:50px;width:auto;" />
     <b>You are logged in as: @GivenName @Surname</b>
     <a class="ml-md-auto btn btn-primary"
        href="/Identity/Logout"

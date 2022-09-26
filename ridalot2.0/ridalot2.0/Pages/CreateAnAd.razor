@@ -2,52 +2,61 @@
 @using Microsoft.Extensions.Logging
 @inject ILogger<CreateAnAd> Logger
 @inject NavigationManager NavMan
+@inherits LoginControl
 
-<h3>Create an Ad</h3>
-<div>
-	<InputFile OnChange="@OnFileSelection" multiple></InputFile>
+@if (!User.Identity.IsAuthenticated)
+{
+	<a class="ml-md-auto btn btn-primary"
+   href="/Identity/Login"
+   target="_top">Login</a>
+}
+else
+{
+	<h3>Create an Ad</h3>
+	<div>
+		<InputFile OnChange="@OnFileSelection" multiple></InputFile>
+		<p>
+
+		</p>
+		<div class="row">
+			@foreach (var imgUrl in @imgUrls)
+			{
+				<img src="@imgUrl" style="height:200px;max-width:500px;width: auto;" />
+			}
+		</div>
+	</div>
+
 	<p>
 
+		Description:
 	</p>
-	<div class="row">
-		@foreach (var imgUrl in @imgUrls)
-		{
-			<img src="@imgUrl" style="height:200px;max-width:500px;width: auto;" />
-		}
-	</div>
-</div>
 
-<p>
+	<p>
+		<label>
+			<textarea type="text" style=" min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;" @bind="description" />
+		</label>
+	</p>
 
-	Description:
-</p>
-
-<p>
-	<label>
-		<textarea type="text" style=" min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;" @bind="description" />
-	</label>
-</p>
-
-<p>
-	Height (cm):
-	<input type="number" @bind="height" />
-</p>
-<p>
-	Width (cm):
-	<input type="number" @bind="width" />
-</p>
-<p>
-	Length (cm):
-	<input type="number" @bind="length" />
-</p>
-<p>
-	Weight (kg):
-	<input type="number" @bind="weight" />
-</p>
-<p>
-	<button type="submit" class="btn btn-success" onclick="@Clicked">Submit</button>
-</p>
-
+	<p>
+		Height (cm):
+		<input type="number" @bind="height" />
+	</p>
+	<p>
+		Width (cm):
+		<input type="number" @bind="width" />
+	</p>
+	<p>
+		Length (cm):
+		<input type="number" @bind="length" />
+	</p>
+	<p>
+		Weight (kg):
+		<input type="number" @bind="weight" />
+	</p>
+	<p>
+		<button type="submit" class="btn btn-success" onclick="@Clicked">Submit</button>
+	</p>
+}
 @code {
 	private List<IBrowserFile> loadedFiles = new();
 	private long maxFileSize = 1024 * 15;

@@ -2,7 +2,8 @@
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor _httpContextAccessor
 @inject HttpClient Http
-@if (User.Identity.Name != null)
+
+@if (User.Identity.IsAuthenticated)
 {
     <img src="@Avatar" style="height:50px;max-width:50px;width:auto;" />
     <b>You are logged in as: @GivenName @Surname</b>
@@ -17,7 +18,7 @@ else
        target="_top">Login</a>
 }
 @code {
-    private ClaimsPrincipal User;
+    public ClaimsPrincipal User;
     private string GivenName;
     private string Surname;
     private string Avatar;
@@ -67,4 +68,5 @@ else
         }
         catch { }
     }
+
 }

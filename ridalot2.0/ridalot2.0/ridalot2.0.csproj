@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>ridalot2._0</RootNamespace>
+    <UserSecretsId>3784d645-2889-4fa9-a9b2-2e4c5c591c4f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

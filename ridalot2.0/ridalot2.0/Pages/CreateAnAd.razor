@@ -2,6 +2,15 @@
 @using Microsoft.Extensions.Logging
 @using Pages
 @inject NavigationManager NavMan
+@inherits LoginControl
+
+@if (!User.Identity.IsAuthenticated)
+{
+	<a class="ml-md-auto btn btn-primary"
+   href="/Identity/Login"
+   target="_top">Login</a>
+}
+else {
 
 <h3>Create an Ad</h3>
 <style>
@@ -45,18 +54,17 @@
 			</div>
 		}
 	</div>
-</div>
 
-<p>
+	<p>
 
-	Description:
-</p>
-
-<p>
-	<label>
-		<textarea type="text" style=" min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;" @bind="description" />
-	</label>
-</p>
+		Description:
+	</p>
+  
+  <p>
+		<label>
+			<textarea type="text" style=" min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;" @bind="description" />
+		</label>
+	</p>
 
 <p>
 	<table>
@@ -82,6 +90,8 @@
 <p>
 	<button type="submit" class="btn btn-success" onclick="@Clicked">Submit</button>
 </p>
+
+}
 
 @if (popup)
 {

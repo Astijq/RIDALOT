@@ -1,6 +1,6 @@
 ﻿@page "/createad"
 @using Microsoft.Extensions.Logging
-@inject ILogger<CreateAnAd> Logger
+@using Pages
 @inject NavigationManager NavMan
 @inherits LoginControl
 
@@ -10,60 +10,106 @@
    href="/Identity/Login"
    target="_top">Login</a>
 }
-else
-{
-	<h3>Create an Ad</h3>
-	<div>
-		<InputFile OnChange="@OnFileSelection" multiple></InputFile>
-		<p>
+else {
 
-		</p>
-		<div class="row">
-			@foreach (var imgUrl in @imgUrls)
-			{
-				<img src="@imgUrl" style="height:200px;max-width:500px;width: auto;" />
-			}
-		</div>
+<h3>Create an Ad</h3>
+<style>
+	.container {
+		position: relative;
+		width:fit-content;
+		height: 200px
+	}
+	.middle {
+		transition: .5s ease;
+		opacity: 0;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+		text-align: center;
+	}
+	.container:hover .image {
+		opacity: 0.3;
+	}
+	.container:hover .middle {
+		opacity: 1;
+	}
+</style>
+
+<div>
+	<InputFile OnChange="@OnFileSelection" multiple></InputFile>
+	<div class="row">
+		@foreach (string imgUrl in imgUrls)
+		{
+			<div class="container">
+				<img src="@imgUrl" style="height:200px; max-width: 300px; transition: .5s ease; opacity: @op"
+				 @onmouseout = "@OnMouseOut" @onmouseover = "@OnMouseOver"/> 
+				<div class="middle">
+					<button class="btn btn-success" @onclick="() => DeletePhoto(imgUrl)" style="position:center; transition: .5s ease; opacity: @opButton "
+						@onmouseout="@OnMouseOut"  @onmouseover="@OnMouseOver">
+						Delete
+					</button>
+				</div>
+			</div>
+		}
 	</div>
 
 	<p>
 
 		Description:
 	</p>
-
-	<p>
+  
+  <p>
 		<label>
 			<textarea type="text" style=" min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;" @bind="description" />
 		</label>
 	</p>
 
-	<p>
-		Height (cm):
-		<input type="number" @bind="height" />
-	</p>
-	<p>
-		Width (cm):
-		<input type="number" @bind="width" />
-	</p>
-	<p>
-		Length (cm):
-		<input type="number" @bind="length" />
-	</p>
-	<p>
-		Weight (kg):
-		<input type="number" @bind="weight" />
-	</p>
-	<p>
-		<button type="submit" class="btn btn-success" onclick="@Clicked">Submit</button>
-	</p>
+<p>
+	<table>
+		<tr>
+			<td align="right">Height (cm):</td>
+			<td align="left"><input type="number" @bind="height" /></td>
+		</tr>
+		<tr>
+			<td align="right">Width (cm):</td>
+			<td align="left"><input type="number" @bind="width" /></td>
+		</tr>
+		<tr>
+			<td align="right">Length (cm):</td>
+			<td align="left"><input type="number" @bind="length" /></td>
+		</tr>
+		<tr>
+			<td align="right">Weight (kg):</td>
+			<td align="left"><input type="number" @bind="weight" /></td>
+		</tr>
+	</table>
+</p>
+
+<p>
+	<button type="submit" class="btn btn-success" onclick="@Clicked">Submit</button>
+</p>
+
 }
+
+@if (popup)
+{
+	<AdPopUp Title="Posted"
+                 Text="Ad posted succesfully!"
+                 OnClose="@ClosePopup"
+                 DialogType="AdPopUp.ModalDialogType.Ok">
+	</AdPopUp>
+}
+
 @code {
-	private List<IBrowserFile> loadedFiles = new();
-	private long maxFileSize = 1024 * 15;
-	private int maxAllowedFiles = 3, height, width, length, weight;
-	private bool isLoading, save = false;
-	private String description = "write here", LastSubmitResult;
+	private int height, width, length, weight;
+	public String description = "write here", file = "AdInfo.txt";
 	List<string> imgUrls = new List<string>();
+	public bool popup { get; set; } = false;
+	public bool isHovering {get; set; } = false;
+	public double op { get; set; } = 1;
+	public double opButton { get; set; } = 0;
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)
 	{
@@ -79,7 +125,51 @@ else
 
 	private void Clicked()
 	{
-		NavMan.NavigateTo("/");
+		System.IO.File.AppendAllLines(@file, Information());
+		popup = true;
 	}
 
+	private string[] Information()
+	{
+		string[] info = {
+			"Post : " + "\n Picture paths: " + string.Join(Environment.NewLine, imgUrls.ToArray()) +
+			"\n Descpription: " + description + "\n Height: " + height + "\n Width: " +  width +
+			"\n Length: " + length + "\n Weigth: " + weight };
+
+		return info;
+	}
+	private async Task ClosePopup(bool accepted)
+	{
+		popup = false;
+		StateHasChanged();
+		NavMan.NavigateTo("/");
+	}
+	protected void OnMouseOver(MouseEventArgs mouseEvent)
+	{
+		if (!isHovering)
+		{
+			isHovering = true;
+			op = 0.3;
+			opButton = 0.7;
+			StateHasChanged();
+		}
+	}
+
+	protected void OnMouseOut(MouseEventArgs mouseEvent)
+	{
+		op = 1;
+		opButton = 0;
+		isHovering = false;
+		StateHasChanged();
+	}
+	void DeletePhoto(string imgUrl){
+		for (int i = 0; i < imgUrls.Count; i++)
+		{
+			if (imgUrls[i] == imgUrl)
+			{
+				imgUrls.RemoveAt(i);
+			}
+		}
+		StateHasChanged();
+	}
 }

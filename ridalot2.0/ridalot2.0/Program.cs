@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using ridalot2._0.Data;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

@@ -21,7 +21,7 @@
 
 
         <tr>
-            <td>09/21/2022</td>
+            <td>@now.ToString("F")</td>
             <td><img src="@getImg()" style="height:200px;max-width:500px;width: auto;" /></td>
             <td>@getDescription()</td>
             <td>@getHeight() @getWidth() @getLength() @getWeight()</td>
@@ -38,14 +38,15 @@
 @code{
 
     IEnumerable<string> postLines = File.ReadLines("AdInfo.txt");
-
+    DateTime now = DateTime.Now;
+    private string date;
     private string weight;
     private string length;
     private string width;
     private string height;
     private string description;  
     private string img;
-    private string date;
+ 
 
     private string getImg()
     {

@@ -1,4 +1,5 @@
 ﻿@page "/feed"
+@using System.Collections
 
 <PageTitle>Feed</PageTitle>
 
@@ -18,16 +19,120 @@
         </thead>
         <tbody>
 
-            
-                <tr>
-                    <td>09/21/2022</td>
-            <td><img src="https://img.furniture1.eu/v7/_im_/detailed/2499/2499117.jpg" style="height:200px;max-width:500px;width: auto;" /></td>
-                    <td>Žr gera sofa, bet reik, kad ižvežtu </td>
-                    <td>didelė</td>
-                    <td>25e</td>
-                    <td>Didlaukio g. 29</td>
+
+        <tr>
+            <td>@now.ToString("F")</td>
+            <td><img src="@getImg()" style="height:200px;max-width:500px;width: auto;" /></td>
+            <td>@getDescription()</td>
+            <td>@getHeight() @getWidth() @getLength() @getWeight()</td>
+            <td>25e</td>
+            <td>Didlaukio g. 29</td>
             <td> <button class="btn btn-primary">Priimti užsakymą</button> </td>
-                </tr>
-            
-        </tbody>
-    </table>
+        </tr>
+
+    </tbody>
+</table>
+
+
+
+@code{
+
+    IEnumerable<string> postLines = File.ReadLines("AdInfo.txt");
+    DateTime now = DateTime.Now;
+    private string date;
+    private string weight;
+    private string length;
+    private string width;
+    private string height;
+    private string description;  
+    private string img;
+ 
+
+    private string getImg()
+    {
+        foreach (string line in postLines)
+        {
+            if (line.Substring(0, 15) == " Picture paths:")
+            {
+                Console.WriteLine(line);
+                img = line.Substring(15);
+            }
+        }
+        return img;
+    }
+    private string getDescription()
+    {
+        foreach (string line in postLines)
+        {
+            if (line.Substring(0, 13) == " Description:")
+            {
+                Console.WriteLine(line);
+                description = line.Substring(13);
+                
+            }
+        }
+        return description;
+    }
+    private string getHeight()
+    {
+        foreach (string line in postLines)
+        {
+            if (line.Substring(0, 8) == " Height:")
+            {
+                Console.WriteLine(line);
+                height = line.Substring(0);    
+            }
+        }
+        return height;
+    }
+    private string getWidth()
+    {
+        foreach (string line in postLines)
+        {
+            if (line.Substring(0, 7) == " Width:")
+            {
+                Console.WriteLine(line);
+                width = line.Substring(0);
+            }
+        }
+        return width;
+    }
+    private string getLength()
+    {
+        foreach (string line in postLines)
+        {
+            if (line.Substring(0, 8) == " Length:")
+            {
+                Console.WriteLine(line);
+                length = line.Substring(0);
+            }
+        }
+        return length;
+    }
+    private string getWeight()
+    {
+        foreach (string line in postLines)
+        {
+            if (line.Substring(0, 8) == " Weight:")
+            {
+                Console.WriteLine(line);
+                weight = line.Substring(0);
+            }
+        }
+        return weight;
+    }
+
+
+    /*
+    private string readLines()
+    {
+        ;
+        foreach (string line in postLines)
+        {
+            Console.WriteLine(line);
+            break;
+        }
+
+    }
+    */
+}

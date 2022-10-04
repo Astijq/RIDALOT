@@ -18,4 +18,12 @@
     <Folder Include="wwwroot\AdInformations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\majne\OneDrive\Desktop\uni\inzinerija\RIDALOT\ridalot2.0\ridalot2.0\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\majne\OneDrive\Desktop\uni\inzinerija\RIDALOT\ridalot2.0\ridalot2.0\.editorconfig" />
+  </ItemGroup>
+
 </Project>

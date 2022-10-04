@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
   public class ReadPost
     {
-        List<Post>? posts { get; set; }
+        public List<Post>? posts { get; set; }
         public void LoadJson()
         {
             using (StreamReader r = File.OpenText("PostInfo.json"))

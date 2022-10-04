@@ -5,133 +5,132 @@
 
 <h1>Feed</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date uploaded</th>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Measurements</th>
-                <th>Estimated price</th>
-                <th>Adresas</th>
-                <th>Žiūrėti skelbimą</th>
-            </tr>
-        </thead>
-        <tbody>
-
-
+<table class="table">
+    <thead>
         <tr>
-            <td>@now.ToString("F")</td>
-            <td><img src="@getImg()" style="height:200px;max-width:500px;width: auto;" /></td>
-            <td>@getDescription()</td>
-            <td>@getHeight() @getWidth() @getLength() @getWeight()</td>
-            <td>25e</td>
-            <td>Didlaukio g. 29</td>
-            <td> <button class="btn btn-primary">Priimti užsakymą</button> </td>
+            <th>Date uploaded</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Measurements</th>
+            <th>Estimated price</th>
+            <th>Adresas</th>
+            <th>Žiūrėti skelbimą</th>
         </tr>
+    </thead>
+    <tbody>
+
+        @for (int i = 0; i < n; i++)
+        {
+            <tr>
+                <td>@now.ToString("F")</td>
+                <td><img src="@getData(searchImg, i)" style="height:200px;max-width:500px;width: auto;" /></td>
+                <td>@getData(searchDescription, i)</td>
+                <td>@getData(searchHeight, i) @getData(searchWidth, i) @getData(searchLength, i) @getData(searchWeight, i)</td>
+                <td>25e</td>
+                <td>Didlaukio g. 29</td>
+                <td> <button class="btn btn-primary">Priimti užsakymą</button> </td>
+            </tr>
+        }
 
     </tbody>
 </table>
 
 
 
-@code{
+@code {
 
-    IEnumerable<string> postLines = File.ReadLines("AdInfo.txt");
+
     DateTime now = DateTime.Now;
+    private int n = 0;
     private string date;
     private string weight;
     private string length;
     private string width;
     private string height;
-    private string description;  
+    private string description;
     private string img;
- 
+    private string searchImg = " Picture paths:";
+    private string searchDescription = " Description:";
+    private string searchHeight = " Height:";
+    private string searchWidth = " Width:";
+    private string searchLength = " Length:";
+    private string searchWeight = " Weight:";
 
-    private string getImg()
+    void SomeStartupMethod()
     {
+        IEnumerable<string> postLines = File.ReadLines("AdInfo.txt");
         foreach (string line in postLines)
         {
-            if (line.Substring(0, 15) == " Picture paths:")
+            int length = line.Length;
+
+            if (length >= 6 && line.Substring(0, 6) == "Post :")
             {
-                Console.WriteLine(line);
+
+                n++;
+            }
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        SomeStartupMethod();
+    }
+
+
+    private string getData(string data, int n)
+    {
+
+        IEnumerable<string> postLines = File.ReadLines("AdInfo.txt").Skip(n * 7);
+        foreach (string line in postLines)
+        {
+            int lengthOfString = line.Length;
+            if (lengthOfString >= 15 && line.Substring(0, 15) == data)
+            {
                 img = line.Substring(15);
+                Console.WriteLine(img);
+                return img;
             }
-        }
-        return img;
-    }
-    private string getDescription()
-    {
-        foreach (string line in postLines)
-        {
-            if (line.Substring(0, 13) == " Description:")
+            if (lengthOfString >= 13 && line.Substring(0, 13) == data)
             {
-                Console.WriteLine(line);
                 description = line.Substring(13);
-                
+                return description;
+
             }
-        }
-        return description;
-    }
-    private string getHeight()
-    {
-        foreach (string line in postLines)
-        {
-            if (line.Substring(0, 8) == " Height:")
+            if (lengthOfString >= 8 && line.Substring(0, 8) == data)
             {
-                Console.WriteLine(line);
-                height = line.Substring(0);    
+                height = line.Substring(0);
+                return height;
             }
-        }
-        return height;
-    }
-    private string getWidth()
-    {
-        foreach (string line in postLines)
-        {
-            if (line.Substring(0, 7) == " Width:")
+            if (lengthOfString >= 7 && line.Substring(0, 7) == data)
             {
-                Console.WriteLine(line);
                 width = line.Substring(0);
+                return width;
             }
-        }
-        return width;
-    }
-    private string getLength()
-    {
-        foreach (string line in postLines)
-        {
-            if (line.Substring(0, 8) == " Length:")
+            if (lengthOfString >= 8 && line.Substring(0, 8) == data)
             {
-                Console.WriteLine(line);
                 length = line.Substring(0);
+                return length;
             }
-        }
-        return length;
-    }
-    private string getWeight()
-    {
-        foreach (string line in postLines)
-        {
-            if (line.Substring(0, 8) == " Weight:")
+            if (lengthOfString >= 8 && line.Substring(0, 8) == data)
             {
-                Console.WriteLine(line);
                 weight = line.Substring(0);
+                Console.WriteLine(weight);
+                return weight;
             }
+
         }
-        return weight;
+        return "";
     }
 
 
     /*
     private string readLines()
-    {
+        {
         ;
         foreach (string line in postLines)
-        {
+            {
             Console.WriteLine(line);
-            break;
-        }
+    break;
+    }
 
     }
     */

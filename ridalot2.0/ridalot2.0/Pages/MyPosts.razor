@@ -1,8 +1,49 @@
-﻿<h3>MyPosts</h3>
+﻿@page "/myposts"
+<h3>MyPosts</h3>
+
+<Virtualize Context="post" Items="@posts">
+<table class="table">
+		    <thead>
+        <tr>
+            <th>Date uploaded</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Measurements</th>
+            <th>Estimated price</th>
+            <th>Adresas</th>
+            <th>Žiūrėti skelbimą</th>
+        </tr>
+    </thead>
+	<tbody>
+		<tr>
+			<td>Date</td>
+			<td><img src="@post.Image" style="height:200px; max-width: 300px;"/></td>
+			<td>@post.Description</td>
+			<pre>
+Weight: @post.Weight
+Height: @post.Height
+Width: @post.Width
+Length: @post.Length
+			</pre>
+			<td>Price</td>
+			<td>Adresas</td>
+			<td>button</td>
+		</tr>
+	</tbody>
+</table>
+	<hr />
+</Virtualize>
 
 
+@code {
 
-@code { 
+	List<Post>? posts;
+	protected override void OnInitialized()
+	{
+		ReadPost postList = new ReadPost();
+		postList.LoadJson();
+		posts = postList.posts;
+	}
 
 
 }

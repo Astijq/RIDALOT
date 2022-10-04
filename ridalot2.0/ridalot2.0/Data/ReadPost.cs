@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
-  public class ReadPost
+﻿namespace ridalot2._0.Data
+{
+    using Newtonsoft.Json;
+    public class ReadPost
     {
-        List<Post>? posts { get; set; }
+        public List<Post>? posts { get; set; }
         public void LoadJson()
         {
             using (StreamReader r = File.OpenText("PostInfo.json"))
@@ -12,11 +14,11 @@
         }
         public List<Post> Add(Post post)
         {
-            if(posts == null)
+            if (posts == null)
                 posts = new List<Post>();
 
             posts.Add(post);
             return posts;
         }
     }
-
+}

@@ -4,12 +4,13 @@ namespace ridalot2._0.Data
 {
     public class ReadPost
     {
+        List<Post>? posts { get; set; }
         public void LoadJson()
         {
             using (StreamReader r = new StreamReader("PostInfo.json"))
             {
                 string json = r.ReadToEnd();
-                List<Post> items = JsonConvert.DeserializeObject<List<Post>>(PostInfo.json);
+                posts = JsonConvert.DeserializeObject<List<Post>>(json);
             }
         }
     }

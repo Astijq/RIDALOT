@@ -96,6 +96,10 @@ else
                 <td align="right">Address:</td>
                 <td align="left"><input type="text" @bind="address" /></td>
             </tr>
+            <tr>
+                <td align="right">Pay (€):</td>
+                <td align="left"><input type="text" @bind="pay" /></td>
+            </tr>
         </table>
     </p>
 
@@ -115,7 +119,7 @@ else
 }
 
 @code {
-    private int height, width, length, weight;
+    private int height, width, length, weight, pay;
     public String description = "write here";
     public String? address;
     public String file = "PostInfo.json";
@@ -157,6 +161,7 @@ else
         post.Length = length;
         post.Weight = weight;
         post.Address = address;
+        post.Pay = pay;
         DateTime now = DateTime.Now.ToUniversalTime();
         post.Time = now.ToString();
 

@@ -34,6 +34,10 @@
         {
             get; set;
         }
+        public string Pay
+        {
+            get; set;
+        }
         public string Time
         {
             get; set;

@@ -128,8 +128,10 @@ else {
 
 	private void Clicked()
 	{
-		string json = JsonSerializer.Serialize(returnPost());
-		File.WriteAllText(@file,json);
+		ReadPost json = new ReadPost();
+		json.LoadJson();
+		string jsonString = JsonSerializer.Serialize(json.Add(returnPost()));
+		File.WriteAllText(file,jsonString);
 		popup = true;
 	}
 

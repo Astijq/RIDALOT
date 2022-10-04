@@ -12,7 +12,7 @@
             <th>Image</th>
             <th>Description</th>
             <th>Measurements</th>
-            <th>Estimated price</th>
+            <th>Estimated price ($)</th>
             <th>Adresas</th>
             <th>Žiūrėti skelbimą</th>
         </tr>
@@ -22,12 +22,18 @@
         @foreach (Post post in json.posts)
         {
             <tr>
-                <td>@now.ToString("F")  (UTC)</td>
+                <td>@post.Time (UTC)</td>
                 <td><img src="@post.Image" style="height:200px;max-width:500px;width: auto;" /></td>
                 <td>@post.Description</td>
-                <td>@post.Height @post.Width @post.Length @post.Weight</td>
-                <td>25e</td>
-                <td>Didlaukio g. 29</td>
+                
+<td> <pre>Weight: @post.Height
+Width: @post.Width
+Length: @post.Length
+Weight: @post.Weight
+</pre>
+                </td>
+                <td>@post.Pay</td>
+                <td>@post.Address</td>
                 <td> <button class="btn btn-primary">Priimti užsakymą</button> </td>
             </tr>
         }
@@ -41,6 +47,7 @@
 
 
     DateTime now = DateTime.Now.ToUniversalTime();
+
     private int n = 0;
     ReadPost json = new ReadPost();
     protected override async Task OnInitializedAsync()

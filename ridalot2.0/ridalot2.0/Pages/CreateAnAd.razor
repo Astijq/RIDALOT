@@ -1,6 +1,8 @@
 ﻿@page "/createad"
 @using Microsoft.Extensions.Logging
 @using Pages
+@using System.Text.Json
+@using System.Text.Json.Serialization
 @inject NavigationManager NavMan
 @inherits LoginControl
 
@@ -105,7 +107,7 @@ else {
 
 @code {
 	private int height, width, length, weight;
-	public String description = "write here", file = "AdInfo.txt";
+	public String description = "write here", file = "PostInfo.json";
 	List<string> imgUrls = new List<string>();
 	public bool popup { get; set; } = false;
 	public bool isHovering {get; set; } = false;
@@ -126,19 +128,24 @@ else {
 
 	private void Clicked()
 	{
-		System.IO.File.AppendAllLines(@file, Information());
+		string json = JsonSerializer.Serialize(returnPost());
+		File.WriteAllText(@file,json);
 		popup = true;
 	}
 
-	private string[] Information()
-	{
-		string[] info = {
-			"Post : " + "\n Picture paths: " + string.Join(Environment.NewLine, imgUrls.ToArray()) +
-			"\n Descpription: " + description + "\n Height: " + height + "\n Width: " +  width +
-			"\n Length: " + length + "\n Weigth: " + weight };
+	private Post returnPost(){
+		Post post = new Post();
+		post.User = " ";    // User.Identity; TODO 
+		post.Image = string.Join(Environment.NewLine, imgUrls.ToArray());
+		post.Description = description;
+		post.Height = height;
+		post.Width = width;
+		post.Length = length;
+		post.Weight = weight;
 
-		return info;
+		return post;
 	}
+
 	private async Task ClosePopup(bool accepted)
 	{
 		popup = false;

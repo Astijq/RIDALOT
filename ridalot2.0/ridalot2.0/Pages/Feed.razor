@@ -42,35 +42,7 @@
 
     DateTime now = DateTime.Now.ToUniversalTime();
     private int n = 0;
-    private string date;
-    private string weight;
-    private string length;
-    private string width;
-    private string height;
-    private string description;
-    private string img;
-    private string searchImg = " Picture paths:";
-    private string searchDescription = " Description:";
-    private string searchHeight = " Height:";
-    private string searchWidth = " Width:";
-    private string searchLength = " Length:";
-    private string searchWeight = " Weight:";
     ReadPost json = new ReadPost();
-
-    void SomeStartupMethod()
-    {
-        IEnumerable<string> postLines = File.ReadLines("AdInfo.txt");
-        foreach (string line in postLines)
-        {
-            int length = line.Length;
-
-            if (length >= 6 && line.Substring(0, 6) == "Post :")
-            {
-
-                n++;
-            }
-        }
-    }
     protected override async Task OnInitializedAsync()
     {
         json.LoadJson();

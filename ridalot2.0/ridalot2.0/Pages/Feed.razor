@@ -1,6 +1,6 @@
 ﻿@page "/feed"
 @using System.Collections
-
+@using Data
 <PageTitle>Feed</PageTitle>
 
 <h1>Feed</h1>
@@ -19,13 +19,13 @@
     </thead>
     <tbody>
 
-        @for (int i = 0; i < n; i++)
+        @foreach (Post post in json.posts)
         {
             <tr>
-                <td>@now.ToString("F")</td>
-                <td><img src="@getData(searchImg, i)" style="height:200px;max-width:500px;width: auto;" /></td>
-                <td>@getData(searchDescription, i)</td>
-                <td>@getData(searchHeight, i) @getData(searchWidth, i) @getData(searchLength, i) @getData(searchWeight, i)</td>
+                <td>@now.ToString("F")  (UTC)</td>
+                <td><img src="@post.Image" style="height:200px;max-width:500px;width: auto;" /></td>
+                <td>@post.Description</td>
+                <td>@post.Height @post.Width @post.Length @post.Weight</td>
                 <td>25e</td>
                 <td>Didlaukio g. 29</td>
                 <td> <button class="btn btn-primary">Priimti užsakymą</button> </td>
@@ -40,7 +40,7 @@
 @code {
 
 
-    DateTime now = DateTime.Now;
+    DateTime now = DateTime.Now.ToUniversalTime();
     private int n = 0;
     private string date;
     private string weight;
@@ -55,6 +55,7 @@
     private string searchWidth = " Width:";
     private string searchLength = " Length:";
     private string searchWeight = " Weight:";
+    ReadPost json = new ReadPost();
 
     void SomeStartupMethod()
     {
@@ -72,66 +73,7 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        SomeStartupMethod();
+        json.LoadJson();
     }
 
-
-    private string getData(string data, int n)
-    {
-
-        IEnumerable<string> postLines = File.ReadLines("AdInfo.txt").Skip(n * 7);
-        foreach (string line in postLines)
-        {
-            int lengthOfString = line.Length;
-            if (lengthOfString >= 15 && line.Substring(0, 15) == data)
-            {
-                img = line.Substring(15);
-                Console.WriteLine(img);
-                return img;
-            }
-            if (lengthOfString >= 13 && line.Substring(0, 13) == data)
-            {
-                description = line.Substring(13);
-                return description;
-
-            }
-            if (lengthOfString >= 8 && line.Substring(0, 8) == data)
-            {
-                height = line.Substring(0);
-                return height;
-            }
-            if (lengthOfString >= 7 && line.Substring(0, 7) == data)
-            {
-                width = line.Substring(0);
-                return width;
-            }
-            if (lengthOfString >= 8 && line.Substring(0, 8) == data)
-            {
-                length = line.Substring(0);
-                return length;
-            }
-            if (lengthOfString >= 8 && line.Substring(0, 8) == data)
-            {
-                weight = line.Substring(0);
-                Console.WriteLine(weight);
-                return weight;
-            }
-
-        }
-        return "";
-    }
-
-
-    /*
-    private string readLines()
-        {
-        ;
-        foreach (string line in postLines)
-            {
-            Console.WriteLine(line);
-    break;
-    }
-
-    }
-    */
 }

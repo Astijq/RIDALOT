@@ -1,4 +1,5 @@
 ﻿@page "/myposts"
+@using Data
 <h3>MyPosts</h3>
 
 <Virtualize Context="post" Items="@posts">
@@ -10,13 +11,13 @@
             <th>Description</th>
             <th>Measurements</th>
             <th>Estimated price</th>
-            <th>Adresas</th>
-            <th>Žiūrėti skelbimą</th>
+            <th>Adress</th>
+            <th>View Add</th>
         </tr>
     </thead>
 	<tbody>
 		<tr>
-			<td>Date</td>
+			<td>@post.Time</td>
 			<td><img src="@post.Image" style="height:200px; max-width: 300px;"/></td>
 			<td>@post.Description</td>
 			<pre>
@@ -25,8 +26,8 @@ Height: @post.Height
 Width: @post.Width
 Length: @post.Length
 			</pre>
-			<td>Price</td>
-			<td>Adresas</td>
+			<td>@post.Pay</td>
+			<td>@post.Address</td>
 			<td>button</td>
 		</tr>
 	</tbody>
@@ -42,7 +43,15 @@ Length: @post.Length
 	{
 		ReadPost postList = new ReadPost();
 		postList.LoadJson();
-		posts = postList.posts;
+		if(postList.posts == null)
+		{
+			var error = "No posts found...";
+		}
+		else
+		{
+			posts = postList.posts;
+		}
+
 	}
 
 

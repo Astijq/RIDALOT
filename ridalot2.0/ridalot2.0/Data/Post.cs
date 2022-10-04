@@ -30,15 +30,15 @@
         {
             get; set;
         }
-        public string Address
+        public string? Address
         {
             get; set;
         }
-        public string Pay
+        public int Pay
         {
             get; set;
         }
-        public string Time
+        public string? Time
         {
             get; set;
         }

@@ -2,6 +2,8 @@
 @using Data
 @using System.Text.Json
 @using System.Text.Json.Serialization
+@inherits LoginControl
+
 <h3>MyPosts</h3>
 
 <table class="table">
@@ -46,12 +48,13 @@
 	{
 		ReadPost postList = new ReadPost();
 		postList.LoadJson();
+
 		if (postList.posts == null)
 		{
 		}
 		else
 		{
-			posts = postList.posts;
+			posts = postList.getConsumerPosts(c.Email);
 		}
 
 	}

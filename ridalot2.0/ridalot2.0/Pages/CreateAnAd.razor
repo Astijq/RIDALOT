@@ -7,7 +7,7 @@
 @inject NavigationManager NavMan
 @inherits LoginControl
 
-@if (!User.Identity.IsAuthenticated)
+@if (!c.User.Identity.IsAuthenticated)
 {
     <a class="ml-md-auto btn btn-primary"
    href="/Identity/Login"
@@ -153,7 +153,7 @@ else
     private Post returnPost()
     {
         Post post = new Post();
-        post.User = " ";    // User.Identity; TODO
+        post.User = c.Email;    // User.Identity; TODO
         post.Image = string.Join(Environment.NewLine, imgUrls.ToArray());
         post.Description = description;
         post.Height = height;

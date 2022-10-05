@@ -3,7 +3,10 @@
     using Newtonsoft.Json;
     public class ReadPost
     {
-        public List<Post>? posts { get; set; }
+        public List<Post>? posts
+        {
+            get; set;
+        }
         public void LoadJson()
         {
             using (StreamReader r = File.OpenText("PostInfo.json"))
@@ -19,6 +22,19 @@
 
             posts.Add(post);
             return posts;
+        }
+
+        public List<Post> getConsumerPosts(string email)
+        {
+            foreach (Post post in posts.ToList())
+            {
+                if (post.User != email)
+                {
+                    posts.Remove(post);
+                }
+            }
+            return posts;
+
         }
     }
 }

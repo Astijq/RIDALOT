@@ -26,12 +26,13 @@
                 <td>@post.Time (UTC)</td>
                 <td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
                 <td>@post.Description</td>
-                
-<td> <pre>Weight: @post.Height
+
+                <td>
+                <pre>Weight: @post.Height
 Width: @post.Width
 Length: @post.Length
 Weight: @post.Weight
-</pre>
+                </pre>
                 </td>
                 <td>@post.Pay</td>
                 <td>@post.Address</td>
@@ -45,7 +46,7 @@ Weight: @post.Weight
 @if (popup)
 {
     <AdPopUp Title="Task"
-         Text="Task accepted succesfully!" 
+         Text="Task accepted succesfully!"
          TextName="Name:"
          TextAdress="Address:"
          TextPhone="Phone:"

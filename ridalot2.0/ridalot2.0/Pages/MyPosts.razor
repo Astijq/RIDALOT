@@ -2,38 +2,39 @@
 @using Data
 <h3>MyPosts</h3>
 
-<Virtualize Context="post" Items="@posts">
 <table class="table">
-		    <thead>
-        <tr>
-            <th>Date uploaded</th>
-            <th>Image</th>
-            <th>Description</th>
-            <th>Measurements</th>
-            <th>Estimated price</th>
-            <th>Adress</th>
-            <th>View Add</th>
-        </tr>
-    </thead>
-	<tbody>
+	<thead>
 		<tr>
-			<td>@post.Time</td>
-			<td><img src="@post.Image" style="height:200px; max-width: 300px;"/></td>
-			<td>@post.Description</td>
-			<pre>
-Weight: @post.Weight
-Height: @post.Height
-Width: @post.Width
-Length: @post.Length
-			</pre>
-			<td>@post.Pay</td>
-			<td>@post.Address</td>
-			<td>button</td>
+			<th>Date uploaded</th>
+			<th>Image</th>
+			<th>Description</th>
+			<th>Measurements</th>
+			<th>Estimated price</th>
+			<th>Adress</th>
+			<th>Edit post</th>
 		</tr>
-	</tbody>
+	</thead>
+
+	<Virtualize Context="post" Items="@posts">
+		<tbody>
+			<tr>
+				<td>@post.Time</td>
+				<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+				<td>@post.Description</td>
+				<td>
+					Weight: @post.Weight<br />
+					Height: @post.Height<br />
+					Width: @post.Width<br />
+					Length: @post.Length<br />
+				</td>
+				<td>@post.Pay</td>
+				<td>@post.Address</td>
+				<td><button type="button" class="btn btn-info btn-sm">Edit</button></td>
+			</tr>
+		</tbody>
+	</Virtualize>
+
 </table>
-	<hr />
-</Virtualize>
 
 
 @code {
@@ -43,9 +44,8 @@ Length: @post.Length
 	{
 		ReadPost postList = new ReadPost();
 		postList.LoadJson();
-		if(postList.posts == null)
+		if (postList.posts == null)
 		{
-			var error = "No posts found...";
 		}
 		else
 		{

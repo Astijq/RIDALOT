@@ -7,6 +7,9 @@
             </div>
             <div class="modal-body">
                 <p>@Text</p>
+                <p>@TextName</p>
+                <p>@TextAdress</p>
+                <p>@TextPhone</p>
             </div>
             <div class="modal-footer">
                 @switch (DialogType)
@@ -34,6 +37,15 @@
 
     [Parameter]
     public string Text { get; set; }
+
+    [Parameter]
+    public string TextName { get; set; }
+
+    [Parameter]
+    public string TextPhone { get; set; }
+
+    [Parameter]
+    public string TextAdress { get; set; }
 
     [Parameter]
     public EventCallback<bool> OnClose { get; set; }

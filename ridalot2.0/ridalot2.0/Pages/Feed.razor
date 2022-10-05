@@ -1,6 +1,7 @@
 ﻿@page "/feed"
 @using System.Collections
 @using Data
+@inject NavigationManager NavMan
 <PageTitle>Feed</PageTitle>
 
 <h1>Feed</h1>
@@ -12,9 +13,9 @@
             <th>Image</th>
             <th>Description</th>
             <th>Measurements</th>
-            <th>Estimated price ($)</th>
-            <th>Adresas</th>
-            <th>Žiūrėti skelbimą</th>
+            <th>Estimated price (€)</th>
+            <th>Address</th>
+            <th>Take tasks</th>
         </tr>
     </thead>
     <tbody>
@@ -23,7 +24,7 @@
         {
             <tr>
                 <td>@post.Time (UTC)</td>
-                <td><img src="@post.Image" style="height:200px;max-width:500px;width: auto;" /></td>
+                <td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
                 <td>@post.Description</td>
                 
 <td> <pre>Weight: @post.Height
@@ -34,12 +35,24 @@ Weight: @post.Weight
                 </td>
                 <td>@post.Pay</td>
                 <td>@post.Address</td>
-                <td> <button class="btn btn-primary">Priimti užsakymą</button> </td>
+                <td> <button type="submit" class="btn btn-success" onclick="@Clicked">Accept the task</button> </td>
             </tr>
         }
 
     </tbody>
 </table>
+
+@if (popup)
+{
+    <AdPopUp Title="Task"
+         Text="Task accepted succesfully!" 
+         TextName="Name:"
+         TextAdress="Address:"
+         TextPhone="Phone:"
+         OnClose="@ClosePopup"
+         DialogType="AdPopUp.ModalDialogType.Ok">
+    </AdPopUp>
+}
 
 
 
@@ -47,12 +60,21 @@ Weight: @post.Weight
 
 
     DateTime now = DateTime.Now.ToUniversalTime();
-
+    public bool popup { get; set; } = false;
     private int n = 0;
     ReadPost json = new ReadPost();
     protected override async Task OnInitializedAsync()
     {
         json.LoadJson();
     }
-
+    private void Clicked()
+    {
+        popup = true;
+    }
+    private async Task ClosePopup(bool accepted)
+    {
+        popup = false;
+        StateHasChanged();
+        NavMan.NavigateTo("/");
+    }
 }

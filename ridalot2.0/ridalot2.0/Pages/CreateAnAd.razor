@@ -77,19 +77,19 @@ else
 		<table>
 			<tr>
 				<td align="right">Height (cm):</td>
-				<td align="left"><input type="number" @bind="height" /></td>
+				<td align="left"><input type="number" @bind="d.height"/></td>
 			</tr>
 			<tr>
 				<td align="right">Width (cm):</td>
-				<td align="left"><input type="number" @bind="width" /></td>
+				<td align="left"><input type="number" @bind="d.width" /></td>
 			</tr>
 			<tr>
 				<td align="right">Length (cm):</td>
-				<td align="left"><input type="number" @bind="length" /></td>
+				<td align="left"><input type="number" @bind="d.length" /></td>
 			</tr>
 			<tr>
 				<td align="right">Weight (kg):</td>
-				<td align="left"><input type="number" @bind="weight" /></td>
+				<td align="left"><input type="number" @bind="d.weight" /></td>
 			</tr>
 			<tr>
 				<td align="right">Address:</td>
@@ -97,7 +97,7 @@ else
 			</tr>
 			<tr>
 				<td align="right">Pay (€):</td>
-				<td align="left"><input type="text" @bind="pay" /></td>
+				<td align="left"><input type="text" @bind="d.pay" /></td>
 			</tr>
 		</table>
 	</p>
@@ -118,7 +118,16 @@ else
 }
 
 @code {
-	private int height, width, length, weight, pay;
+	public struct Dimensions
+	{
+		public int height { get; set; }
+		public int width { get; set; }
+		public int length { get; set; }
+		public int weight { get; set; }
+		public int pay { get; set; }
+	}
+	Dimensions d;
+
 	public String description = "write here";
 	public String? address;
 	public String file = "PostInfo.json";
@@ -155,12 +164,12 @@ else
 		post.User = c.Email;    // User.Identity; TODO
 		post.Image = string.Join(Environment.NewLine, imgUrls.ToArray());
 		post.Description = description;
-		post.Height = height;
-		post.Width = width;
-		post.Length = length;
-		post.Weight = weight;
+		post.Height = d.height;
+		post.Width = d.width;
+		post.Length = d.length;
+		post.Weight = d.weight;
 		post.Address = address;
-		post.Pay = pay;
+		post.Pay = d.pay;
 		DateTime now = DateTime.Now.ToUniversalTime();
 		post.Time = now.ToString();
 

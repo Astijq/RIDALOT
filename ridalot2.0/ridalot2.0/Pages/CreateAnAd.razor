@@ -142,7 +142,7 @@ else
 
 	private void Clicked()
 	{
-		ReadPost oldPosts = new ReadPost();
+		ReadPost<Post> oldPosts = new ReadPost<Post>();
 		oldPosts.LoadJson();
 		string jsonString = JsonSerializer.Serialize(oldPosts.Add(returnPost()));
 		File.WriteAllText(file, jsonString);

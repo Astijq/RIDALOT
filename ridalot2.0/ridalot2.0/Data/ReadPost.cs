@@ -1,29 +1,26 @@
 ﻿namespace ridalot2._0.Data
 {
     using Newtonsoft.Json;
-    public class ReadPost
+    using System.Collections.Generic;
+    public class ReadPost<T>
     {
-        public List<Post>? posts { get; set; }
-        public void LoadJson()
+        public List<T>? posts { get; set; }
+        public void LoadJson(string file = "PostInfo.json")
         {
-            using (StreamReader r = File.OpenText("PostInfo.json"))
+            using (StreamReader r = File.OpenText(file))
             {
                 string json = r.ReadToEnd();
-                posts = JsonConvert.DeserializeObject<List<Post>>(json);
+                posts = JsonConvert.DeserializeObject<List<T>>(json);
             }
         }
-        public List<Post> Add(Post post)
+        public List<T> Add(T post)
         {
             if (posts == null)
             {
-                posts = new List<Post>();
+                posts = new List<T>();
             }
             posts.Add(post);
             return posts;
-        }
-        public List<Post> getConsumerPosts(string email)
-        {
-            return posts.Where(x => x.User == email).ToList();
         }
     }
 }

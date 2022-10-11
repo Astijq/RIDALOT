@@ -47,7 +47,7 @@
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		ReadPost postList = new ReadPost();
+		ReadPost<Post> postList = new ReadPost<Post>();
 		postList.LoadJson();
 
 		if (postList.posts == null)
@@ -55,7 +55,8 @@
 		}
 		else
 		{
-			posts = postList.getConsumerPosts(c.Email);
+			posts = postList.posts;
+			posts.Where(x => x.User == c.Email).ToList();
 		}
 
 	}

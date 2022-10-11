@@ -62,7 +62,7 @@
 	DateTime now = DateTime.Now.ToUniversalTime();
 	public bool popup { get; set; } = false;
 	private int n = 0;
-	ReadPost json = new ReadPost();
+	ReadPost<Post> json = new ReadPost<Post>();
 	protected override async Task OnInitializedAsync()
 	{
 		json.LoadJson();

@@ -2,57 +2,56 @@
 @using System.Collections
 @using Data
 @inject NavigationManager NavMan
-<PageTitle>Feed</PageTitle>
 
 <h1>Feed</h1>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>Date uploaded</th>
-            <th>Image</th>
-            <th>Description</th>
-            <th>Measurements</th>
-            <th>Estimated price (€)</th>
-            <th>Address</th>
-            <th>Take tasks</th>
-        </tr>
-    </thead>
-    <tbody>
+	<thead>
+		<tr>
+			<th>Date uploaded</th>
+			<th>Image</th>
+			<th>Description</th>
+			<th>Measurements</th>
+			<th>Estimated price (€)</th>
+			<th>Address</th>
+			<th>Take tasks</th>
+		</tr>
+	</thead>
+	<tbody>
 
-        @foreach (Post post in json.posts)
-        {
-            <tr>
-                <td>@post.Time (UTC)</td>
-                <td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
-                <td>@post.Description</td>
+		@foreach (Post post in json.posts)
+		{
+			<tr>
+				<td>@post.Time (UTC)</td>
+				<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+				<td>@post.Description</td>
 
-                <td>
-                <pre>Weight: @post.Height
-Width: @post.Width
-Length: @post.Length
-Weight: @post.Weight
-                </pre>
-                </td>
-                <td>@post.Pay</td>
-                <td>@post.Address</td>
-                <td> <button type="submit" class="btn btn-success" onclick="@Clicked">Accept the task</button> </td>
-            </tr>
-        }
+				<td>
+					<pre>Weight: @post.Height
+	Width: @post.Width
+	Length: @post.Length
+	Weight: @post.Weight
+					</pre>
+				</td>
+				<td>@post.Pay</td>
+				<td>@post.Address</td>
+				<td> <button type="submit" class="btn btn-success" onclick="@Clicked">Accept the task</button> </td>
+			</tr>
+		}
 
-    </tbody>
+	</tbody>
 </table>
 
 @if (popup)
 {
-    <AdPopUp Title="Task"
-         Text="Task accepted succesfully!"
-         TextName="Name:"
-         TextAdress="Address:"
-         TextPhone="Phone:"
-         OnClose="@ClosePopup"
-         DialogType="AdPopUp.ModalDialogType.Ok">
-    </AdPopUp>
+	<AdPopUp Title="Task"
+		 Text="Task accepted succesfully!"
+		 TextName="Name:"
+		 TextAdress="Address:"
+		 TextPhone="Phone:"
+		 OnClose="@ClosePopup"
+		 DialogType="AdPopUp.ModalDialogType.Ok">
+	</AdPopUp>
 }
 
 
@@ -60,22 +59,22 @@ Weight: @post.Weight
 @code {
 
 
-    DateTime now = DateTime.Now.ToUniversalTime();
-    public bool popup { get; set; } = false;
-    private int n = 0;
-    ReadPost json = new ReadPost();
-    protected override async Task OnInitializedAsync()
-    {
-        json.LoadJson();
-    }
-    private void Clicked()
-    {
-        popup = true;
-    }
-    private async Task ClosePopup(bool accepted)
-    {
-        popup = false;
-        StateHasChanged();
-        NavMan.NavigateTo("/");
-    }
+	DateTime now = DateTime.Now.ToUniversalTime();
+	public bool popup { get; set; } = false;
+	private int n = 0;
+	ReadPost json = new ReadPost();
+	protected override async Task OnInitializedAsync()
+	{
+		json.LoadJson();
+	}
+	private void Clicked()
+	{
+		popup = true;
+	}
+	private async Task ClosePopup(bool accepted)
+	{
+		popup = false;
+		StateHasChanged();
+		NavMan.NavigateTo("/");
+	}
 }

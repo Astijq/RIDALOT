@@ -21,11 +21,11 @@ else
 
 	public class Consumer
 	{
-		public ClaimsPrincipal? User;
-		public string? GivenName;
-		public string? Surname;
-		public string? Avatar;
-		public string? Email;
+		public ClaimsPrincipal? User { get; set; }
+		public string? GivenName { get; set; }
+		public string? Surname { get; set; }
+		public string? Avatar { get; set; }
+		public string? Email { get; set; }
 	}
 	public Consumer c = new Consumer();
 	protected override void OnInitialized()

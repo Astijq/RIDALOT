@@ -153,7 +153,9 @@ else
 	{
 		ReadPost<Post> oldPosts = new ReadPost<Post>();
 		oldPosts.LoadJson();
-		string jsonString = JsonSerializer.Serialize(oldPosts.Add(returnPost()));
+		List<Post> allPosts = oldPosts.posts.ToList();
+		allPosts.Add(returnPost());
+		string jsonString = JsonSerializer.Serialize(allPosts);
 		File.WriteAllText(file, jsonString);
 		popup = true;
 	}

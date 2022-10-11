@@ -3,10 +3,10 @@
 @inject IHttpContextAccessor _httpContextAccessor
 @inject HttpClient Http
 
-@if (User.Identity.IsAuthenticated)
+@if (@c.User.Identity.IsAuthenticated)
 {
-    <img src="@Avatar" style="height:50px;max-width:50px;width:auto;" />
-    <b>You are logged in as: @GivenName @Surname</b>
+    <img src="@c.Avatar" style="height:50px;max-width:50px;width:auto;" />
+    <b>You are logged in as: @c.GivenName @c.Surname</b>
     <a class="ml-md-auto btn btn-primary"
        href="/Identity/Logout"
        target="_top">Logout</a>
@@ -18,28 +18,44 @@ else
        target="_top">Login</a>
 }
 @code {
-    public ClaimsPrincipal User;
-    private string GivenName;
-    private string Surname;
-    private string Avatar;
+
+    public class Consumer
+    {
+        public ClaimsPrincipal User;
+        public string GivenName;
+        public string Surname;
+        public string Avatar;
+        public string Email;
+    }
+    public Consumer c = new Consumer();
     protected override void OnInitialized()
     {
         base.OnInitialized();
         try
         {
             // Set the user to determine if they are logged in
-            User = _httpContextAccessor.HttpContext.User;
+            c.User = _httpContextAccessor.HttpContext.User;
+            //email
+            var givenEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email);
+            if(givenEmail != null)
+            {
+                c.Email = givenEmail.Value;
+            }
+            else
+            {
+                c.Email = "";
+            }
             // Try to get the GivenName
             var givenName =
                 _httpContextAccessor.HttpContext.User
                 .FindFirst(ClaimTypes.GivenName);
             if (givenName != null)
             {
-                GivenName = givenName.Value;
+                c.GivenName = givenName.Value;
             }
             else
             {
-                GivenName = User.Identity.Name;
+                c.GivenName = c.User.Identity.Name;
             }
             // Try to get the Surname
             var surname =
@@ -47,11 +63,11 @@ else
                 .FindFirst(ClaimTypes.Surname);
             if (surname != null)
             {
-                Surname = surname.Value;
+                c.Surname = surname.Value;
             }
             else
             {
-                Surname = "";
+                c.Surname = "";
             }
             // Try to get Avatar
             var avatar =
@@ -59,11 +75,11 @@ else
             .FindFirst("urn:google:image");
             if (avatar != null)
             {
-                Avatar = avatar.Value;
+                c.Avatar = avatar.Value;
             }
             else
             {
-                Avatar = "";
+                c.Avatar = "";
             }
         }
         catch { }

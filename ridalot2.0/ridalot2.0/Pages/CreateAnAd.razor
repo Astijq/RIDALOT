@@ -7,200 +7,199 @@
 @inject NavigationManager NavMan
 @inherits LoginControl
 
-@if (!User.Identity.IsAuthenticated)
+@if (!c.User.Identity.IsAuthenticated)
 {
-    <a class="ml-md-auto btn btn-primary"
+	<a class="ml-md-auto btn btn-primary"
    href="/Identity/Login"
    target="_top">Login</a>
 }
 else
 {
+	<h3>Create an Ad</h3>
+	<style>
+		.container {
+			position: relative;
+			width: fit-content;
+			height: 200px
+		}
 
-    <h3>Create an Ad</h3>
-    <style>
-        .container {
-            position: relative;
-            width: fit-content;
-            height: 200px
-        }
+		.middle {
+			transition: .5s ease;
+			opacity: 0;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			text-align: center;
+		}
 
-        .middle {
-            transition: .5s ease;
-            opacity: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%);
-            text-align: center;
-        }
+		.container:hover .image {
+			opacity: 0.3;
+		}
 
-        .container:hover .image {
-            opacity: 0.3;
-        }
+		.container:hover .middle {
+			opacity: 1;
+		}
+	</style>
 
-        .container:hover .middle {
-            opacity: 1;
-        }
-    </style>
+	<div>
+		<InputFile OnChange="@OnFileSelection" multiple></InputFile>
+		<div class="row">
+			@foreach (string imgUrl in imgUrls)
+			{
+				<div class="container">
+					<img src="@imgUrl" style="height:200px; max-width: 300px; transition: .5s ease; opacity: @op"
+				 @onmouseout="@OnMouseOut" @onmouseover="@OnMouseOver" />
+					<div class="middle">
+						<button class="btn btn-success" @onclick="() => DeletePhoto(imgUrl)" style="position:center; transition: .5s ease; opacity: @opButton "
+						@onmouseout="@OnMouseOut" @onmouseover="@OnMouseOver">
+							Delete
+						</button>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
 
-    <div>
-        <InputFile OnChange="@OnFileSelection" multiple></InputFile>
-        <div class="row">
-            @foreach (string imgUrl in imgUrls)
-            {
-                <div class="container">
-                    <img src="@imgUrl" style="height:200px; max-width: 300px; transition: .5s ease; opacity: @op"
-                 @onmouseout="@OnMouseOut" @onmouseover="@OnMouseOver" />
-                    <div class="middle">
-                        <button class="btn btn-success" @onclick="() => DeletePhoto(imgUrl)" style="position:center; transition: .5s ease; opacity: @opButton "
-                        @onmouseout="@OnMouseOut" @onmouseover="@OnMouseOver">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
+	<p>
 
-    <p>
+		Description:
+	</p>
 
-        Description:
-    </p>
+	<p>
+		<label>
+			<textarea type="text" style=" min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;" @bind="description" />
+		</label>
+	</p>
 
-    <p>
-        <label>
-            <textarea type="text" style=" min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;" @bind="description" />
-        </label>
-    </p>
+	<p>
+		<table>
+			<tr>
+				<td align="right">Height (cm):</td>
+				<td align="left"><input type="number" @bind="height" /></td>
+			</tr>
+			<tr>
+				<td align="right">Width (cm):</td>
+				<td align="left"><input type="number" @bind="width" /></td>
+			</tr>
+			<tr>
+				<td align="right">Length (cm):</td>
+				<td align="left"><input type="number" @bind="length" /></td>
+			</tr>
+			<tr>
+				<td align="right">Weight (kg):</td>
+				<td align="left"><input type="number" @bind="weight" /></td>
+			</tr>
+			<tr>
+				<td align="right">Address:</td>
+				<td align="left"><input type="text" @bind="address" /></td>
+			</tr>
+			<tr>
+				<td align="right">Pay (€):</td>
+				<td align="left"><input type="text" @bind="pay" /></td>
+			</tr>
+		</table>
+	</p>
 
-    <p>
-        <table>
-            <tr>
-                <td align="right">Height (cm):</td>
-                <td align="left"><input type="number" @bind="height" /></td>
-            </tr>
-            <tr>
-                <td align="right">Width (cm):</td>
-                <td align="left"><input type="number" @bind="width" /></td>
-            </tr>
-            <tr>
-                <td align="right">Length (cm):</td>
-                <td align="left"><input type="number" @bind="length" /></td>
-            </tr>
-            <tr>
-                <td align="right">Weight (kg):</td>
-                <td align="left"><input type="number" @bind="weight" /></td>
-            </tr>
-            <tr>
-                <td align="right">Address:</td>
-                <td align="left"><input type="text" @bind="address" /></td>
-            </tr>
-            <tr>
-                <td align="right">Pay (€):</td>
-                <td align="left"><input type="text" @bind="pay" /></td>
-            </tr>
-        </table>
-    </p>
-
-    <p>
-        <button type="submit" class="btn btn-success" onclick="@Clicked">Submit</button>
-    </p>
+	<p>
+		<button type="submit" class="btn btn-success" onclick="@Clicked">Submit</button>
+	</p>
 
 }
 
 @if (popup)
 {
-    <AdPopUp Title="Posted"
-         Text="Ad posted succesfully!"
-         OnClose="@ClosePopup"
-         DialogType="AdPopUp.ModalDialogType.Ok">
-    </AdPopUp>
+	<AdPopUp Title="Posted"
+		 Text="Ad posted succesfully!"
+		 OnClose="@ClosePopup"
+		 DialogType="AdPopUp.ModalDialogType.Ok">
+	</AdPopUp>
 }
 
 @code {
-    private int height, width, length, weight, pay;
-    public String description = "write here";
-    public String? address;
-    public String file = "PostInfo.json";
-    public List<string> imgUrls = new List<string>();
-    public bool popup { get; set; } = false;
-    public bool isHovering { get; set; } = false;
-    public double op { get; set; } = 1;
-    public double opButton { get; set; } = 0;
+	private int height, width, length, weight, pay;
+	public String description = "write here";
+	public String? address;
+	public String file = "PostInfo.json";
+	public List<string> imgUrls = new List<string>();
+	public bool popup { get; set; } = false;
+	public bool isHovering { get; set; } = false;
+	public double op { get; set; } = 1;
+	public double opButton { get; set; } = 0;
 
-    private async Task OnFileSelection(InputFileChangeEventArgs e)
-    {
-        foreach (IBrowserFile imgFile in e.GetMultipleFiles(5))
-        {
-            var buffers = new byte[imgFile.Size];
-            await imgFile.OpenReadStream().ReadAsync(buffers);
-            string imageType = imgFile.ContentType;
-            string imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(buffers)}";
-            imgUrls.Add(imgUrl);
-        }
-    }
+	private async Task OnFileSelection(InputFileChangeEventArgs e)
+	{
+		foreach (IBrowserFile imgFile in e.GetMultipleFiles(5))
+		{
+			var buffers = new byte[imgFile.Size];
+			await imgFile.OpenReadStream().ReadAsync(buffers);
+			string imageType = imgFile.ContentType;
+			string imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(buffers)}";
+			imgUrls.Add(imgUrl);
+		}
+	}
 
-    private void Clicked()
-    {
-        ReadPost oldPosts = new ReadPost();
-        oldPosts.LoadJson();
-        string jsonString = JsonSerializer.Serialize(oldPosts.Add(returnPost()));
-        File.WriteAllText(file, jsonString);
-        popup = true;
-    }
+	private void Clicked()
+	{
+		ReadPost oldPosts = new ReadPost();
+		oldPosts.LoadJson();
+		string jsonString = JsonSerializer.Serialize(oldPosts.Add(returnPost()));
+		File.WriteAllText(file, jsonString);
+		popup = true;
+	}
 
-    private Post returnPost()
-    {
-        Post post = new Post();
-        post.User = " ";    // User.Identity; TODO
-        post.Image = string.Join(Environment.NewLine, imgUrls.ToArray());
-        post.Description = description;
-        post.Height = height;
-        post.Width = width;
-        post.Length = length;
-        post.Weight = weight;
-        post.Address = address;
-        post.Pay = pay;
-        DateTime now = DateTime.Now.ToUniversalTime();
-        post.Time = now.ToString();
+	private Post returnPost()
+	{
+		Post post = new Post();
+		post.User = c.Email;    // User.Identity; TODO
+		post.Image = string.Join(Environment.NewLine, imgUrls.ToArray());
+		post.Description = description;
+		post.Height = height;
+		post.Width = width;
+		post.Length = length;
+		post.Weight = weight;
+		post.Address = address;
+		post.Pay = pay;
+		DateTime now = DateTime.Now.ToUniversalTime();
+		post.Time = now.ToString();
 
-        return post;
-    }
+		return post;
+	}
 
-    private async Task ClosePopup(bool accepted)
-    {
-        popup = false;
-        StateHasChanged();
-        NavMan.NavigateTo("/");
-    }
-    protected void OnMouseOver(MouseEventArgs mouseEvent)
-    {
-        if (!isHovering)
-        {
-            isHovering = true;
-            op = 0.3;
-            opButton = 0.7;
-            StateHasChanged();
-        }
-    }
+	private async Task ClosePopup(bool accepted)
+	{
+		popup = false;
+		StateHasChanged();
+		NavMan.NavigateTo("/");
+	}
+	protected void OnMouseOver(MouseEventArgs mouseEvent)
+	{
+		if (!isHovering)
+		{
+			isHovering = true;
+			op = 0.3;
+			opButton = 0.7;
+			StateHasChanged();
+		}
+	}
 
-    protected void OnMouseOut(MouseEventArgs mouseEvent)
-    {
-        op = 1;
-        opButton = 0;
-        isHovering = false;
-        StateHasChanged();
-    }
-    void DeletePhoto(string imgUrl)
-    {
-        for (int i = 0; i < imgUrls.Count; i++)
-        {
-            if (imgUrls[i] == imgUrl)
-            {
-                imgUrls.RemoveAt(i);
-            }
-        }
-        StateHasChanged();
-    }
+	protected void OnMouseOut(MouseEventArgs mouseEvent)
+	{
+		op = 1;
+		opButton = 0;
+		isHovering = false;
+		StateHasChanged();
+	}
+	void DeletePhoto(string imgUrl)
+	{
+		for (int i = 0; i < imgUrls.Count; i++)
+		{
+			if (imgUrls[i] == imgUrl)
+			{
+				imgUrls.RemoveAt(i);
+			}
+		}
+		StateHasChanged();
+	}
 }

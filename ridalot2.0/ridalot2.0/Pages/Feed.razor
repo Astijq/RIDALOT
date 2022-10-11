@@ -1,58 +1,80 @@
 ﻿@page "/feed"
 @using System.Collections
 @using Data
-<PageTitle>Feed</PageTitle>
+@inject NavigationManager NavMan
 
 <h1>Feed</h1>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>Date uploaded</th>
-            <th>Image</th>
-            <th>Description</th>
-            <th>Measurements</th>
-            <th>Estimated price ($)</th>
-            <th>Adresas</th>
-            <th>Žiūrėti skelbimą</th>
-        </tr>
-    </thead>
-    <tbody>
+	<thead>
+		<tr>
+			<th>Date uploaded</th>
+			<th>Image</th>
+			<th>Description</th>
+			<th>Measurements</th>
+			<th>Estimated price (€)</th>
+			<th>Address</th>
+			<th>Take tasks</th>
+		</tr>
+	</thead>
+	<tbody>
 
-        @foreach (Post post in json.posts)
-        {
-            <tr>
-                <td>@post.Time (UTC)</td>
-                <td><img src="@post.Image" style="height:200px;max-width:500px;width: auto;" /></td>
-                <td>@post.Description</td>
-                
-<td> <pre>Weight: @post.Height
-Width: @post.Width
-Length: @post.Length
-Weight: @post.Weight
-</pre>
-                </td>
-                <td>@post.Pay</td>
-                <td>@post.Address</td>
-                <td> <button class="btn btn-primary">Priimti užsakymą</button> </td>
-            </tr>
-        }
+		@foreach (Post post in json.posts)
+		{
+			<tr>
+				<td>@post.Time (UTC)</td>
+				<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+				<td>@post.Description</td>
 
-    </tbody>
+				<td>
+					<pre>Weight: @post.Height
+	Width: @post.Width
+	Length: @post.Length
+	Weight: @post.Weight
+					</pre>
+				</td>
+				<td>@post.Pay</td>
+				<td>@post.Address</td>
+				<td> <button type="submit" class="btn btn-success" onclick="@Clicked">Accept the task</button> </td>
+			</tr>
+		}
+
+	</tbody>
 </table>
+
+@if (popup)
+{
+	<AdPopUp Title="Task"
+		 Text="Task accepted succesfully!"
+		 TextName="Name:"
+		 TextAdress="Address:"
+		 TextPhone="Phone:"
+		 OnClose="@ClosePopup"
+		 DialogType="AdPopUp.ModalDialogType.Ok">
+	</AdPopUp>
+}
 
 
 
 @code {
 
 
-    DateTime now = DateTime.Now.ToUniversalTime();
-
-    private int n = 0;
-    ReadPost json = new ReadPost();
-    protected override async Task OnInitializedAsync()
-    {
-        json.LoadJson();
-    }
-
+	DateTime now = DateTime.Now.ToUniversalTime();
+	public bool popup { get; set; } = false;
+	private int n = 0;
+	ReadPost json = new ReadPost();
+	protected override async Task OnInitializedAsync()
+	{
+		json.LoadJson();
+	}
+	private void Clicked()
+	{
+		popup = true;
+	}
+	private async Task ClosePopup(bool accepted)
+	{
+		popup = false;
+		StateHasChanged();
+		NavMan.NavigateTo("/");
+	}
 }

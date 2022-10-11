@@ -1,19 +1,21 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>ridalot2.0</PageTitle>
+<PageTitle>RIDALOT</PageTitle>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+	<!--Menu-->
+	<div class="sidebar">
+		<NavMenu />
+	</div>
 
-    <main>
-        <div class="top-row px-4">
-           <LoginControl />
-        </div>
-        
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+	<main>
+		<!--User info, login button-->
+		<div class="top-row px-4">
+			<LoginControl />
+		</div>
+		<!--Main Body-->
+		<article class="content px-4">
+			@Body
+		</article>
+	</main>
 </div>

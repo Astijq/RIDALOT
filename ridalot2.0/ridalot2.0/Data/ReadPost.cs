@@ -15,10 +15,15 @@
         public List<Post> Add(Post post)
         {
             if (posts == null)
+            {
                 posts = new List<Post>();
-
+            }
             posts.Add(post);
             return posts;
+        }
+        public List<Post> getConsumerPosts(string email)
+        {
+            return posts.Where(x => x.User == email).ToList();
         }
     }
 }

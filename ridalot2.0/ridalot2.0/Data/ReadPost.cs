@@ -2,9 +2,11 @@
 {
     using Newtonsoft.Json;
     using System.Collections.Generic;
-    public class ReadPost<T>
+    using System.Collections;
+
+    public class ReadPost<T> : IEnumerable
     {
-        public List<T>? posts { get; set; }
+        public IEnumerable<T>? posts { get; set; } = new List<T>();
         public void LoadJson(string file = "PostInfo.json")
         {
             using (StreamReader r = File.OpenText(file))
@@ -13,14 +15,10 @@
                 posts = JsonConvert.DeserializeObject<List<T>>(json);
             }
         }
-        public List<T> Add(T post)
+
+        public IEnumerator GetEnumerator()
         {
-            if (posts == null)
-            {
-                posts = new List<T>();
-            }
-            posts.Add(post);
-            return posts;
+            throw new NotImplementedException();
         }
     }
 }

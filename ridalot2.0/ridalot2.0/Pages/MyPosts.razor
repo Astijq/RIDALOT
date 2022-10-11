@@ -46,6 +46,7 @@
 	List<Post>? posts;
 	protected override void OnInitialized()
 	{
+		base.OnInitialized();
 		ReadPost postList = new ReadPost();
 		postList.LoadJson();
 

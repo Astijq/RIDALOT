@@ -26,15 +26,7 @@
 
         public List<Post> getConsumerPosts(string email)
         {
-            foreach (Post post in posts.ToList())
-            {
-                if (post.User != email)
-                {
-                    posts.Remove(post);
-                }
-            }
-            return posts;
-
+            return posts.Where(x => x.User == email).ToList();
         }
     }
 }

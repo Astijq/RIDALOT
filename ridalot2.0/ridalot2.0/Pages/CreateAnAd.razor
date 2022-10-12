@@ -4,6 +4,7 @@
 @using Data
 @using System.Text.Json
 @using System.Text.Json.Serialization
+@using System.Text.RegularExpressions;
 @inject NavigationManager NavMan
 @inherits LoginControl
 
@@ -116,6 +117,14 @@ else
 		 DialogType="AdPopUp.ModalDialogType.Ok">
 	</AdPopUp>
 }
+@if (popup2)
+{
+	<AdPopUp Title="Not posted"
+		 Text="Address isn't correct"
+		 OnClose="@FixPopup"
+		 DialogType="AdPopUp.ModalDialogType.Ok">
+	</AdPopUp>
+}
 
 @code {
 	public struct Dimensions
@@ -129,10 +138,11 @@ else
 	Dimensions d;
 
 	public String description = "write here";
-	public String? address;
+	public String? address = "Street-name 000";
 	public String file = "PostInfo.json";
 	public List<string> imgUrls = new List<string>();
 	public bool popup { get; set; } = false;
+	public bool popup2 {get;set;} = false;
 	public bool isHovering { get; set; } = false;
 	public double op { get; set; } = 1;
 	public double opButton { get; set; } = 0;
@@ -149,13 +159,28 @@ else
 		}
 	}
 
+	public static bool isValidAddress (string add)
+	{
+		string strRegex = @"^([\w\s\W]+[\w\W]?)\s([\d\-\\\/\w]*)?";
+
+		Regex re = new Regex(strRegex);
+
+		if (re.IsMatch(add))
+			return (true);
+		else
+			return (false);
+	}
 	private void Clicked()
 	{
-		ReadPost<Post> oldPosts = new ReadPost<Post>();
-		oldPosts.LoadJson();
-		string jsonString = JsonSerializer.Serialize(oldPosts.Add(returnPost()));
-		File.WriteAllText(file, jsonString);
-		popup = true;
+		if (isValidAddress(address))
+		{
+			ReadPost oldPosts = new ReadPost();
+			oldPosts.LoadJson();
+			string jsonString = JsonSerializer.Serialize(oldPosts.Add(returnPost()));
+			File.WriteAllText(file, jsonString);
+			popup = true;
+		}
+		else popup2 = true;
 	}
 
 	private Post returnPost()
@@ -176,12 +201,19 @@ else
 		return post;
 	}
 
-	private async Task ClosePopup(bool accepted)
+	private async Task ClosePopup()
 	{
 		popup = false;
 		StateHasChanged();
 		NavMan.NavigateTo("/");
 	}
+
+	private async Task FixPopup()
+	{
+		popup2 = false;
+		StateHasChanged();
+	}
+
 	protected void OnMouseOver(MouseEventArgs mouseEvent)
 	{
 		if (!isHovering)

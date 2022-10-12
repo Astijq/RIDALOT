@@ -1,0 +1,15 @@
+Post :                         
+ Picture paths: https://img.furniture1.eu/v7/_im_/detailed/2499/2499117.jpg
+ Description: write here
+ Height: 0                
+ Width: 0                
+ Length: 0                   
+ Weight: 0              
+
+
+public void Clicked(Post post)
+    {
+        posts.Remove(post);
+        string jsonString = JsonSerializer.Serialize(posts);
+        File.WriteAllText("PostInfo.json", jsonString); 
+    }

@@ -207,6 +207,7 @@ else
 		post.Pay = d.pay;
 		DateTime now = DateTime.Now.ToUniversalTime();
 		post.Time = now.ToString();
+		post.Worker = null;
 
 		return post;
 	}

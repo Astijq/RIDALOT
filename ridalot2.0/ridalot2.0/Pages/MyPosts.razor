@@ -48,15 +48,14 @@
 	{
 		base.OnInitialized();
 		ReadPost<Post> postList = new ReadPost<Post>();
-		postList.LoadJson();
-
+		postList.LoadJson("PostInfo.json");
 		if (postList.posts == null)
 		{
+			
 		}
 		else
 		{
-			posts = postList.posts.ToList();
-			posts.Where(x => x.User == c.Email).ToList();
+			posts = postList.posts.Where(x => x.User == c.Email).ToList();
 		}
 
 	}
@@ -67,5 +66,4 @@
 		string jsonString = JsonSerializer.Serialize(posts);
 		File.WriteAllText("PostInfo.json", jsonString);
 	}
-
 }

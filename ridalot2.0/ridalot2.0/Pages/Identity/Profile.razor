@@ -27,12 +27,14 @@
 	public String file = "WorkerInfo.json";
 	List<Worker>? workers;
 	public void Clicked()
-    {
-        ReadPost<Worker> worker = new ReadPost<Worker>();
-        worker.LoadJson("WorkerInfo.json");
-        if (worker.posts == null)
-        {
-            string jsonString = JsonSerializer.Serialize(worker.Add(returnWorker()));
+	{
+		ReadPost<Worker> worker = new ReadPost<Worker>();
+		worker.LoadJson("WorkerInfo.json");
+		if (worker.posts == null)
+		{
+			workers = new List<Worker>();
+			workers.Add(returnWorker());
+			string jsonString = JsonSerializer.Serialize(workers);
             File.WriteAllText(file, jsonString);
             popup = true;
         }

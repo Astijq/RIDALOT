@@ -12,5 +12,9 @@
         public string? Address { get; set; }
         public int Pay { get; set; }
         public string? Time { get; set; }
+        public string? Worker
+        {
+            get; set;
+        }
     }
 }

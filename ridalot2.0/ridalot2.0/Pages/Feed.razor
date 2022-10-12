@@ -2,6 +2,9 @@
 @using System.Collections
 @using Data
 @inject NavigationManager NavMan
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inherits LoginControl
 
 <h1>Feed</h1>
 
@@ -35,7 +38,7 @@
 				</td>
 				<td>@post.Pay</td>
 				<td>@post.Address</td>
-				<td> <button type="submit" class="btn btn-success" onclick="@Clicked">Accept the task</button> </td>
+				<td> <button type="submit" class="btn btn-success" @onclick="()=>Clicked(post)">Accept the task</button> </td>
 			</tr>
 		}
 
@@ -52,28 +55,47 @@
 		 OnClose="@ClosePopup"
 		 DialogType="AdPopUp.ModalDialogType.Ok">
 	</AdPopUp>
+}@if (popup1)
+{
+	<AdPopUp Title="CAN'T TAKE THE TASK"
+		 Text="YOU ARE NOT A WORKER"
+		 OnClose="@ClosePopup">
+	</AdPopUp>
 }
 
 
 
 @code {
-
-
 	DateTime now = DateTime.Now.ToUniversalTime();
 	public bool popup { get; set; } = false;
+	public bool popup1 { get; set; } = false;
 	private int n = 0;
 	ReadPost<Post> json = new ReadPost<Post>();
+	ReadPost<Post> worker = new ReadPost<Post>();
 	protected override async Task OnInitializedAsync()
 	{
-		json.LoadJson();
+		json.LoadJson("PostInfo.json");
+		json.posts = json.posts.Where(x => x.Worker == null).ToList();
 	}
-	private void Clicked()
+	public void Clicked(Post post)
 	{
-		popup = true;
+		worker.LoadJson("WorkerInfo.json");
+		if (worker.posts == null)
+		{
+			popup1 = true;
+		}
+		else
+		{
+			post.Worker = c.Email;
+			string jsonString = JsonSerializer.Serialize(json.posts);
+			File.WriteAllText("PostInfo.json", jsonString);
+			popup = true;
+		}
 	}
 	private async Task ClosePopup(bool accepted)
 	{
 		popup = false;
+		popup1 = false;
 		StateHasChanged();
 		NavMan.NavigateTo("/");
 	}

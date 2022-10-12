@@ -174,9 +174,19 @@ else
 	{
 		if (isValidAddress(address))
 		{
-			ReadPost oldPosts = new ReadPost();
+			ReadPost<Post> oldPosts = new ReadPost<Post>();
 			oldPosts.LoadJson();
-			string jsonString = JsonSerializer.Serialize(oldPosts.Add(returnPost()));
+			List<Post> allPosts;
+			if (oldPosts.posts != null)
+			{
+				allPosts = oldPosts.posts.ToList();
+			}
+			else
+			{
+				allPosts = new List<Post>();
+			}
+			allPosts.Add(returnPost());
+			string jsonString = JsonSerializer.Serialize(allPosts);
 			File.WriteAllText(file, jsonString);
 			popup = true;
 		}
@@ -197,6 +207,7 @@ else
 		post.Pay = d.pay;
 		DateTime now = DateTime.Now.ToUniversalTime();
 		post.Time = now.ToString();
+		post.Worker = null;
 
 		return post;
 	}

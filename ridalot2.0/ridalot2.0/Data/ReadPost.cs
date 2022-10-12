@@ -6,6 +6,7 @@
 
     public class ReadPost<T> : IEnumerable
     {
+
         public IEnumerable<T>? posts { get; set; } = new List<T>();
         public void LoadJson(string file = "PostInfo.json")
         {

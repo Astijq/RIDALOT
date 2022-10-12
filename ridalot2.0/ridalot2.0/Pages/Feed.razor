@@ -2,6 +2,9 @@
 @using System.Collections
 @using Data
 @inject NavigationManager NavMan
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inherits LoginControl
 
 <h1>Feed</h1>
 
@@ -35,7 +38,7 @@
 				</td>
 				<td>@post.Pay</td>
 				<td>@post.Address</td>
-				<td> <button type="submit" class="btn btn-success" onclick="@Clicked">Accept the task</button> </td>
+				<td> <button type="submit" class="btn btn-success" @onclick="()=>Clicked(post)">Accept the task</button> </td>
 			</tr>
 		}
 
@@ -57,19 +60,21 @@
 
 
 @code {
-
-
 	DateTime now = DateTime.Now.ToUniversalTime();
 	public bool popup { get; set; } = false;
 	private int n = 0;
 	ReadPost<Post> json = new ReadPost<Post>();
+	ReadPost<Post> worker = new ReadPost<Post>();
 	protected override async Task OnInitializedAsync()
 	{
-		json.LoadJson();
+		json.LoadJson("PostInfo.json");
 	}
-	private void Clicked()
+	private void Clicked(Post post)
 	{
-		popup = true;
+			post.Worker = c.Email;
+			string jsonString = JsonSerializer.Serialize(json.posts);
+			File.WriteAllText("PostInfo.json", jsonString);
+			popup = true;
 	}
 	private async Task ClosePopup(bool accepted)
 	{

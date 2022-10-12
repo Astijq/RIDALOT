@@ -152,7 +152,7 @@ else
 	private void Clicked()
 	{
 		ReadPost<Post> oldPosts = new ReadPost<Post>();
-		oldPosts.LoadJson();
+		oldPosts.LoadJson("PostInfo.json");
 		string jsonString = JsonSerializer.Serialize(oldPosts.Add(returnPost()));
 		File.WriteAllText(file, jsonString);
 		popup = true;
@@ -172,6 +172,7 @@ else
 		post.Pay = d.pay;
 		DateTime now = DateTime.Now.ToUniversalTime();
 		post.Time = now.ToString();
+		post.Worker = null;
 
 		return post;
 	}

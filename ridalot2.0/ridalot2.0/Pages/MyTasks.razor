@@ -1,0 +1,73 @@
+﻿@page "/mytasks"
+@using Data
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inherits LoginControl
+
+<h3>MyTasks</h3>
+
+<table class="table">
+
+	<Virtualize Context="post" Items="@posts">
+		<tbody>
+			
+			<tr>
+				<th>Phone number:</th>
+				<td></td>
+			</tr>
+			<tr>
+				<th>Email:</th>
+				<td>@post.User</td>
+			</tr>
+			<tr>
+				<th>Description:</th>
+				<td>@post.Description</td>
+			</tr>
+			<tr>
+				<th>Measurements:</th>
+				<td>Weight: @post.Weight Height: @post.Height Width: @post.Width Length: @post.Length</td>
+			</tr>
+			<tr>
+				<th>Picture:</th>
+				<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+			</tr>
+			<tr>
+				<th>Adress:</th>
+				<td>@post.Address</td>
+			</tr>
+			<tr>
+				<th><button type="submit" class="btn btn-success" onclick="@Clicked">Open in maps</button></th>
+				<td></td>
+			</tr>
+
+		</tbody>
+	</Virtualize>
+
+</table>
+
+
+@code {
+
+	List<Post>? posts;
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		ReadPost<Post> postList = new ReadPost<Post>();
+		postList.LoadJson("PostInfo.json");
+
+		if (postList.posts == null)
+		{
+		}
+		else
+		{
+			posts = postList.posts.Where(x => x.Worker == c.Email).ToList();
+		}
+
+	}
+
+	public void Clicked()
+	{
+		
+	}
+
+}

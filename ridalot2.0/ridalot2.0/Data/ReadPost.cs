@@ -5,7 +5,7 @@
     public class ReadPost<T>
     {
         public List<T>? posts { get; set; }
-        public void LoadJson(string file = "PostInfo.json")
+        public void LoadJson(string file)
         {
             using (StreamReader r = File.OpenText(file))
             {

@@ -1,6 +1,42 @@
 ﻿@page "/profile"
+@using Pages
+@using Data
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject NavigationManager NavMan
+@inherits LoginControl
 <h3>Profile</h3>
-
+<th><button type="submit" class="btn btn-success" onclick="@Clicked">Become a worker</button></th>
+@if (popup)
+{
+	<AdPopUp Title="Welcome"
+		 Text="You became a worker successfully!"
+		 OnClose="@ClosePopup"
+		 DialogType="AdPopUp.ModalDialogType.Ok">
+	</AdPopUp>
+}
 @code {
-
+	public bool popup { get; set; } = false;
+	public String file = "WorkerInfo.json";
+	public void Clicked()
+	{
+		ReadPost<Worker> worker = new ReadPost<Worker>();
+		worker.LoadJson("WorkerInfo.json");
+		string jsonString = JsonSerializer.Serialize(returnWorker());
+		File.WriteAllText(file, jsonString);
+		popup = true;
+	}
+	private Worker returnWorker()
+	{
+		Worker worker = new Worker();
+		worker.Email = c.Email;
+		worker.Phone = "";
+		return worker;
+	}
+	private async Task ClosePopup(bool accepted)
+	{
+		popup = false;
+		StateHasChanged();
+		NavMan.NavigateTo("/");
+	}
 }

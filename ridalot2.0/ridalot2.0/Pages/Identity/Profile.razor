@@ -15,21 +15,36 @@
 		 DialogType="AdPopUp.ModalDialogType.Ok">
 	</AdPopUp>
 }
+@if (popup1)
+{
+	<AdPopUp Text="You are already a worker"
+		OnClose="@ClosePopup1">
+		</AdPopUp>
+}
 @code {
 	public bool popup { get; set; } = false;
+	public bool popup1 { get; set; } = false;
 	public String file = "WorkerInfo.json";
+	List<Worker>? workers;
 	public void Clicked()
-	{
-		ReadPost<Worker> worker = new ReadPost<Worker>();
-		worker.LoadJson("WorkerInfo.json");
-		string jsonString = JsonSerializer.Serialize(returnWorker());
-		File.WriteAllText(file, jsonString);
-		popup = true;
-	}
-	private Worker returnWorker()
-	{
-		Worker worker = new Worker();
-		worker.Email = c.Email;
+    {
+        ReadPost<Worker> worker = new ReadPost<Worker>();
+        worker.LoadJson("WorkerInfo.json");
+        if (worker.posts == null)
+        {
+            string jsonString = JsonSerializer.Serialize(worker.Add(returnWorker()));
+            File.WriteAllText(file, jsonString);
+            popup = true;
+        }
+        else
+        {
+            popup1 = true;
+        }
+    }
+    private Worker returnWorker()
+    {
+        Worker worker = new Worker();
+        worker.Email = c.Email;
 		worker.Phone = "";
 		return worker;
 	}
@@ -37,6 +52,10 @@
 	{
 		popup = false;
 		StateHasChanged();
-		NavMan.NavigateTo("/");
+	}
+	private async Task ClosePopup1(bool accepted)
+	{
+		popup1 = false;
+		StateHasChanged();
 	}
 }

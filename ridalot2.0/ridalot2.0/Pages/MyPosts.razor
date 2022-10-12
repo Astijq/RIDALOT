@@ -22,11 +22,6 @@
 	<Virtualize Context="post" Items="@posts">
 		<tbody>
 			<tr>
-				<td><button class="btn btn-dark" @onclick="GuardarCotizacion"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar Cotización</button></td>
-				@if (show)
-				{
-					<td><button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Correo</button></td>
-				}
 				<td>@post.Time</td>
 				<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
 				<td>@post.Description</td>
@@ -54,7 +49,6 @@
 		base.OnInitialized();
 		ReadPost<Post> postList = new ReadPost<Post>();
 		postList.LoadJson("PostInfo.json");
-
 		if (postList.posts == null)
 		{
 			
@@ -72,10 +66,5 @@
 		posts.Remove(post);
 		string jsonString = JsonSerializer.Serialize(posts);
 		File.WriteAllText("PostInfo.json", jsonString);
-	}
-	private bool show = false;
-	private void GuardarCotizacion()
-	{
-		show = true;
 	}
 }

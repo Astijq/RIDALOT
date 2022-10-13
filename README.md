@@ -30,12 +30,8 @@ RIDALOT is a web app which helps users find people, who will transport big objec
 | N.M | 4   | 3   | 5   |   |
 | U.M | 3   | 3   | 2   |   |
 
-\begin{table}[]
-\begin{tabular}{|l|l|l|l|l|}
-\hline
-    & A.K & N.M & U.M &  \\ \hline
-A.K & 3   & 3   & 4   &  \\ \hline
-N.M & 3   & 3   & 3   &  \\ \hline
-U.M & 4   & 4   & 3   &  \\ \hline
-\end{tabular}
-\end{table}
+|     | A.K | N.M | U.M |   |
+|-----|-----|-----|-----|---|
+| A.K | 3   | 3   | 4   |   |
+| N.M | 3   | 3   | 3   |   |
+| U.M | 4   | 4   | 3   |   |

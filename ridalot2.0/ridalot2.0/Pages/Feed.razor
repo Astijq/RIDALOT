@@ -38,7 +38,7 @@
 				</td>
 				<td>@post.Pay</td>
 				<td>@post.Address</td>
-				<td> <button type="submit" class="btn btn-success" @onclick="()=>Clicked(post)">Accept the task</button> </td>
+				<td> <button type="submit" class="btn btn-success" style=@Constants.button @onclick="()=>Clicked(post)">Accept the task</button> </td>
 			</tr>
 		}
 
@@ -62,7 +62,6 @@
 		 OnClose="@ClosePopup">
 	</AdPopUp>
 }
-
 
 
 @code {

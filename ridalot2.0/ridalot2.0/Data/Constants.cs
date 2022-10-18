@@ -16,7 +16,7 @@ namespace ridalot2._0.Data
 
         public static Regex addressRegex = new Regex(addressRegexString);
 
-        public static bool addressMatch(string str)
+        public static bool addressMatch(this string str)
         {
             return addressRegex.IsMatch(str);
         }

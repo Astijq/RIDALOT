@@ -196,6 +196,7 @@ else
 	private Post returnPost()
 	{
 		Post post = new Post();
+		post.Status = Status.Waiting;
 		post.User = c.Email;    // User.Identity; TODO
 		post.Image = string.Join(Environment.NewLine, imgUrls.ToArray());
 		post.Description = description;

@@ -87,6 +87,7 @@
 		else
 		{
 			post.Worker = c.Email;
+			post.Status = Status.InProgress;
 			string jsonString = JsonSerializer.Serialize(json.posts);
 			File.WriteAllText("PostInfo.json", jsonString);
 			popup = true;

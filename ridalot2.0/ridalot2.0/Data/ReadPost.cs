@@ -4,9 +4,8 @@
     using System.Collections.Generic;
     using System.Collections;
 
-    public class ReadPost<T> : IEnumerable
+    public class ReadPost<T>
     {
-
         public IEnumerable<T>? posts { get; set; } = new List<T>();
         public void LoadJson(string file = "PostInfo.json")
         {
@@ -23,11 +22,6 @@
                     posts = JsonConvert.DeserializeObject<List<T>>(json);
                 }
             }
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            throw new NotImplementedException();
         }
     }
 }

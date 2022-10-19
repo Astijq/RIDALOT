@@ -27,7 +27,6 @@
 					<td>@post.Time (UTC)</td>
 					<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
-
 					<td>
 						<pre>Weight: @post.Height
 Width: @post.Width
@@ -39,8 +38,6 @@ Weight: @post.Weight</pre>
 					<td> <button type="submit" class="btn btn-success" @onclick="()=>Clicked(post)">Accept the task</button> </td>
 				</tr>
 			}
-		
-
 	</tbody>
 </table>
 
@@ -61,7 +58,6 @@ Weight: @post.Weight</pre>
 		 OnClose="@ClosePopup">
 	</AdPopUp>
 }
-
 
 
 @code {

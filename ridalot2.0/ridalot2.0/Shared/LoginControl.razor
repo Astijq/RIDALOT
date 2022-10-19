@@ -1,5 +1,6 @@
 ﻿@using System.Security.Claims
 @using Microsoft.AspNetCore.Http
+@using Data
 @inject IHttpContextAccessor _httpContextAccessor
 @inject HttpClient Http
 
@@ -7,7 +8,7 @@
 {
 	<img src="@c.Avatar" style="height:50px;max-width:50px;width:auto;" />
 	<b>You are logged in as: @c.GivenName @c.Surname</b>
-	<a class="ml-md-auto btn btn-primary"
+	<a class="ml-md-auto btn btn-primary" style=@Constants.button
    href="/Identity/Logout"
    target="_top">Logout</a>
 }

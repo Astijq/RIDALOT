@@ -104,7 +104,7 @@ else
 	</p>
 
 	<p>
-		<button type="submit" class="btn btn-success" onclick="@Clicked">Submit</button>
+		<button type="submit" class="btn btn-success" style=@Constants.button onclick="@Clicked">Submit</button>
 	</p>
 
 }
@@ -161,11 +161,7 @@ else
 
 	public static bool isValidAddress (string add)
 	{
-		string strRegex = @"^([\w\s\W]+[\w\W]?)\s([\d\-\\\/\w]*)?";
-
-		Regex re = new Regex(strRegex);
-
-		if (re.IsMatch(add))
+		if (add.addressMatch())
 			return (true);
 		else
 			return (false);
@@ -197,7 +193,7 @@ else
 	{
 		Post post = new Post();
 		post.Status = Status.Waiting;
-		post.User = c.Email;    // User.Identity; TODO
+		post.User = c.Email;
 		post.Image = string.Join(Environment.NewLine, imgUrls.ToArray());
 		post.Description = description;
 		post.Height = d.height;

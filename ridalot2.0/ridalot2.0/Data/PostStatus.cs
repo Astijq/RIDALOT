@@ -1,4 +1,6 @@
-﻿namespace ridalot2._0.Data
+﻿using static System.Formats.Asn1.AsnWriter;
+
+namespace ridalot2._0.Data
 {
     public enum Status
     {
@@ -7,3 +9,4 @@
         Finished
     }
 }
+

@@ -1,12 +1,81 @@
 ﻿@page "/profile"
+@using Microsoft.Extensions.Logging
 @using Pages
 @using Data
 @using System.Text.Json
 @using System.Text.Json.Serialization
 @inject NavigationManager NavMan
 @inherits LoginControl
-<h3>Profile</h3>
-<th><button type="submit" class="btn btn-success" onclick="@Clicked">Become a worker</button></th>
+<h3>Worker application</h3>
+@if (!c.User.Identity.IsAuthenticated)
+{
+	<a class="ml-md-auto btn btn-primary"
+   href="/Identity/Login"
+   target="_top">Login</a>
+}
+else
+{
+	<style>
+		.container {
+			position: relative;
+			width: fit-content;
+			height: 200px
+		}
+
+		.middle {
+			transition: .5s ease;
+			opacity: 0;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			text-align: center;
+		}
+
+		.container:hover .image {
+			opacity: 0.3;
+		}
+
+		.container:hover .middle {
+			opacity: 1;
+		}
+	</style>
+	<p>
+
+		Write about yourself
+	</p>
+
+	<p>
+		<label>
+			<textarea type="text" style=" min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;" @bind="description" />
+		</label>
+	</p>
+
+	<p>
+		<table>
+			<tr>
+				<td align="right">First Name</td>
+				<td align="left"><input type="text" placeholder=Vardenis @bind="firstName"/></td>
+			</tr>
+			<tr>
+				<td align="right">Last Name</td>
+				<td align="left"><input type="text" placeholder=Pavardenis @bind="lastName" /></td>
+			</tr>
+			<tr>
+				<td align="right">Phone number</td>
+				<td align="left"><input type="text" placeholder=+370******** @bind ="phoneNumber" /></td>
+			</tr>
+			<tr>
+				<td align="right">Birth date</td>
+				<td align="left"><input type="text" placeholder=YYYY-MM-DD @bind ="birthDate" /></td>
+			</tr>
+		</table>
+	</p>
+
+	<p>
+		<button type="submit" class="btn btn-success" onclick="@Clicked">Submit</button>
+	</p>
 @if (popup)
 {
 	<AdPopUp Title="Welcome"
@@ -21,43 +90,59 @@
 		OnClose="@ClosePopup1">
 		</AdPopUp>
 }
-@code {
+	@code {
+
+	public String file1 = "PostInfo.json";
+	public String? description = "";
+	public String? birthDate = "";
+	public String? phoneNumber = "";
+	public String? firstName = "";
+	public String? lastName = "";
+
 	public bool popup { get; set; } = false;
 	public bool popup1 { get; set; } = false;
 	public String file = "WorkerInfo.json";
-	List<Worker>? workers;
 	public void Clicked()
 	{
-		ReadPost<Worker> worker = new ReadPost<Worker>();
-		worker.LoadJson("WorkerInfo.json");
-		if (worker.posts == null)
+		ReadPost<Worker> oldWorkers = new ReadPost<Worker>();
+		oldWorkers.LoadJson("WorkerInfo.json");
+		List<Worker> allWorkers;
+		if (oldWorkers.posts != null)
 		{
-			workers = new List<Worker>();
-			workers.Add(returnWorker());
-			string jsonString = JsonSerializer.Serialize(workers);
-            File.WriteAllText(file, jsonString);
-            popup = true;
-        }
-        else
-        {
-            popup1 = true;
-        }
-    }
-    private Worker returnWorker()
-    {
-        Worker worker = new Worker();
-        worker.Email = c.Email;
-		worker.Phone = "";
+			allWorkers = oldWorkers.posts.ToList();
+		}	
+		else
+		{
+			allWorkers = new List<Worker>();
+		}
+		allWorkers.Add(returnWorker());
+		string jsonString = JsonSerializer.Serialize(allWorkers);
+		File.WriteAllText(file, jsonString);
+		popup = true;
+		
+	}
+	private Worker returnWorker()
+	{
+		Worker worker = new Worker();
+		worker.Email = c.Email;
+		worker.Phone = phoneNumber;
+		worker.BirthDate = birthDate;
+		worker.Description = description;
+		worker.FirstName = firstName;
+		worker.LastName = firstName;
 		return worker;
 	}
-	private async Task ClosePopup(bool accepted)
+	private async Task ClosePopup()
 	{
 		popup = false;
 		StateHasChanged();
+		NavMan.NavigateTo("/");
 	}
-	private async Task ClosePopup1(bool accepted)
+	private async Task ClosePopup1()
 	{
-		popup1 = false;
+		popup = false;
 		StateHasChanged();
+		NavMan.NavigateTo("/");
 	}
+}
 }

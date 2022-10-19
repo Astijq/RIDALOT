@@ -10,10 +10,18 @@
         public IEnumerable<T>? posts { get; set; } = new List<T>();
         public void LoadJson(string file = "PostInfo.json")
         {
-            using (StreamReader r = File.OpenText(file))
+            if (new FileInfo(file).Length == 0)
             {
-                string json = r.ReadToEnd();
-                posts = JsonConvert.DeserializeObject<List<T>>(json);
+
+            }
+            else
+            {
+                using (StreamReader r = File.OpenText(file))
+                {
+
+                    string json = r.ReadToEnd();
+                    posts = JsonConvert.DeserializeObject<List<T>>(json);
+                }
             }
         }
 

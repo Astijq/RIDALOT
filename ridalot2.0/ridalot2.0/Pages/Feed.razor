@@ -21,26 +21,25 @@
 		</tr>
 	</thead>
 	<tbody>
+			@foreach (Post post in Filter)
+			{
+				<tr>
+					<td>@post.Time (UTC)</td>
+					<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+					<td>@post.Description</td>
 
-		@foreach (Post post in json.posts)
-		{
-			<tr>
-				<td>@post.Time (UTC)</td>
-				<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
-				<td>@post.Description</td>
-
-				<td>
-					<pre>Weight: @post.Height
-	Width: @post.Width
-	Length: @post.Length
-	Weight: @post.Weight
-					</pre>
-				</td>
-				<td>@post.Pay</td>
-				<td>@post.Address</td>
-				<td> <button type="submit" class="btn btn-success" @onclick="()=>Clicked(post)">Accept the task</button> </td>
-			</tr>
-		}
+					<td>
+						<pre>Weight: @post.Height
+Width: @post.Width
+Length: @post.Length
+Weight: @post.Weight</pre>
+					</td>
+					<td>@post.Pay</td>
+					<td>@post.Address</td>
+					<td> <button type="submit" class="btn btn-success" @onclick="()=>Clicked(post)">Accept the task</button> </td>
+				</tr>
+			}
+		
 
 	</tbody>
 </table>
@@ -72,13 +71,18 @@
 	private int n = 0;
 	ReadPost<Post> json = new ReadPost<Post>();
 	ReadPost<Post> worker = new ReadPost<Post>();
+	IEnumerable<Post> Filter;
 	protected override async Task OnInitializedAsync()
 	{
 		json.LoadJson("PostInfo.json");
-		json.posts = json.posts.Where(x => x.Worker == null).ToList();
+		Filter =
+		from Status in json.posts
+		where Status.Status == Data.Status.Waiting
+		select Status;
 	}
 	public void Clicked(Post post)
 	{
+
 		worker.LoadJson("WorkerInfo.json");
 		if (worker.posts == null)
 		{
@@ -87,10 +91,12 @@
 		else
 		{
 			post.Worker = c.Email;
+			post.Status = Status.InProgress;
 			string jsonString = JsonSerializer.Serialize(json.posts);
 			File.WriteAllText("PostInfo.json", jsonString);
 			popup = true;
 		}
+
 	}
 	private async Task ClosePopup(bool accepted)
 	{

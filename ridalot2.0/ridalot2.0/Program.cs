@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using ridalot2._0.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,14 @@ builder.Services.AddScoped<HttpContextAccessor>();
 // Required for HttpClient support in the Blazor Client project
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<HttpClient>();
+
+// Read the connection string from the appsettings.json file
+// Set the database connection for the EndtoEndContext
+builder.Services.AddDbContext<ridalot2._0.Data.RIDALOT.RIDALOTContext>(options =>
+options.UseSqlServer(
+                                    builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<PostsService>();
 
 
 var app = builder.Build();

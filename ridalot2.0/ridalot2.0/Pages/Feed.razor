@@ -1,45 +1,43 @@
 ﻿@page "/feed"
 @using System.Collections
 @using Data
+@using ridalot2._0.Data.RIDALOT
+@inherits OwningComponentBase<PostsService>
 @inject NavigationManager NavMan
-@using System.Text.Json
-@using System.Text.Json.Serialization
-@inherits LoginControl
 
 <h1>Feed</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Date uploaded</th>
+				<th>Image</th>
+				<th>Description</th>
+				<th>Measurements</th>
+				<th>Estimated price (€)</th>
+				<th>Address</th>
+				<th>Take tasks</th>
+			</tr>
+		</thead>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>Date uploaded</th>
-			<th>Image</th>
-			<th>Description</th>
-			<th>Measurements</th>
-			<th>Estimated price (€)</th>
-			<th>Address</th>
-			<th>Take tasks</th>
-		</tr>
-	</thead>
-	<tbody>
-			@foreach (Post post in Filter)
-			{
+		<Virtualize Context="post" Items="@posts">
+			<tbody>
 				<tr>
-					<td>@post.Time (UTC)</td>
+					<td>@post.Date</td>
 					<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
 					<td>
-						<pre>Weight: @post.Height
-Width: @post.Width
-Length: @post.Length
-Weight: @post.Weight</pre>
+						Weight: @post.Weight<br />
+						Height: @post.Height<br />
+						Width: @post.Width<br />
+						Length: @post.Length<br />
 					</td>
 					<td>@post.Pay</td>
 					<td>@post.Address</td>
-					<td> <button type="submit" class="btn btn-success" @onclick="()=>Clicked(post)">Accept the task</button> </td>
+					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Accept the task</button></td>
 				</tr>
-			}
-	</tbody>
-</table>
+			</tbody>
+		</Virtualize>
+	</table>
 
 @if (popup)
 {
@@ -61,39 +59,28 @@ Weight: @post.Weight</pre>
 
 
 @code {
-	DateTime now = DateTime.Now.ToUniversalTime();
+	List<Posts> posts = new List<Posts>();
+	private string UserIdentityName = "maj.neringa@gmail.com";
 	public bool popup { get; set; } = false;
 	public bool popup1 { get; set; } = false;
-	private int n = 0;
-	ReadPost<Post> json = new ReadPost<Post>();
-	ReadPost<Post> worker = new ReadPost<Post>();
-	IEnumerable<Post> Filter;
+
 	protected override async Task OnInitializedAsync()
 	{
-		json.LoadJson("PostInfo.json");
-		Filter =
-		from Status in json.posts
-		where Status.Status == Data.Status.Waiting
-		select Status;
+		posts = await @Service.GetAllPostsAsync(); //TODO get correct username
 	}
-	public void Clicked(Post post)
+
+	async Task Clicked(Posts post)
 	{
+		post.Worker = UserIdentityName;
+		post.Status = Convert.ToInt32(Status.InProgress);
+		var result =
+		@Service.UpdatePostAsync(post);
 
-		worker.LoadJson("WorkerInfo.json");
-		if (worker.posts == null)
-		{
-			popup1 = true;
-		}
-		else
-		{
-			post.Worker = c.Email;
-			post.Status = Status.InProgress;
-			string jsonString = JsonSerializer.Serialize(json.posts);
-			File.WriteAllText("PostInfo.json", jsonString);
-			popup = true;
-		}
-
+		posts =
+		await @Service.GetAllPostsAsync();
 	}
+
+
 	private async Task ClosePopup(bool accepted)
 	{
 		popup = false;

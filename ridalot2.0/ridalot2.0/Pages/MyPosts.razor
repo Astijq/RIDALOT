@@ -4,74 +4,51 @@
 @inherits OwningComponentBase<PostsService>
 
 <h3>MyPosts</h3>
-		@if (posts == null)
-		{
-			<p><em>Loading...</em></p>
-		}
-		else
-		{
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Image</th>
-						<th>Description</th>
-						<th>Measurements</th>
-						<th>Estimated price</th>
-						<th>Adress</th>
-						<th>Edit post</th>
-					</tr>
-				</thead>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Posted</th>
+				<th>Image</th>
+				<th>Description</th>
+				<th>Measurements</th>
+				<th>Estimated price</th>
+				<th>Adress</th>
+				<th>Edit post</th>
+			</tr>
+		</thead>
 
-				<Virtualize Context="post" Items="@posts">
-					<tbody>
-						<tr>
-							<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
-							<td>@post.Description</td>
-							<td>
-								Weight: @post.Weight<br />
-								Height: @post.Height<br />
-								Width: @post.Width<br />
-								Length: @post.Length<br />
-							</td>
-							<td>@post.Pay</td>
-							<td>@post.Address</td>
-							<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button>Delete</button></td>
-						</tr>
-					</tbody>
-				</Virtualize>
-
-			</table>
-		}
-	
-
+		<Virtualize Context="post" Items="@posts">
+			<tbody>
+				<tr>
+					<td>@post.Date</td>
+					<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+					<td>@post.Description</td>
+					<td>
+						Weight: @post.Weight<br />
+						Height: @post.Height<br />
+						Width: @post.Width<br />
+						Length: @post.Length<br />
+					</td>
+					<td>@post.Pay</td>
+					<td>@post.Address</td>
+					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Delete</button></td>
+				</tr>
+			</tbody>
+		</Virtualize>
+	</table>
 
 @code {
-	// AuthenticationState is available as a CascadingParameter
-	//[CascadingParameter]
-	//private Task<AuthenticationState>? authenticationStateTask { get; set; }
 	List<Posts> posts = new List<Posts>();
 	private string UserIdentityName = "maj.neringa@gmail.com";
 	protected override async Task OnInitializedAsync()
 	{
-		// Get the current user
-		/*if (authenticationStateTask != null)
-		{
-			var user = (await authenticationStateTask).User;
-			if (user.Identity != null)
-			{
-				UserIdentityName = "maj.neringa@gmail.com";
-			}
-		}*/
-		// Get the forecasts for the current user
-		// We access WeatherForecastService using @Service
-		posts = await @Service.GetPostAsync(UserIdentityName); //TODO get correct username
+		posts = await @Service.GetMyPostsAsync(UserIdentityName); //TODO get correct username
 	}
 
-
-	/*public void Clicked(Post post) //TODO configure clicked
+	async Task Clicked(Posts post)
 	{
-		posts.Remove(post);
-		string jsonString = JsonSerializer.Serialize(posts);
-		File.WriteAllText("PostInfo.json", jsonString);
-	}*/
+		var result = @Service.DeletePostAsync(post);
+		posts =
+		await @Service.GetMyPostsAsync(UserIdentityName);
+	}
 }

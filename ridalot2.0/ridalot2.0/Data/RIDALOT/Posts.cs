@@ -8,9 +8,10 @@ namespace ridalot2._0.Data.RIDALOT
     public partial class Posts
     {
         public int Id { get; set; }
+        public DateTime? Date { get; set; }
         public int? Status { get; set; }
         public string User { get; set; }
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
         public string Description { get; set; }
         public int? Height { get; set; }
         public int? Width { get; set; }

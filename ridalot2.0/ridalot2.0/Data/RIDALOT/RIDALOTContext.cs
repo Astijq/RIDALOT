@@ -26,9 +26,9 @@ namespace ridalot2._0.Data.RIDALOT
             {
                 entity.Property(e => e.Address).HasMaxLength(50);
 
-                entity.Property(e => e.Description).HasMaxLength(50);
+                entity.Property(e => e.Date).HasColumnType("datetime");
 
-                entity.Property(e => e.Image).HasMaxLength(50);
+                entity.Property(e => e.Description).HasMaxLength(50);
 
                 entity.Property(e => e.User).HasMaxLength(50);
 

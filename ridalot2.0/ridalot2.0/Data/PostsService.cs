@@ -1,8 +1,6 @@
 ﻿using ridalot2._0.Data.RIDALOT;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 namespace ridalot2._0.Data
 {
     public class PostsService
@@ -13,14 +11,23 @@ namespace ridalot2._0.Data
             _context = context;
         }
         public async Task<List<Posts>>
-            GetPostAsync(string strCurrentUser)
+            GetAllPostsAsync()
         {
-            // Get Weather Forecasts  
             return await _context.Posts
-                 // Only get entries for the current logged in user
+                 .AsNoTracking().ToListAsync();
+        }
+        public async Task<List<Posts>>
+            GetMyPostsAsync(string strCurrentUser)
+        {
+            return await _context.Posts
                  .Where(x => x.User == strCurrentUser)
-                 // Use AsNoTracking to disable EF change tracking
-                 // Use ToListAsync to avoid blocking a thread
+                 .AsNoTracking().ToListAsync();
+        }
+        public async Task<List<Posts>>
+            GetMyTasksAsync(string strCurrentUser)
+        {
+            return await _context.Posts
+                 .Where(x => x.Worker == strCurrentUser)
                  .AsNoTracking().ToListAsync();
         }
         public Task<Posts>
@@ -29,6 +36,47 @@ namespace ridalot2._0.Data
             _context.Posts.Add(post);
             _context.SaveChanges();
             return Task.FromResult(post);
+        }
+
+        public Task<bool>
+           DeletePostAsync(Posts post)
+        {
+            var ExistingPost =
+                _context.Posts
+                .Where(x => x.Id == post.Id)
+                .FirstOrDefault();
+            if (ExistingPost != null)
+            {
+                _context.Posts.Remove(ExistingPost);
+                _context.SaveChanges();
+            }
+            else
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
+        }
+
+        public Task<bool>
+            UpdatePostAsync(Posts post)
+        {
+            var ExistingPost =
+                _context.Posts
+                .Where(x => x.Id == post.Id)
+                .FirstOrDefault();
+            if (ExistingPost != null)
+            {
+                ExistingPost.Status =
+                    post.Status;
+                ExistingPost.Worker =
+                    post.Worker;
+                _context.SaveChanges();
+            }
+            else
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
         }
 
     }

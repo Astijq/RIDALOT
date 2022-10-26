@@ -30,6 +30,13 @@ namespace ridalot2._0.Data
                  .Where(x => x.Worker == strCurrentUser)
                  .AsNoTracking().ToListAsync();
         }
+        public async Task<List<Posts>>
+            GetFeedPostsAsync(int strCurrentUser)
+        {
+            return await _context.Posts
+                 .Where(x => x.Status == strCurrentUser)
+                 .AsNoTracking().ToListAsync();
+        }
         public Task<Posts>
             CreatePostAsync(Posts post)
         {

@@ -65,11 +65,12 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		posts = await @Service.GetAllPostsAsync();
+		posts = await @Service.GetFeedPostsAsync(Convert.ToInt32(Status.Waiting));
 	}
 
 	async Task Clicked(Posts post)
 	{
+		popup = true;
 		post.Worker = c.Email;
 		post.Status = Convert.ToInt32(Status.InProgress);
 		var result =

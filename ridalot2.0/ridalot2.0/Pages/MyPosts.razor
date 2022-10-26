@@ -18,44 +18,48 @@
 			<th>Edit post</th>
 		</tr>
 	</thead>
-
-	<Virtualize Context="post" Items="@posts">
-		<tbody>
-			<tr>
-				<td>@post.Time</td>
-				<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
-				<td>@post.Description</td>
-				<td>
-					Weight: @post.Weight<br />
-					Height: @post.Height<br />
-					Width: @post.Width<br />
-					Length: @post.Length<br />
-				</td>
-				<td>@post.Pay</td>
-				<td>@post.Address</td>
-				<td><button type="subimt" class="btn btn-info btn-sm" style=@Constants.button @onclick ="()=>Clicked(post)">Delete</button></td>
-			</tr>
-		</tbody>
-	</Virtualize>
-
+	<tbody>
+	@if (new FileInfo("PostInfo.json").Length != 0)
+	{
+		@foreach (Post post in Filter)
+		{
+			
+				<tr>
+					<td>@post.Time (UTC)</td>
+					<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+					<td>@post.Description</td>
+					<td>
+						Weight: @post.Weight<br />
+						Height: @post.Height<br />
+						Width: @post.Width<br />
+						Length: @post.Length<br />
+					</td>
+					<td>@post.Pay</td>
+					<td>@post.Address</td>
+					<td><button type="subimt" class="btn btn-info btn-sm" style=@Constants.button @onclick ="()=>Clicked(post)">Delete</button></td>
+				</tr>
+			
+		}
+	}
+			</tbody>
 </table>
 
 
 @code {
 
 	List<Post>? posts;
+	IEnumerable<Post> Filter;
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
 		ReadPost<Post> postList = new ReadPost<Post>();
-		postList.LoadJson("PostInfo.json");
-		if (postList.posts == null)
+		if (new FileInfo("PostInfo.json").Length != 0)
 		{
-			
-		}
-		else
-		{
-			posts = postList.posts.Where(x => x.User == c.Email).ToList();
+			postList.LoadJson("PostInfo.json");
+			Filter =
+			from post in postList.posts
+			where post.User == c.Email
+			select post;
 		}
 
 	}

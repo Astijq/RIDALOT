@@ -105,17 +105,26 @@ else
 	public void Clicked()
 	{
 		ReadPost<Worker> oldWorkers = new ReadPost<Worker>();
-		oldWorkers.LoadJson("WorkerInfo.json");
-		List<Worker> allWorkers;
+		oldWorkers.LoadJson(file: "WorkerInfo.json");
+		List<Worker>? allWorkers;
 		if (oldWorkers.posts != null)
 		{
 			allWorkers = oldWorkers.posts.ToList();
+			bool isAlreadyWorker = allWorkers.All(n => n.Email != c.Email);
+			if (isAlreadyWorker)
+			{
+				allWorkers.Add(returnWorker());
+			}
+			else
+			{
+				popup1 = true;
+			}
 		}	
 		else
 		{
 			allWorkers = new List<Worker>();
+			allWorkers.Add(returnWorker());
 		}
-		allWorkers.Add(returnWorker());
 		string jsonString = JsonSerializer.Serialize(allWorkers);
 		File.WriteAllText(file, jsonString);
 		popup = true;
@@ -129,7 +138,7 @@ else
 		worker.BirthDate = birthDate;
 		worker.Description = description;
 		worker.FirstName = firstName;
-		worker.LastName = firstName;
+		worker.LastName = lastName;
 		return worker;
 	}
 	private async Task ClosePopup()

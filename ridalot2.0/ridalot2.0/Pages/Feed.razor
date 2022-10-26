@@ -6,7 +6,7 @@
 @using System.Text.Json.Serialization
 @inherits LoginControl
 
-<h1>Feed</h1>
+<h3>Feed</h3>
 
 <table class="table">
 	<thead>
@@ -21,6 +21,8 @@
 		</tr>
 	</thead>
 	<tbody>
+		@if (new FileInfo("PostInfo.json").Length != 0)
+		{
 			@foreach (Post post in Filter)
 			{
 				<tr>
@@ -28,16 +30,17 @@
 					<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
 					<td>
-						<pre>Weight: @post.Height
-Width: @post.Width
-Length: @post.Length
-Weight: @post.Weight</pre>
+						Weight: @post.Height<br />
+						Width: @post.Width<br />
+						Length: @post.Length<br />
+						Weight: @post.Weight<br />
 					</td>
 					<td>@post.Pay</td>
 					<td>@post.Address</td>
 					<td> <button type="submit" class="btn btn-success" @onclick="()=>Clicked(post)">Accept the task</button> </td>
 				</tr>
 			}
+		}
 	</tbody>
 </table>
 
@@ -45,16 +48,13 @@ Weight: @post.Weight</pre>
 {
 	<AdPopUp Title="Task"
 		 Text="Task accepted succesfully!"
-		 TextName="Name:"
-		 TextAdress="Address:"
-		 TextPhone="Phone:"
 		 OnClose="@ClosePopup"
 		 DialogType="AdPopUp.ModalDialogType.Ok">
 	</AdPopUp>
 }@if (popup1)
 {
-	<AdPopUp Title="CAN'T TAKE THE TASK"
-		 Text="YOU ARE NOT A WORKER"
+	<AdPopUp Title="Can't take the task'"
+		 Text="You are not a worker yet, go to profile to apply!"
 		 OnClose="@ClosePopup">
 	</AdPopUp>
 }
@@ -66,15 +66,18 @@ Weight: @post.Weight</pre>
 	public bool popup1 { get; set; } = false;
 	private int n = 0;
 	ReadPost<Post> json = new ReadPost<Post>();
-	ReadPost<Post> worker = new ReadPost<Post>();
+	ReadPost<Worker> worker = new ReadPost<Worker>();
 	IEnumerable<Post> Filter;
 	protected override async Task OnInitializedAsync()
 	{
-		json.LoadJson("PostInfo.json");
-		Filter =
-		from Status in json.posts
-		where Status.Status == Data.Status.Waiting
-		select Status;
+		if (new FileInfo("PostInfo.json").Length != 0)
+		{
+			json.LoadJson("PostInfo.json");
+			Filter =
+			from Status in json.posts
+			where Status.Status == Data.Status.Waiting
+			select Status;
+		}
 	}
 	public void Clicked(Post post)
 	{

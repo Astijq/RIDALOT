@@ -7,59 +7,69 @@
 <h3>MyTasks</h3>
 
 <table class="table">
+	<thead>
+		<tr>
+			<th></th>
+			<th></th>
 
-	<Virtualize Context="post" Items="@posts">
-		<tbody>
-			
-			<tr>
-				<th>Phone number:</th>
-				<td></td>
-			</tr>
-			<tr>
-				<th>Email:</th>
-				<td>@post.User</td>
-			</tr>
-			<tr>
-				<th>Description:</th>
-				<td>@post.Description</td>
-			</tr>
-			<tr>
-				<th>Measurements:</th>
-				<td>Weight: @post.Weight Height: @post.Height Width: @post.Width Length: @post.Length</td>
-			</tr>
-			<tr>
-				<th>Picture:</th>
-				<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
-			</tr>
-			<tr>
-				<th>Adress:</th>
-				<td>@post.Address</td>
-			</tr>
-			<tr>
-				<th><button type="submit" class="btn btn-success" style=@Constants.button onclick ="@Clicked">Open in maps</button></th>
-				<td></td>
-			</tr>
+		</tr>
+	</thead>
+	<tbody>
+	@if (new FileInfo("PostInfo.json").Length != 0)
+	{
+		foreach (Post post in Filter)
+		{
+		
 
-		</tbody>
-	</Virtualize>
-
+				<tr>
+					<th>Phone number:</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th>Email:</th>
+					<td>@post.User</td>
+				</tr>
+				<tr>
+					<th>Description:</th>
+					<td>@post.Description</td>
+				</tr>
+				<tr>
+					<th>Measurements:</th>
+					<td>Weight: @post.Weight Height: @post.Height Width: @post.Width Length: @post.Length</td>
+				</tr>
+				<tr>
+					<th>Picture:</th>
+					<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+				</tr>
+				<tr>
+					<th>Adress:</th>
+					<td>@post.Address</td>
+				</tr>
+				<tr>
+					<th><button type="submit" class="btn btn-success" style=@Constants.button onclick ="@Clicked">Open in maps</button></th>
+					<td></td>
+				</tr>
+		}
+	}
+	</tbody>
 </table>
 
 
 @code {
 
 	List<Post>? posts;
+	IEnumerable<Post> Filter;
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
 		ReadPost<Post> postList = new ReadPost<Post>();
 		postList.LoadJson("PostInfo.json");
-
-		if (postList.posts == null)
+		if (new FileInfo("PostInfo.json").Length != 0)
 		{
-		}
-		else
-		{
+			Filter =
+			from post in postList.posts
+			where post.Worker == c.Email
+			select post;
 			posts = postList.posts.Where(x => x.Worker == c.Email).ToList();
 		}
 

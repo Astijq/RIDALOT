@@ -2,13 +2,11 @@
 @using Microsoft.Extensions.Logging
 @using Pages
 @using Data
-@using System.Text.Json
-@using System.Text.Json.Serialization
-@using System.Text.RegularExpressions;
-@inject NavigationManager NavMan
+@using ridalot2._0.Data.RIDALOT
 @inherits LoginControl
+@inject NavigationManager NavMan
 
-@if (!c.User.Identity.IsAuthenticated)
+@if (!@c.User.Identity.IsAuthenticated)
 {
 	<a class="ml-md-auto btn btn-primary"
    href="/Identity/Login"
@@ -166,47 +164,31 @@ else
 		else
 			return (false);
 	}
+
 	private void Clicked()
 	{
 		if (isValidAddress(address))
 		{
-			ReadPost<Post> oldPosts = new ReadPost<Post>();
-			oldPosts.LoadJson();
-			List<Post> allPosts;
-			if (oldPosts.posts != null)
-			{
-				allPosts = oldPosts.posts.ToList();
-			}
-			else
-			{
-				allPosts = new List<Post>();
-			}
-			allPosts.Add(returnPost());
-			string jsonString = JsonSerializer.Serialize(allPosts);
-			File.WriteAllText(file, jsonString);
+				Posts newPost = new Posts();
+				newPost.Date = System.DateTime.Now;
+				newPost.Status = Convert.ToInt32(Status.Waiting);
+				newPost.User = c.Email;
+				newPost.Image = null;
+				newPost.Description = description;
+				newPost.Height = d.height;
+				newPost.Width = d.width;
+				newPost.Length = d.length;
+				newPost.Weight = d.weight;
+				newPost.Address = address;
+				newPost.Pay = d.pay;
+				newPost.Worker = null;
+				// Save the result
+				var result =
+				@Service.CreatePostAsync(newPost);
+			
 			popup = true;
 		}
 		else popup2 = true;
-	}
-
-	private Post returnPost()
-	{
-		Post post = new Post();
-		post.Status = Status.Waiting;
-		post.User = c.Email;
-		post.Image = string.Join(Environment.NewLine, imgUrls.ToArray());
-		post.Description = description;
-		post.Height = d.height;
-		post.Width = d.width;
-		post.Length = d.length;
-		post.Weight = d.weight;
-		post.Address = address;
-		post.Pay = d.pay;
-		DateTime now = DateTime.Now.ToUniversalTime();
-		post.Time = now.ToString();
-		post.Worker = null;
-
-		return post;
 	}
 
 	private async Task ClosePopup()

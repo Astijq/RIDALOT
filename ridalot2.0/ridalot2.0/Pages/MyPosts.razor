@@ -1,69 +1,53 @@
 ﻿@page "/myposts"
 @using Data
-@using System.Text.Json
-@using System.Text.Json.Serialization
+@using ridalot2._0.Data.RIDALOT
 @inherits LoginControl
 
 <h3>MyPosts</h3>
-
-<table class="table">
-	<thead>
-		<tr>
-			<th>Date uploaded</th>
-			<th>Image</th>
-			<th>Description</th>
-			<th>Measurements</th>
-			<th>Estimated price</th>
-			<th>Adress</th>
-			<th>Edit post</th>
-		</tr>
-	</thead>
-
-	<Virtualize Context="post" Items="@posts">
-		<tbody>
+	<table class="table">
+		<thead>
 			<tr>
-				<td>@post.Time</td>
-				<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
-				<td>@post.Description</td>
-				<td>
-					Weight: @post.Weight<br />
-					Height: @post.Height<br />
-					Width: @post.Width<br />
-					Length: @post.Length<br />
-				</td>
-				<td>@post.Pay</td>
-				<td>@post.Address</td>
-				<td><button type="subimt" class="btn btn-info btn-sm" style=@Constants.button @onclick ="()=>Clicked(post)">Delete</button></td>
+				<th>Posted</th>
+				<th>Image</th>
+				<th>Description</th>
+				<th>Measurements</th>
+				<th>Estimated price</th>
+				<th>Adress</th>
+				<th>Edit post</th>
 			</tr>
-		</tbody>
-	</Virtualize>
+		</thead>
 
-</table>
-
+		<Virtualize Context="post" Items="@posts">
+			<tbody>
+				<tr>
+					<td>@post.Date</td>
+					<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+					<td>@post.Description</td>
+					<td>
+						Weight: @post.Weight<br />
+						Height: @post.Height<br />
+						Width: @post.Width<br />
+						Length: @post.Length<br />
+					</td>
+					<td>@post.Pay</td>
+					<td>@post.Address</td>
+					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Delete</button></td>
+				</tr>
+			</tbody>
+		</Virtualize>
+	</table>
 
 @code {
-
-	List<Post>? posts;
-	protected override void OnInitialized()
+	List<Posts> posts = new List<Posts>();
+	protected override async Task OnInitializedAsync()
 	{
-		base.OnInitialized();
-		ReadPost<Post> postList = new ReadPost<Post>();
-		postList.LoadJson("PostInfo.json");
-		if (postList.posts == null)
-		{
-			
-		}
-		else
-		{
-			posts = postList.posts.Where(x => x.User == c.Email).ToList();
-		}
-
+		posts = await @Service.GetMyPostsAsync(c.Email);
 	}
 
-	public void Clicked(Post post)
+	async Task Clicked(Posts post)
 	{
-		posts.Remove(post);
-		string jsonString = JsonSerializer.Serialize(posts);
-		File.WriteAllText("PostInfo.json", jsonString);
+		var result = @Service.DeletePostAsync(post);
+		posts =
+		await @Service.GetMyPostsAsync(c.Email);
 	}
 }

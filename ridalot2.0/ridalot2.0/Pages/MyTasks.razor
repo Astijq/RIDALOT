@@ -1,7 +1,6 @@
 ﻿@page "/mytasks"
 @using Data
-@using System.Text.Json
-@using System.Text.Json.Serialization
+@using ridalot2._0.Data.RIDALOT
 @inherits LoginControl
 
 <h3>MyTasks</h3>
@@ -47,22 +46,10 @@
 
 
 @code {
-
-	List<Post>? posts;
-	protected override void OnInitialized()
+	List<Posts> posts = new List<Posts>();
+	protected override async Task OnInitializedAsync()
 	{
-		base.OnInitialized();
-		ReadPost<Post> postList = new ReadPost<Post>();
-		postList.LoadJson("PostInfo.json");
-
-		if (postList.posts == null)
-		{
-		}
-		else
-		{
-			posts = postList.posts.Where(x => x.Worker == c.Email).ToList();
-		}
-
+		posts = await @Service.GetMyTasksAsync(c.Email);
 	}
 
 	public void Clicked()

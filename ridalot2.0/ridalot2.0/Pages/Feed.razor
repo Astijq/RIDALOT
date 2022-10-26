@@ -2,7 +2,7 @@
 @using System.Collections
 @using Data
 @using ridalot2._0.Data.RIDALOT
-@inherits OwningComponentBase<PostsService>
+@inherits LoginControl
 @inject NavigationManager NavMan
 
 <h1>Feed</h1>
@@ -60,18 +60,17 @@
 
 @code {
 	List<Posts> posts = new List<Posts>();
-	private string UserIdentityName = "maj.neringa@gmail.com";
 	public bool popup { get; set; } = false;
 	public bool popup1 { get; set; } = false;
 
 	protected override async Task OnInitializedAsync()
 	{
-		posts = await @Service.GetAllPostsAsync(); //TODO get correct username
+		posts = await @Service.GetAllPostsAsync();
 	}
 
 	async Task Clicked(Posts post)
 	{
-		post.Worker = UserIdentityName;
+		post.Worker = c.Email;
 		post.Status = Convert.ToInt32(Status.InProgress);
 		var result =
 		@Service.UpdatePostAsync(post);

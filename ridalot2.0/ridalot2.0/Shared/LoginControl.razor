@@ -3,6 +3,7 @@
 @using Data
 @inject IHttpContextAccessor _httpContextAccessor
 @inject HttpClient Http
+@inherits OwningComponentBase<PostsService>
 
 @if (@c.User.Identity.IsAuthenticated)
 {

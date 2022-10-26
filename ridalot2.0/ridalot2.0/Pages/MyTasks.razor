@@ -1,7 +1,7 @@
 ﻿@page "/mytasks"
 @using Data
 @using ridalot2._0.Data.RIDALOT
-@inherits OwningComponentBase<PostsService>
+@inherits LoginControl
 
 <h3>MyTasks</h3>
 
@@ -47,10 +47,9 @@
 
 @code {
 	List<Posts> posts = new List<Posts>();
-	private string UserIdentityName = "maj.neringa@gmail.com";
 	protected override async Task OnInitializedAsync()
 	{
-		posts = await @Service.GetMyTasksAsync(UserIdentityName); //TODO get correct username
+		posts = await @Service.GetMyTasksAsync(c.Email);
 	}
 
 	public void Clicked()

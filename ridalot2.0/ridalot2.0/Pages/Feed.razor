@@ -23,7 +23,7 @@
 	<tbody>
 		@if (new FileInfo("PostInfo.json").Length != 0)
 		{
-			@foreach (Post post in Filter)
+			foreach (Post post in Filter)
 			{
 				<tr>
 					<td>@post.Time (UTC)</td>

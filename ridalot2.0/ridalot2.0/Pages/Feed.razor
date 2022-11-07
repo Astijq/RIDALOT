@@ -21,9 +21,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@if (new FileInfo("PostInfo.json").Length != 0)
-		{
-			foreach (Post post in Filter)
+			@foreach (Post post in Filter)
 			{
 				<tr>
 					<td>@post.Time (UTC)</td>
@@ -40,7 +38,6 @@
 					<td> <button type="submit" class="btn btn-success" @onclick="()=>Clicked(post)">Accept the task</button> </td>
 				</tr>
 			}
-		}
 	</tbody>
 </table>
 
@@ -70,14 +67,14 @@
 	IEnumerable<Post> Filter;
 	protected override async Task OnInitializedAsync()
 	{
-		if (new FileInfo("PostInfo.json").Length != 0)
-		{
+		
+		
 			json.LoadJson("PostInfo.json");
 			Filter =
 			from Status in json.posts
 			where Status.Status == Data.Status.Waiting
 			select Status;
-		}
+		
 	}
 	public void Clicked(Post post)
 	{

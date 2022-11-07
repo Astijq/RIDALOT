@@ -19,8 +19,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	@if (new FileInfo("PostInfo.json").Length != 0)
-	{
+
 		@foreach (Post post in Filter)
 		{
 			
@@ -40,7 +39,6 @@
 				</tr>
 			
 		}
-	}
 			</tbody>
 </table>
 
@@ -53,14 +51,11 @@
 	{
 		base.OnInitialized();
 		ReadPost<Post> postList = new ReadPost<Post>();
-		if (new FileInfo("PostInfo.json").Length != 0)
-		{
 			postList.LoadJson("PostInfo.json");
 			Filter =
 			from post in postList.posts
 			where post.User == c.Email
 			select post;
-		}
 
 	}
 

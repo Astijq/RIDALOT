@@ -10,7 +10,8 @@
         public int Width { get; set; }
         public int Length { get; set; }
         public int Weight { get; set; }
-        public string? Address { get; set; }
+        public double? AddressLat { get; set; }
+        public double? AddressLng { get; set; }
         public int Pay { get; set; }
         public string? Time { get; set; }
         public string? Worker

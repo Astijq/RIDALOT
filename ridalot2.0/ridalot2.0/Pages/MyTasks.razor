@@ -40,17 +40,28 @@
                 </tr>
                 <tr>
                     <th>Adress:</th>
-                    <td>@post.Address</td>
+                    <td>@post.AddressLat</td>
+                    <td>@post.AddressLng</td>
                 </tr>
                 <tr>
-                    <a href="https://www.google.com/search?q=" onclick="location.href=this.href+'@post.Address';return false;">
-                    <th><button type="submit" class="btn btn-success" style=@Constants.button onclick="@Clicked">Open in maps</button></th>
-                    </a>
-                    <a href="https://www.google.com/maps/dir//" onclick="location.href=this.href+'@post.Address';return false;">
-                    <th><button type="submit" class="btn btn-success" style=@Constants.button onclick="@Clicked">Open directions in maps</button></th>
-                    </a>
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11354.652921443007!2d25.234450275968243!3d54.755636382201246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dd91ab9a166fe5%3A0x90ddc962e896aed1!2sBajorai%2C%20Vilnius!5e0!3m2!1slt!2slt!4v1667643221134!5m2!1slt!2slt" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    <td></td>
+                <a class="btn btn success" style=@Constants.button href="https://www.google.com/search?q=" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google maps</a>
+                <a class="btn btn success" style=@Constants.button href="https://www.google.com/maps/dir//" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google dir</a>
+                <table>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <h3>
+                            </h3>
+                            @lat=@post.AddressLat;
+                            @lng=@post.AddressLng;
+                            <RadzenGoogleMap style="height:600px;width:500px;" Zoom="@zoom" Center="@(new GoogleMapPosition() {  Lat = 55.260903771231035, Lng = 24.05798398437499 })">
+                                <Markers>
+                                    <RadzenGoogleMapMarker Title="Pick Up Location" Label="Pick Up Location" Position="@(new GoogleMapPosition() { Lat = lat, Lng = lng })" />
+                                </Markers>
+                            </RadzenGoogleMap>
+
+                        </div>
+                    </div>
+                </table>
                 </tr>
             }
     </tbody>
@@ -58,7 +69,9 @@
 
 
 @code {
-
+    int zoom = 7;
+    double lat;
+    double lng;
     List<Post>? posts;
     IEnumerable<Post> Filter;
     protected override void OnInitialized()

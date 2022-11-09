@@ -52,3 +52,11 @@ RIDALOT is a web app which helps users find people, who will transport big objec
 | A.K | 3   | 4   | 4   |   |
 | N.M | 5   | 5   | 4   |   |
 | U.M | 2   | 1   | 2   |   |
+
+11-09
+
+|     | A.K | N.M | U.M |   |
+|-----|-----|-----|-----|---|
+| A.K | 3   | 4   | 3   |   |
+| N.M | 4   | 3   | 3   |   |
+| U.M | 3   | 3   | 4   |   |

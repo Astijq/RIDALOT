@@ -31,7 +31,7 @@ builder.Services.AddDbContext<ridalot2._0.Data.RIDALOT.RIDALOTContext>(options =
 options.UseSqlServer(
                                     builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<PostsService>();
+builder.Services.AddScoped<Service>();
 
 
 var app = builder.Build();

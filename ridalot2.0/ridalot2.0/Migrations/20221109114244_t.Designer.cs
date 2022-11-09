@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ridalot2._0.Data.RIDALOT;
 
@@ -11,9 +12,11 @@ using ridalot2._0.Data.RIDALOT;
 namespace ridalot2._0.Migrations
 {
     [DbContext(typeof(RIDALOTContext))]
-    partial class RIDALOTContextModelSnapshot : ModelSnapshot
+    [Migration("20221109114244_t")]
+    partial class t
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,8 +72,8 @@ namespace ridalot2._0.Migrations
                     b.Property<int?>("Length")
                         .HasColumnType("int");
 
-                    b.Property<double?>("Pay")
-                        .HasColumnType("float");
+                    b.Property<int?>("Pay")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");
@@ -93,7 +96,7 @@ namespace ridalot2._0.Migrations
 
                     b.ToTable("Posts");
                 });
-                
+
             modelBuilder.Entity("ridalot2._0.Data.Workers", b =>
                 {
                     b.Property<int>("Id")
@@ -141,7 +144,6 @@ namespace ridalot2._0.Migrations
                 {
                     b.Navigation("Images");
                 });
-
 #pragma warning restore 612, 618
         }
     }

@@ -19,11 +19,17 @@ namespace ridalot2._0.Data.RIDALOT
         }
 
         public virtual DbSet<Posts> Posts { get; set; }
+        public virtual DbSet<Images> Images { get; set; }
+        public virtual DbSet<Workers> Workers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Posts>(entity =>
             {
+                entity.HasKey(e => e.Id);
+
                 entity.Property(e => e.Address).HasMaxLength(50);
 
                 entity.Property(e => e.Date).HasColumnType("datetime");
@@ -33,6 +39,32 @@ namespace ridalot2._0.Data.RIDALOT
                 entity.Property(e => e.User).HasMaxLength(50);
 
                 entity.Property(e => e.Worker).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Images>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.ImagePath).IsRequired();
+
+                entity.HasOne(e => e.Posts).WithMany(p => p.Images);
+            });
+
+            modelBuilder.Entity<Workers>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Email).IsRequired();
+
+                entity.Property(e => e.FirstName);
+
+                entity.Property(e => e.LastName);
+
+                entity.Property(e => e.BirthDate);
+
+                entity.Property(e => e.Phone);
+
+                entity.Property(e => e.Description);
             });
 
             OnModelCreatingPartial(modelBuilder);

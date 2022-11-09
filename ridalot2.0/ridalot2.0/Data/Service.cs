@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ridalot2._0.Data
 {
-    public class PostsService
+    public class Service
     {
         private readonly RIDALOTContext _context;
-        public PostsService(RIDALOTContext context)
+        public Service(RIDALOTContext context)
         {
             _context = context;
         }
@@ -21,6 +21,12 @@ namespace ridalot2._0.Data
         {
             return await _context.Posts
                  .Where(x => x.User == strCurrentUser)
+                 .AsNoTracking().ToListAsync();
+        }
+        public async Task<List<Images>>
+            GetImagesAsync()
+        {
+            return await _context.Images.Include(p => p.Posts)
                  .AsNoTracking().ToListAsync();
         }
         public async Task<List<Posts>>
@@ -43,6 +49,22 @@ namespace ridalot2._0.Data
             _context.Posts.Add(post);
             _context.SaveChanges();
             return Task.FromResult(post);
+        }
+
+        public Task<Workers>
+             CreateWorkerAsync(Workers worker)
+        {
+            _context.Workers.Add(worker);
+            _context.SaveChanges();
+            return Task.FromResult(worker);
+        }
+
+        public Task<Images>
+             CreateImageAsync(Images img)
+        {
+            _context.Images.Add(img);
+            _context.SaveChanges();
+            return Task.FromResult(img);
         }
 
         public Task<bool>
@@ -84,6 +106,13 @@ namespace ridalot2._0.Data
                 return Task.FromResult(false);
             }
             return Task.FromResult(true);
+        }
+
+        public async Task<List<Workers>>
+            GetAllWorkersAsync()
+        {
+            return await _context.Workers
+                 .AsNoTracking().ToListAsync();
         }
 
     }

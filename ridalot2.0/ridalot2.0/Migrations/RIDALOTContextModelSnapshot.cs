@@ -69,8 +69,8 @@ namespace ridalot2._0.Migrations
                     b.Property<int?>("Length")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Pay")
-                        .HasColumnType("int");
+                    b.Property<double?>("Pay")
+                        .HasColumnType("float");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");

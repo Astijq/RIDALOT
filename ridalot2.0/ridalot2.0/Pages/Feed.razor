@@ -23,7 +23,7 @@
 			<tbody>
 				<tr>
 					<td>@post.Date</td>
-					<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+				<td><img src="@getImages(post)" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
 					<td>
 						Weight: @post.Weight<br />
@@ -60,12 +60,14 @@
 
 @code {
 	List<Posts> posts = new List<Posts>();
+	List<Images> img = new List<Images>();
 	public bool popup { get; set; } = false;
 	public bool popup1 { get; set; } = false;
 
 	protected override async Task OnInitializedAsync()
 	{
 		posts = await @Service.GetFeedPostsAsync(Convert.ToInt32(Status.Waiting));
+		img = await @Service.GetImagesAsync();
 	}
 
 	async Task Clicked(Posts post)
@@ -80,7 +82,22 @@
 		await @Service.GetAllPostsAsync();
 	}
 
+	public String getImages(Posts post)
+	{
+		List<Images> temp = new List<Images>();
 
+		Console.WriteLine(img.Count());
+
+		temp = img.Where(x => x.Posts.Id == post.Id).ToList();
+
+		Console.WriteLine(temp.Count);
+
+		if (temp.Count > 0){
+			Console.WriteLine(temp.First().ImagePath);
+			return temp.First().ImagePath;
+		}
+		else return "";
+	}
 	private async Task ClosePopup(bool accepted)
 	{
 		popup = false;

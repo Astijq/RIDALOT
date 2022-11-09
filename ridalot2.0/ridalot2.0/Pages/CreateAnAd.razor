@@ -136,7 +136,7 @@ else
 	Dimensions d;
 
 	public String description = "write here";
-	public String? address = "Street-name 000";
+	public String address = "Street-name 000";
 	public String file = "PostInfo.json";
 	public List<string> imgUrls = new List<string>();
 	public bool popup { get; set; } = false;
@@ -169,23 +169,30 @@ else
 	{
 		if (isValidAddress(address))
 		{
-				Posts newPost = new Posts();
-				newPost.Date = System.DateTime.Now;
-				newPost.Status = Convert.ToInt32(Status.Waiting);
-				newPost.User = c.Email;
-				newPost.Image = null;
-				newPost.Description = description;
-				newPost.Height = d.height;
-				newPost.Width = d.width;
-				newPost.Length = d.length;
-				newPost.Weight = d.weight;
-				newPost.Address = address;
-				newPost.Pay = d.pay;
-				newPost.Worker = null;
-				// Save the result
-				var result =
-				@Service.CreatePostAsync(newPost);
-			
+			var newPost = new Posts();
+			newPost.Date = System.DateTime.Now;
+			newPost.Status = Convert.ToInt32(Status.Waiting);
+			newPost.User = c.Email;
+			newPost.Description = description;
+			newPost.Height = d.height;
+			newPost.Width = d.width;
+			newPost.Length = d.length;
+			newPost.Weight = d.weight;
+			newPost.Address = address;
+			newPost.Pay = d.pay;
+			newPost.Worker = null;
+			// Save the result
+			var result =
+			@Service.CreatePostAsync(newPost);
+
+			foreach (string image in imgUrls)
+			{
+				var img = new Images();
+				img.ImagePath = image;
+				img.Posts = newPost;
+				var result2 = @Service.CreateImageAsync(img);
+			}
+
 			popup = true;
 		}
 		else popup2 = true;

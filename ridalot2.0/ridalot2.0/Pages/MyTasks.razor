@@ -28,7 +28,7 @@
 			</tr>
 			<tr>
 				<th>Picture:</th>
-				<td><img src="@post.Image" style="height:100px; max-width: 200px;" /></td>
+				<td><img src="@getImages(post)" style="height:100px; max-width: 200px;" /></td>
 			</tr>
 			<tr>
 				<th>Adress:</th>
@@ -47,14 +47,33 @@
 
 @code {
 	List<Posts> posts = new List<Posts>();
+	List<Images> img = new List<Images>();
+
 	protected override async Task OnInitializedAsync()
 	{
 		posts = await @Service.GetMyTasksAsync(c.Email);
+		img = await @Service.GetImagesAsync();
 	}
 
 	public void Clicked()
 	{
 		
 	}
+	public String getImages(Posts post)
+	{
+		List<Images> temp = new List<Images>();
 
+		Console.WriteLine(img.Count());
+
+		temp = img.Where(x => x.Posts.Id == post.Id).ToList();
+
+		Console.WriteLine(temp.Count);
+
+		if (temp.Count > 0)
+		{
+			Console.WriteLine(temp.First().ImagePath);
+			return temp.First().ImagePath;
+		}
+		else return "";
+	}
 }

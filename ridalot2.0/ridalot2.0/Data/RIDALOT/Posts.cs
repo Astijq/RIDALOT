@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ridalot2._0.Data.RIDALOT
 {
@@ -11,7 +12,10 @@ namespace ridalot2._0.Data.RIDALOT
         public DateTime? Date { get; set; }
         public int? Status { get; set; }
         public string User { get; set; }
-        public byte[] Image { get; set; }
+        public virtual ICollection<Images> Images
+        {
+            get; set;
+        }
         public string Description { get; set; }
         public int? Height { get; set; }
         public int? Width { get; set; }

@@ -76,7 +76,7 @@ else
 		<table>
 			<tr>
 				<td align="right">Height (cm):</td>
-				<td align="left"><input type="number" @bind="d.height"/></td>
+				<td align="left"><input type="number" @bind="d.height" /></td>
 			</tr>
 			<tr>
 				<td align="right">Width (cm):</td>
@@ -96,7 +96,9 @@ else
 			</tr>
 			<tr>
 				<td align="right">Pay (€):</td>
-				<td align="left"><input type="text" @bind="d.pay" /></td>
+					<td align="left"><input type="text" @bind="pay" /></td>
+					<td>This is a suggested price, making it lower reduces the chances of finding a courier</td>
+
 			</tr>
 		</table>
 	</p>
@@ -131,19 +133,26 @@ else
 		public int width { get; set; }
 		public int length { get; set; }
 		public int weight { get; set; }
-		public int pay { get; set; }
 	}
 	Dimensions d;
 
+	public double pay { get; set; }
 	public String description = "write here";
 	public String? address = "Street-name 000";
 	public String file = "PostInfo.json";
 	public List<string> imgUrls = new List<string>();
 	public bool popup { get; set; } = false;
-	public bool popup2 {get;set;} = false;
+	public bool popup2 { get; set; } = false;
 	public bool isHovering { get; set; } = false;
 	public double op { get; set; } = 1;
 	public double opButton { get; set; } = 0;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		Payment p = new Payment();
+		pay = Math.Round(p.CalculatePay(10.1f, 2), 1);//TODO distance and floor
+	}
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)
 	{
@@ -157,7 +166,7 @@ else
 		}
 	}
 
-	public static bool isValidAddress (string add)
+	public static bool isValidAddress(string add)
 	{
 		if (add.addressMatch())
 			return (true);
@@ -169,23 +178,23 @@ else
 	{
 		if (isValidAddress(address))
 		{
-				Posts newPost = new Posts();
-				newPost.Date = System.DateTime.Now;
-				newPost.Status = Convert.ToInt32(Status.Waiting);
-				newPost.User = c.Email;
-				newPost.Image = null;
-				newPost.Description = description;
-				newPost.Height = d.height;
-				newPost.Width = d.width;
-				newPost.Length = d.length;
-				newPost.Weight = d.weight;
-				newPost.Address = address;
-				newPost.Pay = d.pay;
-				newPost.Worker = null;
-				// Save the result
-				var result =
-				@Service.CreatePostAsync(newPost);
-			
+			Posts newPost = new Posts();
+			newPost.Date = System.DateTime.Now;
+			newPost.Status = Convert.ToInt32(Status.Waiting);
+			newPost.User = c.Email;
+			newPost.Image = null;
+			newPost.Description = description;
+			newPost.Height = d.height;
+			newPost.Width = d.width;
+			newPost.Length = d.length;
+			newPost.Weight = d.weight;
+			newPost.Address = address;
+			newPost.Pay = pay;
+			newPost.Worker = null;
+			// Save the result
+			var result =
+			@Service.CreatePostAsync(newPost);
+
 			popup = true;
 		}
 		else popup2 = true;

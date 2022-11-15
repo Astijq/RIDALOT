@@ -12,8 +12,8 @@ using ridalot2._0.Data.RIDALOT;
 namespace ridalot2._0.Migrations
 {
     [DbContext(typeof(RIDALOTContext))]
-    [Migration("20221109114244_t")]
-    partial class t
+    [Migration("20221115183544_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,8 +72,8 @@ namespace ridalot2._0.Migrations
                     b.Property<int?>("Length")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Pay")
-                        .HasColumnType("int");
+                    b.Property<double?>("Pay")
+                        .HasColumnType("float");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");

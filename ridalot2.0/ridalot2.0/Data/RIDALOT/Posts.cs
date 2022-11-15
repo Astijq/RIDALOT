@@ -21,7 +21,8 @@ namespace ridalot2._0.Data.RIDALOT
         public int? Width { get; set; }
         public int? Length { get; set; }
         public int? Weight { get; set; }
-        public string Address { get; set; }
+        public double AddressLat { get; set; }
+        public double AddressLng { get; set; }
         public double? Pay { get; set; }
         public string Worker { get; set; }
     }

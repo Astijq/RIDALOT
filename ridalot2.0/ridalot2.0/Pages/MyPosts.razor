@@ -17,11 +17,11 @@
 			</tr>
 		</thead>
 
-		<Virtualize Context="post" Items="@posts">
+		<Virtualize Context="post" Items="@pageservice.posts">
 			<tbody>
 				<tr>
 					<td>@post.Date</td>
-				<td><img src="@getImages(post)" style="height:100px; max-width: 200px;" /></td>
+				<td><img src="@pageservice.getImages(post)" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
 					<td>
 						Weight: @post.Weight<br />
@@ -38,37 +38,19 @@
 	</table>
 
 @code {
-	List<Posts> posts = new List<Posts>();
-	List<Images> img = new List<Images>();
+
+	PageService pageservice = new PageService();
 
 	protected override async Task OnInitializedAsync()
 	{
-		posts = await @Service.GetMyPostsAsync(c.Email);
-		img = await @Service.GetImagesAsync();
+		pageservice.posts = await Service.GetMyPostsAsync(c.Email);
+		pageservice.img = await Service.GetImagesAsync();
 	}
 
 	async Task Clicked(Posts post)
 	{
-		var result = @Service.DeletePostAsync(post);
-		posts =
-		await @Service.GetMyPostsAsync(c.Email);
+		await Service.DeletePostAsync(post);
+		pageservice.posts = await Service.GetMyPostsAsync(c.Email);
 	}
 
-	public String getImages(Posts post)
-	{
-		List<Images> temp = new List<Images>();
-
-		Console.WriteLine(img.Count());
-
-		temp = img.Where(x => x.Posts.Id == post.Id).ToList();
-
-		Console.WriteLine(temp.Count);
-
-		if (temp.Count > 0)
-		{
-			Console.WriteLine(temp.First().ImagePath);
-			return temp.First().ImagePath;
-		}
-		else return "";
-	}
 }

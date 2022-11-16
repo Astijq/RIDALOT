@@ -9,7 +9,7 @@
         float basePay { get; set; } = 5.0f;
         public double CalculatePay(float distance, int floor)
         {
-            return (distance*fuelPriceKM) + (floor*baseFloorPay) + basePay;
+            return Math.Round((distance*fuelPriceKM) + (floor*baseFloorPay) + basePay, 1);
         
         }
     }

@@ -29,8 +29,8 @@
 						Width: @post.Width<br />
 						Length: @post.Length<br />
 					</td>
+					<td>@post.AddressLat @post.AddressLng</td>
 					<td>@post.Pay</td>
-					<td>@post.Address</td>
 					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Delete</button></td>
 				</tr>
 			</tbody>

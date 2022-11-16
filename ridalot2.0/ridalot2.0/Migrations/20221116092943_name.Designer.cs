@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ridalot2._0.Data.RIDALOT;
 
@@ -11,9 +12,11 @@ using ridalot2._0.Data.RIDALOT;
 namespace ridalot2._0.Migrations
 {
     [DbContext(typeof(RIDALOTContext))]
-    partial class RIDALOTContextModelSnapshot : ModelSnapshot
+    [Migration("20221116092943_name")]
+    partial class name
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,9 +69,6 @@ namespace ridalot2._0.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("Floor")
-                        .HasColumnType("int");
 
                     b.Property<int?>("Height")
                         .HasColumnType("int");

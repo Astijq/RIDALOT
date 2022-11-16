@@ -27,7 +27,7 @@ namespace RidalotTests
             ca.imgUrls.Add("first");
             ca.imgUrls.Add("second");
 
-            //ca.DeletePhoto("second");
+            ca.DeletePhoto("second");
             Assert.Single(ca.imgUrls);
         }
     }

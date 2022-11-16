@@ -75,6 +75,10 @@ else
 	<p>
 		<table>
 			<tr>
+				<td align="right">Floor:</td>
+				<td align="left"><input type="number" @bind="floor" onblur="@CalculatePay"/></td>
+			</tr>
+			<tr>
 				<td align="right">Height (cm):</td>
 				<td align="left"><input type="number" @bind="d.height" /></td>
 			</tr>
@@ -92,11 +96,10 @@ else
 			</tr>
 			<tr>
 				<td align="right">Pay (€):</td>
-					<td align="left"><input type="text" @bind="pay" /></td>
-					<td>This is a suggested price, making it lower reduces the chances of finding a courier</td>
-
-			</tr>
+				<td align="left"><input type="text" @bind="pay" /></td>
+			</tr
 		</table>
+		<p>This is a suggested price, making it lower reduces the chances of finding a courier</p>
 	</p>
 	<p>
 		<table>
@@ -167,6 +170,7 @@ else
 	Dimensions d;
 
 	public double pay { get; set; }
+	public int floor { get; set; }
 	public String description = "write here";
 	public String address = "Street-name 000";
 	public String file = "PostInfo.json";
@@ -180,8 +184,13 @@ else
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
+		CalculatePay();
+	}
+	public void CalculatePay()
+	{
 		Payment p = new Payment();
-		pay = Math.Round(p.CalculatePay(10.1f, 2), 1);//TODO distance and floor
+		pay = Math.Round(p.CalculatePay(10.1f, floor), 1);
+		StateHasChanged();
 	}
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)
@@ -219,6 +228,7 @@ else
 			newPost.Weight = d.weight;
 			newPost.AddressLat = lat;
 			newPost.AddressLng = lng;
+			newPost.Floor = floor;
 			newPost.Pay = pay;
 			newPost.Worker = null;
 			// Save the result

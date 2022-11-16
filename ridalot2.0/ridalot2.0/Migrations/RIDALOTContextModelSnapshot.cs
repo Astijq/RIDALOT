@@ -93,7 +93,7 @@ namespace ridalot2._0.Migrations
 
                     b.ToTable("Posts");
                 });
-                
+
             modelBuilder.Entity("ridalot2._0.Data.Workers", b =>
                 {
                     b.Property<int>("Id")
@@ -141,7 +141,6 @@ namespace ridalot2._0.Migrations
                 {
                     b.Navigation("Images");
                 });
-
 #pragma warning restore 612, 618
         }
     }

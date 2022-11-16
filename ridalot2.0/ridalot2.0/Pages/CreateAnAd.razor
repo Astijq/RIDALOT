@@ -75,6 +75,10 @@ else
 	<p>
 		<table>
 			<tr>
+				<td align="right">Floor:</td>
+				<td align="left"><input type="number" @bind="floor" onblur="@CalculatePay"/></td>
+			</tr>
+			<tr>
 				<td align="right">Height (cm):</td>
 				<td align="left"><input type="number" @bind="d.height" /></td>
 			</tr>
@@ -91,17 +95,31 @@ else
 				<td align="left"><input type="number" @bind="d.weight" /></td>
 			</tr>
 			<tr>
-				<td align="right">Address:</td>
-				<td align="left"><input type="text" @bind="address" /></td>
-			</tr>
-			<tr>
 				<td align="right">Pay (€):</td>
-					<td align="left"><input type="text" @bind="pay" /></td>
-					<td>This is a suggested price, making it lower reduces the chances of finding a courier</td>
-
-			</tr>
+				<td align="left"><input type="text" @bind="pay" /></td>
+			</tr
 		</table>
+		<p>This is a suggested price, making it lower reduces the chances of finding a courier</p>
 	</p>
+	<p>
+		<table>
+			<div class="row">
+				<div class="col-xl-6">
+					<h3>
+					</h3>
+					<RadzenGoogleMap style="height:600px;width:500px;" Zoom="@zoom" Center="@(new GoogleMapPosition() { Lat = 55.260903771231035, Lng = 24.05798398437499 })" MapClick="@OnMapClick" MarkerClick="OnMarkerClick">
+						<Markers>
+							<RadzenGoogleMapMarker Title="Pick Up Location" Label="Pick Up Location" Position="@(new GoogleMapPosition() { Lat = lat, Lng = lng })" />
+						</Markers>
+					</RadzenGoogleMap>
+
+				</div>
+			</div>
+
+		</table>
+		<p>This is a suggested price, making it lower reduces the chances of finding a courier</p>
+	</p>
+
 
 	<p>
 		<button type="submit" class="btn btn-success" style=@Constants.button onclick="@Clicked">Submit</button>
@@ -127,6 +145,23 @@ else
 }
 
 @code {
+	int zoom = 7;
+	string clickedPosition = "";
+	double lat;
+	double lng;
+
+	void OnMapClick(GoogleMapClickEventArgs args)
+	{
+		clickedPosition = $"Map clicked LAT : {args.Position.Lat}, LNG : {args.Position.Lng}";
+		lat = args.Position.Lat;
+		lng = args.Position.Lng;
+
+	}
+	void OnMarkerClick(RadzenGoogleMapMarker args)
+	{
+		clickedPosition = $"Map {args.Title} Clicked LAT : {args.Position.Lat}, LNG : {args.Position.Lng}";
+	}
+
 	public struct Dimensions
 	{
 		public int height { get; set; }
@@ -137,6 +172,7 @@ else
 	Dimensions d;
 
 	public double pay { get; set; }
+	public int floor { get; set; }
 	public String description = "write here";
 	public String address = "Street-name 000";
 	public String file = "PostInfo.json";
@@ -150,8 +186,13 @@ else
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
+		CalculatePay();
+	}
+	public void CalculatePay()
+	{
 		Payment p = new Payment();
-		pay = Math.Round(p.CalculatePay(10.1f, 2), 1);//TODO distance and floor
+		pay = Math.Round(p.CalculatePay(10.1f, floor), 1);
+		StateHasChanged();
 	}
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)
@@ -179,7 +220,7 @@ else
 		if (isValidAddress(address))
 		{
 			var newPost = new Posts();
-			newPost.Date = System.DateTime.Now;
+			newPost.Date = System.DateTime.Now.ToUniversalTime();
 			newPost.Status = Convert.ToInt32(Status.Waiting);
 			newPost.User = c.Email;
 			newPost.Description = description;
@@ -187,7 +228,9 @@ else
 			newPost.Width = d.width;
 			newPost.Length = d.length;
 			newPost.Weight = d.weight;
-			newPost.Address = address;
+			newPost.AddressLat = lat;
+			newPost.AddressLng = lng;
+			newPost.Floor = floor;
 			newPost.Pay = pay;
 			newPost.Worker = null;
 			// Save the result
@@ -237,7 +280,7 @@ else
 		isHovering = false;
 		StateHasChanged();
 	}
-	void DeletePhoto(string imgUrl)
+	public void DeletePhoto(string imgUrl)
 	{
 		for (int i = 0; i < imgUrls.Count; i++)
 		{
@@ -246,6 +289,5 @@ else
 				imgUrls.RemoveAt(i);
 			}
 		}
-		StateHasChanged();
 	}
 }

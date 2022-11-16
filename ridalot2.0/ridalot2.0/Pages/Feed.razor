@@ -6,6 +6,7 @@
 @inject NavigationManager NavMan
 
 <h1>Feed</h1>
+<input type="button" value="Filter" @onclick="()=> filter_popup = true" style="@Constants.button; float: right">
 	<table class="table">
 		<thead>
 			<tr>
@@ -32,13 +33,61 @@
 						Length: @post.Length<br />
 					</td>
 					<td>@post.Pay</td>
-					<td>@post.Address</td>
+					<td>@post.AddressLat @post.AddressLng</td>
 					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Accept the task</button></td>
 				</tr>
 			</tbody>
 		</Virtualize>
 	</table>
-
+@if(filter_popup)
+{
+	<div class="modal fade show" id="myModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Filter</h4>
+					<button type="button" class="close" @onclick="@ModalCancel">&times;</button>
+				</div>
+				<div class="modal-body">
+					<table>
+						<tr>
+							<td colspan="2">Weight:</td>
+						</tr>
+						<tr>
+							<td align="right"><input type="number" alt="from" @bind="weightFrom" /></td>
+							<td align="left"><input type="number" alt="to" @bind="weightTo" /></td>
+						</tr>
+						<tr>
+							<td colspan="2">Height:</td>
+						</tr>
+						<tr>
+							<td align="right"><input type="number" alt="from" @bind="heightFrom" /></td>
+							<td align="left"><input type="number" alt="to" @bind="heightTo" /></td>
+						</tr>
+						<tr>
+							<td colspan="2">Width:</td>
+						</tr>
+						<tr>
+							<td align="right"><input type="number" alt="from" @bind="widthFrom" /></td>
+							<td align="left"><input type="number" alt="to" @bind="widthTo" /></td>
+						</tr>
+						<tr>
+							<td colspan="2">Length:</td>
+						</tr>
+						<tr>
+							<td align="right"><input type="number" alt="from" @bind="lengthFrom" /></td>
+							<td align="left"><input type="number" alt="to" @bind="lengthTo" /></td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn" @onclick="@ModalCancel">Cancel</button>
+					<button type="button" class="btn btn-primary" @onclick=@Filter>OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+}
 @if (popup)
 {
 	<AdPopUp Title="Task"
@@ -49,7 +98,8 @@
 		 OnClose="@ClosePopup"
 		 DialogType="AdPopUp.ModalDialogType.Ok">
 	</AdPopUp>
-}@if (popup1)
+}
+@if (popup1)
 {
 	<AdPopUp Title="CAN'T TAKE THE TASK"
 		 Text="YOU ARE NOT A WORKER"
@@ -62,6 +112,7 @@
 	PageService pageservice = new PageService();
 	public bool popup { get; set; } = false;
 	public bool popup1 { get; set; } = false;
+	public bool filter_popup { get; set; } = false;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -78,6 +129,26 @@
 
 		pageservice.posts = await Service.GetAllPostsAsync();
 	}
+	public int weightFrom = 0, weightTo = 0, heightFrom = 0, heightTo = 0;
+	public int widthFrom = 0, widthTo = 0, lengthFrom = 0, lengthTo = 0;
+
+	async Task Filter(){
+		if(weightTo != 0)
+			posts = posts.Where(d => d.Weight >= weightFrom
+											&& d.Weight <= weightTo).ToList();
+		if(heightTo != 0)
+			posts = posts.Where(d => d.Height >= heightFrom
+											&& d.Height <= heightTo).ToList();
+		if (widthTo != 0)
+			posts = posts.Where(d => d.Width >= widthFrom
+											&& d.Width <= widthTo).ToList();
+		if (lengthTo != 0)
+			posts = posts.Where(d => d.Length >= lengthFrom
+											&& d.Length <= lengthTo).ToList();
+
+		filter_popup = false;
+		StateHasChanged();
+	}
 
 	private async Task ClosePopup(bool accepted)
 	{
@@ -85,5 +156,23 @@
 		popup1 = false;
 		StateHasChanged();
 		NavMan.NavigateTo("/");
+	}
+
+	public EventCallback<bool> OnClose { get; set; }
+
+	async Task ModalCancel()
+	{
+		weightFrom = 0;
+		weightTo = 0;
+		heightFrom = 0;
+		heightTo = 0;
+		widthFrom = 0;
+		widthTo = 0;
+		lengthFrom = 0;
+		lengthTo = 0;
+		posts =
+		await @Service.GetAllPostsAsync();
+		filter_popup = false;
+		StateHasChanged();
 	}
 }

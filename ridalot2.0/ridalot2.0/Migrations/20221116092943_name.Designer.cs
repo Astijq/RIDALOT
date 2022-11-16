@@ -12,8 +12,8 @@ using ridalot2._0.Data.RIDALOT;
 namespace ridalot2._0.Migrations
 {
     [DbContext(typeof(RIDALOTContext))]
-    [Migration("20221109114244_t")]
-    partial class t
+    [Migration("20221116092943_name")]
+    partial class name
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,9 +55,13 @@ namespace ridalot2._0.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
+                    b.Property<double>("AddressLat")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("float");
+
+                    b.Property<double>("AddressLng")
+                        .HasMaxLength(50)
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime");
@@ -72,8 +76,8 @@ namespace ridalot2._0.Migrations
                     b.Property<int?>("Length")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Pay")
-                        .HasColumnType("int");
+                    b.Property<double?>("Pay")
+                        .HasColumnType("float");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");

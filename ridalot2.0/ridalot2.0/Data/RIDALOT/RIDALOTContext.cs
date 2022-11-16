@@ -30,7 +30,9 @@ namespace ridalot2._0.Data.RIDALOT
             {
                 entity.HasKey(e => e.Id);
 
-                entity.Property(e => e.Address).HasMaxLength(50);
+                entity.Property(e => e.AddressLat).HasMaxLength(50);
+
+                entity.Property(e => e.AddressLng).HasMaxLength(50);
 
                 entity.Property(e => e.Date).HasColumnType("datetime");
 

@@ -12,8 +12,8 @@ using ridalot2._0.Data.RIDALOT;
 namespace ridalot2._0.Migrations
 {
     [DbContext(typeof(RIDALOTContext))]
-    [Migration("20221108191104_payment")]
-    partial class payment
+    [Migration("20221115183544_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,28 @@ namespace ridalot2._0.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ridalot2._0.Data.RIDALOT.Images", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostsId");
+
+                    b.ToTable("Images");
+                });
 
             modelBuilder.Entity("ridalot2._0.Data.RIDALOT.Posts", b =>
                 {
@@ -46,9 +68,6 @@ namespace ridalot2._0.Migrations
 
                     b.Property<int?>("Height")
                         .HasColumnType("int");
-
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<int?>("Length")
                         .HasColumnType("int");
@@ -76,6 +95,54 @@ namespace ridalot2._0.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("ridalot2._0.Data.Workers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BirthDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Workers");
+                });
+
+            modelBuilder.Entity("ridalot2._0.Data.RIDALOT.Images", b =>
+                {
+                    b.HasOne("ridalot2._0.Data.RIDALOT.Posts", "Posts")
+                        .WithMany("Images")
+                        .HasForeignKey("PostsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("ridalot2._0.Data.RIDALOT.Posts", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

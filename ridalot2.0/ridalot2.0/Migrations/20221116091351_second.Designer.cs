@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ridalot2._0.Data.RIDALOT;
 
@@ -11,9 +12,11 @@ using ridalot2._0.Data.RIDALOT;
 namespace ridalot2._0.Migrations
 {
     [DbContext(typeof(RIDALOTContext))]
-    partial class RIDALOTContextModelSnapshot : ModelSnapshot
+    [Migration("20221116091351_second")]
+    partial class second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,13 +55,9 @@ namespace ridalot2._0.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("AddressLat")
+                    b.Property<string>("Address")
                         .HasMaxLength(50)
-                        .HasColumnType("float");
-
-                    b.Property<double>("AddressLng")
-                        .HasMaxLength(50)
-                        .HasColumnType("float");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime");

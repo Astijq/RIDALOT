@@ -26,8 +26,9 @@ namespace RidalotTests
             CreateAnAd ca = new CreateAnAd();
             ca.imgUrls.Add("first");
             ca.imgUrls.Add("second");
-            ca.imgUrls.Add("third");
-            //cannot access deletephoto
+
+            //ca.DeletePhoto("second");
+            Assert.Single(ca.imgUrls);
         }
     }
 }

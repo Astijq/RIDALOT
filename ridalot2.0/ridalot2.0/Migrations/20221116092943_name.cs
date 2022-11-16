@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ridalot2._0.Migrations
 {
     /// <inheritdoc />
-    public partial class t : Migration
+    public partial class name : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,8 +25,9 @@ namespace ridalot2._0.Migrations
                     Width = table.Column<int>(type: "int", nullable: true),
                     Length = table.Column<int>(type: "int", nullable: true),
                     Weight = table.Column<int>(type: "int", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Pay = table.Column<int>(type: "int", nullable: true),
+                    AddressLat = table.Column<double>(type: "float", maxLength: 50, nullable: false),
+                    AddressLng = table.Column<double>(type: "float", maxLength: 50, nullable: false),
+                    Pay = table.Column<double>(type: "float", nullable: true),
                     Worker = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>

@@ -209,7 +209,7 @@ else
 		if (isValidAddress(address))
 		{
 			var newPost = new Posts();
-			newPost.Date = System.DateTime.Now;
+			newPost.Date = System.DateTime.Now.ToUniversalTime();
 			newPost.Status = Convert.ToInt32(Status.Waiting);
 			newPost.User = c.Email;
 			newPost.Description = description;

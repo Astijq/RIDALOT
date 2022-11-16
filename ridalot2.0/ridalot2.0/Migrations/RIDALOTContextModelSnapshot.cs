@@ -52,9 +52,13 @@ namespace ridalot2._0.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
+                    b.Property<double>("AddressLat")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("float");
+
+                    b.Property<double>("AddressLng")
+                        .HasMaxLength(50)
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime");
@@ -93,7 +97,7 @@ namespace ridalot2._0.Migrations
 
                     b.ToTable("Posts");
                 });
-                
+
             modelBuilder.Entity("ridalot2._0.Data.Workers", b =>
                 {
                     b.Property<int>("Id")
@@ -141,7 +145,6 @@ namespace ridalot2._0.Migrations
                 {
                     b.Navigation("Images");
                 });
-
 #pragma warning restore 612, 618
         }
     }

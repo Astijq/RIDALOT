@@ -32,10 +32,26 @@
 			</tr>
 			<tr>
 				<th>Adress:</th>
+                <td>@post.AddressLat</td>
+                <td>@post.AddressLng</td>
 			</tr>
 			<tr>
-				<th><button type="submit" class="btn btn-success" style=@Constants.button onclick ="@Clicked">Open in maps</button></th>
-				<td></td>
+				<a class="btn btn success" style=@Constants.button href="https://www.google.com/search?q=" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google maps</a>
+				<a class="btn btn success" style=@Constants.button href="https://www.google.com/maps/dir//" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google dir</a>
+				<table>
+					<div class="row">
+						<div class="col-xl-6">
+							<h3>
+							</h3>
+							<RadzenGoogleMap style="height:600px;width:500px;" Zoom="@zoom" Center="@(new GoogleMapPosition() {  Lat = @post.AddressLat, Lng = post.AddressLng })">
+								<Markers>
+									<RadzenGoogleMapMarker Title="Pick Up Location" Label="Pick Up Location" Position="@(new GoogleMapPosition() { Lat = post.AddressLat, Lng = post.AddressLng })" />
+								</Markers>
+							</RadzenGoogleMap>
+
+						</div>
+					</div>
+				</table>
 			</tr>
 
 		</tbody>
@@ -45,6 +61,9 @@
 
 
 @code {
+	int zoom = 12;
+	double lat;
+	double lng;
 	List<Posts> posts = new List<Posts>();
 	List<Images> img = new List<Images>();
 

@@ -278,7 +278,7 @@ else
 		isHovering = false;
 		StateHasChanged();
 	}
-	void DeletePhoto(string imgUrl)
+	public void DeletePhoto(string imgUrl)
 	{
 		for (int i = 0; i < imgUrls.Count; i++)
 		{
@@ -287,6 +287,5 @@ else
 				imgUrls.RemoveAt(i);
 			}
 		}
-		StateHasChanged();
 	}
 }

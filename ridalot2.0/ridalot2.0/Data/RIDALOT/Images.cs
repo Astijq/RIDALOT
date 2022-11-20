@@ -6,7 +6,6 @@ namespace ridalot2._0.Data.RIDALOT
     {
         public int Id { get; set; }
         public string? ImagePath { get; set; }
-
-        public virtual Posts Posts { get; set; }
+        public virtual Posts? Posts { get; set; }
     }
 }

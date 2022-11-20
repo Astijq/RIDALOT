@@ -34,7 +34,7 @@ namespace ridalot2._0.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PostsId")
+                    b.Property<int?>("PostsId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -137,9 +137,7 @@ namespace ridalot2._0.Migrations
                 {
                     b.HasOne("ridalot2._0.Data.RIDALOT.Posts", "Posts")
                         .WithMany("Images")
-                        .HasForeignKey("PostsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PostsId");
 
                     b.Navigation("Posts");
                 });

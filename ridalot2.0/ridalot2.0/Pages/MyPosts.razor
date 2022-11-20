@@ -2,6 +2,7 @@
 @using Data
 @using ridalot2._0.Data.RIDALOT
 @inherits LoginControl
+@inject PageService pageservice
 
 <h3>MyPosts</h3>
 	<table class="table">
@@ -38,8 +39,6 @@
 	</table>
 
 @code {
-
-	PageService pageservice = new PageService();
 
 	protected override async Task OnInitializedAsync()
 	{

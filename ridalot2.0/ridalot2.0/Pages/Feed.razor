@@ -134,16 +134,16 @@
 
 	async Task Filter(){
 		if(weightTo != 0)
-			posts = posts.Where(d => d.Weight >= weightFrom
+			pageservice.posts = pageservice.posts.Where(d => d.Weight >= weightFrom
 											&& d.Weight <= weightTo).ToList();
 		if(heightTo != 0)
-			posts = posts.Where(d => d.Height >= heightFrom
+			pageservice.posts = pageservice.posts.Where(d => d.Height >= heightFrom
 											&& d.Height <= heightTo).ToList();
 		if (widthTo != 0)
-			posts = posts.Where(d => d.Width >= widthFrom
+			pageservice.posts = pageservice.posts.Where(d => d.Width >= widthFrom
 											&& d.Width <= widthTo).ToList();
 		if (lengthTo != 0)
-			posts = posts.Where(d => d.Length >= lengthFrom
+			pageservice.posts = pageservice.posts.Where(d => d.Length >= lengthFrom
 											&& d.Length <= lengthTo).ToList();
 
 		filter_popup = false;
@@ -170,8 +170,7 @@
 		widthTo = 0;
 		lengthFrom = 0;
 		lengthTo = 0;
-		posts =
-		await @Service.GetAllPostsAsync();
+		pageservice.posts = await @Service.GetAllPostsAsync();
 		filter_popup = false;
 		StateHasChanged();
 	}

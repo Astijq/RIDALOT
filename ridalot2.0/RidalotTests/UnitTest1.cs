@@ -8,8 +8,8 @@ namespace RidalotTests
         [Fact]
         public void TestPay()
         {
-            Payment p = new Payment();
-            var test = p.CalculatePay(10.1f, 2);
+
+            double test = Payment.CalculatePay(10.1f, 2);
             var expected = 9.5f;
             Assert.Equal(expected, test);
         }
@@ -17,8 +17,7 @@ namespace RidalotTests
         public void TestRegex()
         {
             var test = Constants.addressMatch("Didlaukio g. 47");
-            var expected = true;
-            Assert.Equal(expected, test);
+            Assert.True(test);
         }
         [Fact]
         public void TestDeletePhoto()

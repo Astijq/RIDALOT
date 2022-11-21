@@ -76,7 +76,7 @@ else
 		<table>
 			<tr>
 				<td align="right">Floor:</td>
-				<td align="left"><input type="number" @bind="floor" onblur="@CalculatePay"/></td>
+				<td align="left"><input type="number" @bind="floor" onblur="@CalculatePayment"/></td>
 			</tr>
 			<tr>
 				<td align="right">Height (cm):</td>
@@ -185,13 +185,11 @@ else
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		CalculatePay();
+		CalculatePayment();
 	}
-	public void CalculatePay()
+	public void CalculatePayment()
 	{
-		Payment p = new Payment();
-		pay = Math.Round(p.CalculatePay(10.1f, floor), 1);
-		StateHasChanged();
+		pay = Payment.CalculatePay(10.1f, floor);
 	}
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)

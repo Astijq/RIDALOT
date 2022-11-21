@@ -6,14 +6,6 @@ namespace RidalotTests
     public class UnitTest1
     {
         [Fact]
-        public void TestPay()
-        {
-
-            double test = Payment.CalculatePay(10.1f, 2);
-            var expected = 9.5f;
-            Assert.Equal(expected, test);
-        }
-        [Fact]
         public void TestRegex()
         {
             var test = Constants.addressMatch("Didlaukio g. 47");

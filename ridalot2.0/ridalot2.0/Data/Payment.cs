@@ -9,6 +9,7 @@
         static float fuelPriceKM { get { return (avgFuelConsumption * avgFuelPrice) / 100; } }
         static public double CalculatePay(float distance, int floor)
         {
+            floor = Math.Abs(floor);
             return Math.Round((distance * fuelPriceKM) + (floor * baseFloorPay) + basePay, 1);
         }
     }

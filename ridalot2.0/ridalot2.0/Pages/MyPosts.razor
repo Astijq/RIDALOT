@@ -13,7 +13,8 @@
 				<th>Description</th>
 				<th>Measurements</th>
 				<th>Estimated price</th>
-				<th>Adress</th>
+				<th>Lat</th>
+				<th>Lng</th>
 				<th>Edit post</th>
 			</tr>
 		</thead>
@@ -30,8 +31,9 @@
 						Width: @post.Width<br />
 						Length: @post.Length<br />
 					</td>
-					<td>@post.AddressLat @post.AddressLng</td>
 					<td>@post.Pay</td>
+					<td>@post.AddressLat</td>
+					<td>@post.AddressLng</td>
 					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Delete</button></td>
 				</tr>
 			</tbody>

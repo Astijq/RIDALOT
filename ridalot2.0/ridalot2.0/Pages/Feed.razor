@@ -4,6 +4,7 @@
 @using ridalot2._0.Data.RIDALOT
 @inherits LoginControl
 @inject NavigationManager NavMan
+@inject PageService pageservice
 
 <h1>Feed</h1>
 <input type="button" value="Filter" @onclick="()=> filter_popup = true" style="@Constants.button; float: right">
@@ -110,7 +111,6 @@
 
 
 @code {
-	PageService pageservice = new PageService();
 	public bool popup { get; set; } = false;
 	public bool popup1 { get; set; } = false;
 	public bool filter_popup { get; set; } = false;
@@ -171,8 +171,7 @@
 		widthTo = 0;
 		lengthFrom = 0;
 		lengthTo = 0;
-		pageservice.posts =
-		await @Service.GetAllPostsAsync();
+		pageservice.posts = await @Service.GetAllPostsAsync();
 		filter_popup = false;
 	}
 	async Task Cancel()

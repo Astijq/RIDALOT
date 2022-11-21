@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ridalot2._0.Data;
+using ridalot2._0.Pages;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,7 @@ options.UseSqlServer(
                                     builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<Service>();
-
+builder.Services.AddScoped<PageService>();
 
 var app = builder.Build();
 //middleware after here

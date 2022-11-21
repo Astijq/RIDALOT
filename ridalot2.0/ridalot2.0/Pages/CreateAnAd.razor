@@ -5,8 +5,9 @@
 @using ridalot2._0.Data.RIDALOT
 @inherits LoginControl
 @inject NavigationManager NavMan
+@inject DBService DBservice
 
-@if (!@c.User.Identity.IsAuthenticated)
+@if (!User.Identity.IsAuthenticated)
 {
 	<a class="ml-md-auto btn btn-primary"
    href="/Identity/Login"
@@ -220,7 +221,7 @@ else
 			var newPost = new Posts();
 			newPost.Date = System.DateTime.Now.ToUniversalTime();
 			newPost.Status = Convert.ToInt32(Status.Waiting);
-			newPost.User = c.Email;
+			newPost.User = Email;
 			newPost.Description = description;
 			newPost.Height = d.height;
 			newPost.Width = d.width;
@@ -232,15 +233,14 @@ else
 			newPost.Pay = pay;
 			newPost.Worker = null;
 			// Save the result
-			var result =
-			@Service.CreatePostAsync(newPost);
+			var result = DBservice.CreatePostAsync(newPost);
 
 			foreach (string image in imgUrls)
 			{
 				var img = new Images();
 				img.ImagePath = image;
 				img.Posts = newPost;
-				var result2 = @Service.CreateImageAsync(img);
+				var result2 = DBservice.CreateImageAsync(img);
 			}
 			popup = true;
 		}

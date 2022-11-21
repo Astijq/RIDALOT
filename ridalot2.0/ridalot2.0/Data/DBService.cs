@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ridalot2._0.Data
 {
-    public class Service
+    public class DBService
     {
         private readonly RIDALOTContext _context;
-        public Service(RIDALOTContext context)
+        public DBService(RIDALOTContext context)
         {
             _context = context;
         }

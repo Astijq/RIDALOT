@@ -5,7 +5,7 @@ namespace ridalot2._0.Data
 {
     public class Service
     {
-        private Lazy<RIDALOTContext> _context = null;
+        private Lazy<RIDALOTContext> _context;
         public RIDALOTContext context
         {
             get

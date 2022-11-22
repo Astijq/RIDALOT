@@ -7,6 +7,7 @@ namespace ridalot2._0.Data
     {
         private Lazy<RIDALOTContext> _context;
         public RIDALOTContext context { get{return _context.Value;} }
+
         public DBService(RIDALOTContext context)
         {
             _context = new Lazy<RIDALOTContext>(() => context);
@@ -35,11 +36,11 @@ namespace ridalot2._0.Data
                  .Where(x => x.Status == 0)
                  .AsNoTracking().ToListAsync();
         }
-        public Task<Posts> CreatePostAsync(Posts post)
+        public async Task<Posts> CreatePostAsync(Posts post)
         {
             _context.Value.Posts.Add(post);
             _context.Value.SaveChanges();
-            return Task.FromResult(post);
+            return await Task.FromResult(post);
         }
         public Task<bool> DeletePostAsync(Posts post)
         {

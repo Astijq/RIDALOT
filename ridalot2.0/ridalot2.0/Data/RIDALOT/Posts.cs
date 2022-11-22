@@ -10,7 +10,7 @@ namespace ridalot2._0.Data.RIDALOT
     {
         public int Id { get; set; }
         public DateTime? Date { get; set; }
-        public int? Status { get; set; }
+        public Status? Status { get; set; }
         public string User { get; set; }
         public virtual ICollection<Images> Images { get; set; }
         public string Description { get; set; }

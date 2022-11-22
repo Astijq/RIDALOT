@@ -5,7 +5,7 @@ namespace ridalot2._0.Data
 {
     public class DBService
     {
-        private Lazy<RIDALOTContext> _context = null;
+        private Lazy<RIDALOTContext> _context;
         public RIDALOTContext context
         {
             get
@@ -13,8 +13,7 @@ namespace ridalot2._0.Data
                 return _context.Value;
             }
         }
-        //private readonly RIDALOTContext _context;
-        public Service(RIDALOTContext context)
+        public DBService(RIDALOTContext context)
         {
             _context = new Lazy<RIDALOTContext>(() => context);
         }

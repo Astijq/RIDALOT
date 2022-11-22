@@ -135,8 +135,7 @@
 	public int widthFrom = 0, widthTo = 0, lengthFrom = 0, lengthTo = 0;
 
 	async Task Filter(){
-		pageservice.posts =
-		await @Service.GetAllPostsAsync();
+		pageService.posts = await DBservice.GetAllPostsAsync();
 
 		if(weightTo != 0)
 			pageService.posts = pageService.posts.Where(d => d.Weight >= weightFrom

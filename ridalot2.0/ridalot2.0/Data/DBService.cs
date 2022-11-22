@@ -36,7 +36,7 @@ namespace ridalot2._0.Data
                  .Where(x => x.Status == 0)
                  .AsNoTracking().ToListAsync();
         }
-        public async Task<Posts> CreatePostAsync(Posts post)
+        public Task<bool> CreatePostAsync(Posts post)
         {
             _context.Value.Posts.Add(post);
             _context.Value.SaveChanges();
@@ -99,22 +99,10 @@ namespace ridalot2._0.Data
             return await _context.Value.Images.Include(p => p.Posts)
                  .AsNoTracking().ToListAsync();
         }
-        public Task<Images> CreateImageAsync(Images img)
-        {
-            _context.Value.Images.Add(img);
-            _context.Value.SaveChanges();
-            return Task.FromResult(img);
-        }
         public async Task<List<Workers>> GetAllWorkersAsync()
         {
             return await _context.Value.Workers
                  .AsNoTracking().ToListAsync();
-        }
-        public Task<Workers> CreateWorkerAsync(Workers worker)
-        {
-            _context.Value.Workers.Add(worker);
-            _context.Value.SaveChanges();
-            return Task.FromResult(worker);
         }
     }
 }

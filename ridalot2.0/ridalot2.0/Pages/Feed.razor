@@ -48,7 +48,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">Filter</h4>
-					<button type="button" class="close" @onclick="@ModalCancel">&times;</button>
+					<button type="button" class="close" @onclick="@Cancel">&times;</button>
 				</div>
 				<div class="modal-body">
 					<table>
@@ -83,8 +83,9 @@
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn" @onclick="@ModalCancel">Cancel</button>
+					<button type="button" class="btn" @onclick="@Cancel">Cancel</button>
 					<button type="button" class="btn btn-primary" @onclick=@Filter>OK</button>
+					<button type="button" class="btn" style="background-color: Black; color: white;" @onclick=@Remove>Remove</button>
 				</div>
 			</div>
 		</div>
@@ -134,6 +135,9 @@
 	public int widthFrom = 0, widthTo = 0, lengthFrom = 0, lengthTo = 0;
 
 	async Task Filter(){
+		pageservice.posts =
+		await @Service.GetAllPostsAsync();
+
 		if(weightTo != 0)
 			pageService.posts = pageService.posts.Where(d => d.Weight >= weightFrom
 											&& d.Weight <= weightTo).ToList();
@@ -148,7 +152,6 @@
 											&& d.Length <= lengthTo).ToList();
 
 		filter_popup = false;
-		StateHasChanged();
 	}
 
 	private async Task ClosePopup(bool accepted)
@@ -159,9 +162,7 @@
 		NavMan.NavigateTo("/");
 	}
 
-	public EventCallback<bool> OnClose { get; set; }
-
-	async Task ModalCancel()
+	async Task Remove()
 	{
 		weightFrom = 0;
 		weightTo = 0;
@@ -173,6 +174,9 @@
 		lengthTo = 0;
 		pageService.posts = await DBservice.GetAllPostsAsync();
 		filter_popup = false;
-		StateHasChanged();
+	}
+	async Task Cancel()
+	{
+		filter_popup = false;
 	}
 }

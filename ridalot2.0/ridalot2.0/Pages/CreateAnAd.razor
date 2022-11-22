@@ -175,7 +175,6 @@ else
 	public double pay { get; set; }
 	public int floor { get; set; }
 	public String description = "write here";
-	public String address = "Street-name 000";
 	public String file = "PostInfo.json";
 	public List<string> imgUrls = new List<string>();
 	public bool popup { get; set; } = false;
@@ -206,18 +205,9 @@ else
 		}
 	}
 
-	public static bool isValidAddress(string add)
-	{
-		if (add.addressMatch())
-			return (true);
-		else
-			return (false);
-	}
 
 	private void Clicked()
 	{
-		if (isValidAddress(address))
-		{
 			var newPost = new Posts();
 			newPost.Date = System.DateTime.Now.ToUniversalTime();
 			newPost.Status = Convert.ToInt32(Status.Waiting);
@@ -243,8 +233,6 @@ else
 				var result2 = DBservice.CreateImageAsync(img);
 			}
 			popup = true;
-		}
-		else popup2 = true;
 	}
 
 	private async Task ClosePopup()

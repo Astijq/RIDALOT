@@ -17,7 +17,7 @@ namespace ridalot2._0.Data.RIDALOT
             : base(options)
         {
         }
-
+        //public virtual Lazy<DbSet<Posts>> Posts { get; set; }
         public virtual DbSet<Posts> Posts { get; set; }
         public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Workers> Workers { get; set; }

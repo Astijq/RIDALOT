@@ -193,7 +193,7 @@ else
 		pay = Payment.CalculatePay(10.1f, floor);
 	}
 
-	private async Task OnFileSelection(InputFileChangeEventArgs e)
+	public async Task OnFileSelection(InputFileChangeEventArgs e)
 	{
 		foreach (IBrowserFile imgFile in e.GetMultipleFiles(5))
 		{
@@ -232,8 +232,7 @@ else
 			newPost.Pay = pay;
 			newPost.Worker = null;
 			// Save the result
-			var result =
-			@Service.CreatePostAsync(newPost);
+			var result = Service.CreatePostAsync(newPost);
 
 			foreach (string image in imgUrls)
 			{

@@ -1,27 +1,35 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>RIDALOT</PageTitle>
-
-<style>
-a.basic:link {text-decoration: none; color: blue;}
-a.basic:hover {text-decoration: underline;}
-</style>
-
 <div class="page">
-	<!--Menu-->
-	<div class="sidebar">
-		<NavMenu />
-	</div>
+    <div class="sidebar">
+        <NavMenu />
+    </div>
 
-	<main>
-		<!--User info, buttons-->
-		<div class="top-row px-4">
-			<LoginControl />
-			<a class="basic" href="profile">profile</a>
-		</div>
-		<!--Main Body-->
-		<article class="content px-4">
-			@Body
-		</article>
-	</main>
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            <ErrorBoundary @ref="errorBoundary">
+                <ChildContent>
+                     @Body
+                </ChildContent>
+                <ErrorContent Context="Exception">
+                    <div class="alert alert-primary">
+                        <h3>@Exception.Message</h3>
+                        <button class="btn btn-info" @onclick="() => errorBoundary.Recover()">Clear</button>
+                    </div>
+                </ErrorContent>
+            </ErrorBoundary>
+        </article>
+    </main>
 </div>
+
+@code{
+    private ErrorBoundary errorBoundary;
+    protected override void OnInitialized()
+    {
+        errorBoundary = new ErrorBoundary();
+    }
+}

@@ -50,8 +50,16 @@
 
 	async Task Clicked(Posts post)
 	{
-		await Service.DeletePostAsync(post);
-		pageservice.posts = await Service.GetMyPostsAsync(c.Email);
+		try
+		{
+			await Service.DeletePostAsync(post);
+			pageservice.posts = await Service.GetMyPostsAsync(c.Email);
+		}
+		catch(Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			throw new ArgumentException("The post can't be deleted right now! Our team is fixing that!", ex);
+		}
 	}
 
 }

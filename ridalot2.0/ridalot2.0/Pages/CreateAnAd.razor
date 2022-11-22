@@ -192,7 +192,14 @@ else
 	}
 	public void CalculatePayment()
 	{
-		pay = del(10.1f, floor);
+		try
+		{
+			pay = del(10.1f, floor);
+		}
+		catch(Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+		}
 	}
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)

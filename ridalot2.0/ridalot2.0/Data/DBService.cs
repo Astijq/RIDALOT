@@ -13,6 +13,7 @@ namespace ridalot2._0.Data
                 return _context.Value;
             }
         }
+
         public DBService(RIDALOTContext context)
         {
             _context = new Lazy<RIDALOTContext>(() => context);
@@ -44,7 +45,7 @@ namespace ridalot2._0.Data
                  .AsNoTracking().ToListAsync();
         }
         public async Task<List<Posts>>
-            GetFeedPostsAsync(int strCurrentUser)
+            GetFeedPostsAsync(Status strCurrentUser)
         {
             return await _context.Value.Posts
                  .Where(x => x.Status == strCurrentUser)
@@ -74,7 +75,7 @@ namespace ridalot2._0.Data
             return Task.FromResult(true);
         }
 
-        public Task<bool>
+        public Task<bool> //TODO
            DeletePostAsync(Posts post)
         {
             var ExistingPost =

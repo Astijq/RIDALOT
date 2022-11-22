@@ -11,16 +11,5 @@ namespace ridalot2._0.Data
                                 "text-align: center; " +
                                 "display: inline-block; " +
                                 "font-size: 16px;";
-
-        public static string addressRegexString = @"^([\w\s\W]+[\w\W]?)\s([\d\-\\\/\w]*)?";
-
-        public static Regex addressRegex = new Regex(addressRegexString);
-
-        public static bool addressMatch(this string str)
-        {
-            return addressRegex.IsMatch(str);
-        }
-
-
     }
 }

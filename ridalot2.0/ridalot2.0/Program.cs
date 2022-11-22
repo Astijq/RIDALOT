@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ridalot2._0.Data;
 using ridalot2._0.Pages;
+using ridalot2._0.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,7 @@ options.UseSqlServer(
 builder.Services.AddDbContext<ridalot2._0.Data.RIDALOT.RIDALOTContext>(options =>
     options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<Service>();
+builder.Services.AddScoped<DBService>();
 builder.Services.AddScoped<PageService>();
 
 var app = builder.Build();

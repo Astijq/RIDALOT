@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ridalot2._0.Data;
 using ridalot2._0.Pages;
+using ridalot2._0.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,11 +29,14 @@ builder.Services.AddScoped<HttpClient>();
 
 // Read the connection string from the appsettings.json file
 // Set the database connection for the EndtoEndContext
-builder.Services.AddDbContext<ridalot2._0.Data.RIDALOT.RIDALOTContext>(options =>
+/*builder.Services.AddDbContext<ridalot2._0.Data.RIDALOT.RIDALOTContext>(options =>
 options.UseSqlServer(
-                                    builder.Configuration.GetConnectionString("DefaultConnection")));
+                                    builder.Configuration.GetConnectionString("DefaultConnection")));*/
 
-builder.Services.AddScoped<Service>();
+builder.Services.AddDbContext<ridalot2._0.Data.RIDALOT.RIDALOTContext>(options =>
+    options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<DBService>();
 builder.Services.AddScoped<PageService>();
 
 var app = builder.Build();

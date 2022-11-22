@@ -2,7 +2,8 @@
 @using Data
 @using ridalot2._0.Data.RIDALOT
 @inherits LoginControl
-@inject PageService pageservice
+@inject PageService pageService
+@inject DBService DBservice
 
 <h3>MyPosts</h3>
 	<table class="table">
@@ -19,11 +20,11 @@
 			</tr>
 		</thead>
 
-		<Virtualize Context="post" Items="@pageservice.posts">
+		<Virtualize Context="post" Items="@pageService.posts">
 			<tbody>
 				<tr>
 					<td>@post.Date</td>
-				<td><img src="@pageservice.getImages(post)" style="height:100px; max-width: 200px;" /></td>
+				<td><img src="@pageService.getImages(post)" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
 					<td>
 						Weight: @post.Weight<br />
@@ -44,14 +45,14 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageservice.posts = await Service.GetMyPostsAsync(c.Email);
-		pageservice.img = await Service.GetImagesAsync();
+		pageService.posts = await DBservice.GetMyPostsAsync(Email);
+		pageService.img = await DBservice.GetImagesAsync();
 	}
 
-	async Task Clicked(Posts post)
+	private async Task Clicked(Posts post)
 	{
-		await Service.DeletePostAsync(post);
-		pageservice.posts = await Service.GetMyPostsAsync(c.Email);
+		await DBservice.DeletePostAsync(post);
+		pageService.posts = await DBservice.GetMyPostsAsync(Email);
 	}
 
 }

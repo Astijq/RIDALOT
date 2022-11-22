@@ -33,7 +33,7 @@ namespace ridalot2._0.Data
         public async Task<List<Posts>> GetFeedPostsAsync()
         {
             return await _context.Value.Posts
-                 .Where(x => x.Status == 0)
+                 .Where(x => x.Status == Status.Waiting)
                  .AsNoTracking().ToListAsync();
         }
         public Task<bool> CreatePostAsync(Posts post)

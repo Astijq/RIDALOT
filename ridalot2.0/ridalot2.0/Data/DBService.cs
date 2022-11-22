@@ -7,6 +7,7 @@ namespace ridalot2._0.Data
     {
         private Lazy<RIDALOTContext> _context;
         public RIDALOTContext context { get{return _context.Value;} }
+
         public DBService(RIDALOTContext context)
         {
             _context = new Lazy<RIDALOTContext>(() => context);
@@ -35,35 +36,33 @@ namespace ridalot2._0.Data
                  .Where(x => x.Status == 0)
                  .AsNoTracking().ToListAsync();
         }
-        public Task<Posts> CreatePostAsync(Posts post)
+        public async Task<Posts> CreatePostAsync(Posts post)
         {
             _context.Value.Posts.Add(post);
             _context.Value.SaveChanges();
-            return Task.FromResult(post);
+            return await Task.FromResult(post);
         }
 
-        public Task<Workers>
+        public async Task<Workers>
              CreateWorkerAsync(Workers worker)
         {
             _context.Value.Workers.Add(worker);
             _context.Value.SaveChanges();
-            return Task.FromResult(worker);
+            return await Task.FromResult(worker);
         }
-        public async Task<List<Images>>
-    GetImagesAsync()
+        public async Task<List<Images>> GetImagesAsync()
         {
             return await _context.Value.Images.Include(p => p.Posts)
                  .AsNoTracking().ToListAsync();
         }
-        public Task<Images>
-             CreateImageAsync(Images img)
+        public async Task<Images> CreateImageAsync(Images img)
         {
             _context.Value.Images.Add(img);
             _context.Value.SaveChanges();
-            return Task.FromResult(img);
+            return await Task.FromResult(img);
         }
 
-        public Task<bool>
+        public Task<bool> //TODO
            DeletePostAsync(Posts post)
         {
             var ExistingPost =

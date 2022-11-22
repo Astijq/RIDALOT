@@ -6,8 +6,10 @@
 @using System.Text.Json.Serialization
 @inject NavigationManager NavMan
 @inherits LoginControl
+@inject DBService DBservice
+
 <h3>Worker application</h3>
-@if (!c.User.Identity.IsAuthenticated)
+@if (!User.Identity.IsAuthenticated)
 {
 	<a class="ml-md-auto btn btn-primary"
    href="/Identity/Login"
@@ -106,14 +108,13 @@ else
 	public void Clicked()
 	{
 		Workers worker = new Workers();
-		worker.Email = c.Email;
+		worker.Email = Email;
 		worker.Phone = phoneNumber;
 		worker.BirthDate = birthDate;
 		worker.Description = description;
 		worker.FirstName = firstName;
 		worker.LastName = firstName;
-		var result =
-		@Service.CreateWorkerAsync(worker);
+		var result = DBservice.CreateWorkerAsync(worker);
 		popup = true;
 		
 	}

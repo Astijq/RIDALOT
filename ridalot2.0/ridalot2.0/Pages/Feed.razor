@@ -4,6 +4,8 @@
 @using ridalot2._0.Data.RIDALOT
 @inherits LoginControl
 @inject NavigationManager NavMan
+@inject PageService pageService
+@inject DBService DBservice
 
 <h1>Feed</h1>
 <input type="button" value="Filter" @onclick="()=> filter_popup = true" style="@Constants.button; float: right">
@@ -20,11 +22,11 @@
 			</tr>
 		</thead>
 
-		<Virtualize Context="post" Items="@pageservice.posts">
+		<Virtualize Context="post" Items="@pageService.posts">
 			<tbody>
 				<tr>
 					<td>@post.Date</td>
-				<td><img src="@pageservice.getImages(post)" style="height:100px; max-width: 200px;" /></td>
+				<td><img src="@pageService.getImages(post)" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
 					<td>
 						Weight: @post.Weight<br />
@@ -68,7 +70,6 @@
 
 
 @code {
-	PageService pageservice = new PageService();
 	FilterDimensions filterDimensions = new FilterDimensions();
 	public bool popupTaskAccepted { get; set; } = false;
 	public bool popupTaskNotAccepted { get; set; } = false;
@@ -76,36 +77,35 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageservice.posts = await Service.GetFeedPostsAsync(Status.Waiting);
-		pageservice.img = await Service.GetImagesAsync();
+		pageService.posts = await DBservice.GetFeedPostsAsync(Status.Waiting);
+		pageService.img = await DBservice.GetImagesAsync();
 	}
 
 	private async void Clicked(Posts post)
 	{
 		popupTaskAccepted = true;
-		post.Worker = c.Email;
 		post.Status = Status.InProgress;
-		await Service.UpdatePostAsync(post);
+		post.Worker = Email;
+		await DBservice.UpdatePostAsync(post);
 
-		pageservice.posts = await Service.GetAllPostsAsync();
+		pageService.posts = await DBservice.GetAllPostsAsync();
 	}
 
 	private async Task Filter()
 	{
-		pageservice.posts =
-		await @Service.GetAllPostsAsync();
+		pageService.posts = await DBservice.GetAllPostsAsync();
 
 		if(filterDimensions.weightTo != 0)
-			pageservice.posts = pageservice.posts.Where(d => d.Weight >= filterDimensions.weightFrom
+			pageService.posts = pageService.posts.Where(d => d.Weight >= filterDimensions.weightFrom
 											&& d.Weight <= filterDimensions.weightTo).ToList();
 		if (filterDimensions.heightTo != 0)
-			pageservice.posts = pageservice.posts.Where(d => d.Height >= filterDimensions.heightFrom
+			pageService.posts = pageService.posts.Where(d => d.Height >= filterDimensions.heightFrom
 											&& d.Height <= filterDimensions.heightTo).ToList();
 		if (filterDimensions.widthTo != 0)
-			pageservice.posts = pageservice.posts.Where(d => d.Width >= filterDimensions.widthFrom
+			pageService.posts = pageService.posts.Where(d => d.Width >= filterDimensions.widthFrom
 											&& d.Width <= filterDimensions.widthTo).ToList();
 		if (filterDimensions.lengthTo != 0)
-			pageservice.posts = pageservice.posts.Where(d => d.Length >= filterDimensions.lengthFrom
+			pageService.posts = pageService.posts.Where(d => d.Length >= filterDimensions.lengthFrom
 											&& d.Length <= filterDimensions.lengthTo).ToList();
 
 		filter_popup = false;

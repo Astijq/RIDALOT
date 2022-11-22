@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ridalot2._0.Data
 {
-    public class Service
+    public class DBService
     {
         private Lazy<RIDALOTContext> _context;
         public RIDALOTContext context
@@ -13,7 +13,8 @@ namespace ridalot2._0.Data
                 return _context.Value;
             }
         }
-        public Service(RIDALOTContext context)
+
+        public DBService(RIDALOTContext context)
         {
             _context = new Lazy<RIDALOTContext>(() => context);
         }

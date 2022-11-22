@@ -5,8 +5,9 @@
 @using ridalot2._0.Data.RIDALOT
 @inherits LoginControl
 @inject NavigationManager NavMan
+@inject DBService DBservice
 
-@if (!@c.User.Identity.IsAuthenticated)
+@if (!User.Identity.IsAuthenticated)
 {
 	<a class="ml-md-auto btn btn-primary"
    href="/Identity/Login"
@@ -50,7 +51,7 @@ else
 		<table>
 			<tr>
 				<td align="right">Floor:</td>
-				<td align="left"><input type="number" @bind="floor" onblur="@CalculatePay"/></td>
+				<td align="left"><input type="number" @bind="floor" onblur="@CalculatePayment"/></td>
 			</tr>
 			<tr>
 				<td align="right">Height (cm):</td>
@@ -153,13 +154,11 @@ else
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		CalculatePay();
+		CalculatePayment();
 	}
-	private void CalculatePay()
+	public void CalculatePayment()
 	{
-		Payment p = new Payment();
-		pay = Math.Round(p.CalculatePay(10.1f, floor), 1);
-		StateHasChanged();
+		pay = Payment.CalculatePay(10.1f, floor);
 	}
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)
@@ -192,14 +191,14 @@ else
 		newPost.Pay = pay;
 		newPost.Worker = null;
 		// Save the result
-		var result = Service.CreatePostAsync(newPost);
+		var result = DBservice.CreatePostAsync(newPost);
 
 		foreach (string image in imgUrls)
 		{
 			var img = new Images();
 			img.ImagePath = image;
 			img.Posts = newPost;
-			var result2 = Service.CreateImageAsync(img);
+			var result2 = DBservice.CreateImageAsync(img);
 		}
 
 		popupPostedSuccessfully = true;

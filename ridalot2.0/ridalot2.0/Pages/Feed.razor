@@ -77,7 +77,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageService.posts = await DBservice.GetFeedPostsAsync(Status.Waiting);
+		pageService.posts = await DBservice.GetFeedPostsAsync();
 		pageService.img = await DBservice.GetImagesAsync();
 	}
 

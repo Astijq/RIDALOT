@@ -51,28 +51,28 @@ namespace ridalot2._0.Data
                  .Where(x => x.Status == strCurrentUser)
                  .AsNoTracking().ToListAsync();
         }
-        public async Task<Posts>
+        public Task<bool>
             CreatePostAsync(Posts post)
         {
             _context.Value.Posts.Add(post);
             _context.Value.SaveChanges();
-            return await Task.FromResult(post);
+            return Task.FromResult(true);
         }
 
-        public async Task<Workers>
+        public Task<bool>
              CreateWorkerAsync(Workers worker)
         {
             _context.Value.Workers.Add(worker);
             _context.Value.SaveChanges();
-            return await Task.FromResult(worker);
+            return Task.FromResult(true);
         }
 
-        public async Task<Images>
+        public Task<bool>
              CreateImageAsync(Images img)
         {
             _context.Value.Images.Add(img);
             _context.Value.SaveChanges();
-            return await Task.FromResult(img);
+            return Task.FromResult(true);
         }
 
         public Task<bool> //TODO

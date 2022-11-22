@@ -3,12 +3,11 @@
 @using Data
 @inject IHttpContextAccessor _httpContextAccessor
 @inject HttpClient Http
-@inherits OwningComponentBase<Service>
 
-@if (@c.User.Identity.IsAuthenticated)
+@if (@User.Identity.IsAuthenticated)
 {
-	<img src="@c.Avatar" style="height:50px;max-width:50px;width:auto;" />
-	<b>You are logged in as: @c.GivenName @c.Surname</b>
+	<img src="@Avatar" style="height:50px;max-width:50px;width:auto;" />
+	<b>You are logged in as: @GivenName @Surname</b>
 	<a class="ml-md-auto btn btn-primary" style=@Constants.button
    href="/Identity/Logout"
    target="_top">Logout</a>
@@ -21,61 +20,66 @@ else
 }
 @code {
 
-	public class Consumer
+
+	public ClaimsPrincipal? User { get; set; }
+	public string? GivenName { get; set; }
+	public string? Surname { get; set; }
+	public string? Avatar { get; set; }
+	public string? Email { get; set; }
+
+	public ClaimsPrincipal getUser()
 	{
-		public ClaimsPrincipal? User { get; set; }
-		public string? GivenName { get; set; }
-		public string? Surname { get; set; }
-		public string? Avatar { get; set; }
-		public string? Email { get; set; }
+		User = _httpContextAccessor.HttpContext.User;
+		return User;
 	}
-	public Consumer c = new Consumer();
+
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
+
 		try
 		{
 			// Set the user to determine if they are logged in
-			c.User = _httpContextAccessor.HttpContext.User;
+			User = _httpContextAccessor.HttpContext.User;
 			//email
 			var givenEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email);
 			if (givenEmail != null)
 			{
-				c.Email = givenEmail.Value;
+				Email = givenEmail.Value;
 			}
 			else
 			{
-				c.Email = "";
+				Email = "";
 			}
 			// Try to get the GivenName
 			var givenName = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.GivenName);
 			if (givenName != null)
 			{
-				c.GivenName = givenName.Value;
+				GivenName = givenName.Value;
 			}
 			else
 			{
-				c.GivenName = c.User.Identity.Name;
+				GivenName = User.Identity.Name;
 			}
 			// Try to get the Surname
 			var surname = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Surname);
 			if (surname != null)
 			{
-				c.Surname = surname.Value;
+				Surname = surname.Value;
 			}
 			else
 			{
-				c.Surname = "";
+				Surname = "";
 			}
 			// Try to get Avatar
 			var avatar = _httpContextAccessor.HttpContext.User.FindFirst("urn:google:image");
 			if (avatar != null)
 			{
-				c.Avatar = avatar.Value;
+				Avatar = avatar.Value;
 			}
 			else
 			{
-				c.Avatar = "";
+				Avatar = "";
 			}
 		}
 		catch { }

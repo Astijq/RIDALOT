@@ -4,7 +4,8 @@
 @using ridalot2._0.Data.RIDALOT
 @inherits LoginControl
 @inject NavigationManager NavMan
-@inject PageService pageservice
+@inject PageService pageService
+@inject DBService DBservice
 
 <h1>Feed</h1>
 <input type="button" value="Filter" @onclick="()=> filter_popup = true" style="@Constants.button; float: right">
@@ -21,11 +22,11 @@
 			</tr>
 		</thead>
 
-		<Virtualize Context="post" Items="@pageservice.posts">
+		<Virtualize Context="post" Items="@pageService.posts">
 			<tbody>
 				<tr>
 					<td>@post.Date</td>
-				<td><img src="@pageservice.getImages(post)" style="height:100px; max-width: 200px;" /></td>
+				<td><img src="@pageService.getImages(post)" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
 					<td>
 						Weight: @post.Weight<br />
@@ -117,37 +118,36 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageservice.posts = await Service.GetFeedPostsAsync(Convert.ToInt32(Status.Waiting));
-		pageservice.img = await Service.GetImagesAsync();
+		pageService.posts = await DBservice.GetFeedPostsAsync(Convert.ToInt32(Status.Waiting));
+		pageService.img = await DBservice.GetImagesAsync();
 	}
 
 	async Task Clicked(Posts post)
 	{
 		popup = true;
-		post.Worker = c.Email;
+		post.Worker = Email;
 		post.Status = Convert.ToInt32(Status.InProgress);
-		await Service.UpdatePostAsync(post);
+		await DBservice.UpdatePostAsync(post);
 
-		pageservice.posts = await Service.GetAllPostsAsync();
+		pageService.posts = await DBservice.GetAllPostsAsync();
 	}
 	public int weightFrom = 0, weightTo = 0, heightFrom = 0, heightTo = 0;
 	public int widthFrom = 0, widthTo = 0, lengthFrom = 0, lengthTo = 0;
 
 	async Task Filter(){
-		pageservice.posts =
-		await @Service.GetAllPostsAsync();
+		pageService.posts = await DBservice.GetAllPostsAsync();
 
 		if(weightTo != 0)
-			pageservice.posts = pageservice.posts.Where(d => d.Weight >= weightFrom
+			pageService.posts = pageService.posts.Where(d => d.Weight >= weightFrom
 											&& d.Weight <= weightTo).ToList();
 		if(heightTo != 0)
-			pageservice.posts = pageservice.posts.Where(d => d.Height >= heightFrom
+			pageService.posts = pageService.posts.Where(d => d.Height >= heightFrom
 											&& d.Height <= heightTo).ToList();
 		if (widthTo != 0)
-			pageservice.posts = pageservice.posts.Where(d => d.Width >= widthFrom
+			pageService.posts = pageService.posts.Where(d => d.Width >= widthFrom
 											&& d.Width <= widthTo).ToList();
 		if (lengthTo != 0)
-			pageservice.posts = pageservice.posts.Where(d => d.Length >= lengthFrom
+			pageService.posts = pageService.posts.Where(d => d.Length >= lengthFrom
 											&& d.Length <= lengthTo).ToList();
 
 		filter_popup = false;
@@ -171,7 +171,7 @@
 		widthTo = 0;
 		lengthFrom = 0;
 		lengthTo = 0;
-		pageservice.posts = await @Service.GetAllPostsAsync();
+		pageService.posts = await DBservice.GetAllPostsAsync();
 		filter_popup = false;
 	}
 	async Task Cancel()

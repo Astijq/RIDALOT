@@ -117,15 +117,15 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageservice.posts = await Service.GetFeedPostsAsync(Convert.ToInt32(Status.Waiting));
+		pageservice.posts = await Service.GetFeedPostsAsync(Status.Waiting);
 		pageservice.img = await Service.GetImagesAsync();
 	}
 
-	async Task Clicked(Posts post)
+	async void Clicked(Posts post)
 	{
 		popup = true;
 		post.Worker = c.Email;
-		post.Status = Convert.ToInt32(Status.InProgress);
+		post.Status = Status.InProgress;
 		await Service.UpdatePostAsync(post);
 
 		pageservice.posts = await Service.GetAllPostsAsync();

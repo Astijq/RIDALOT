@@ -3,6 +3,7 @@
 @using Pages
 @using Data
 @using ridalot2._0.Data.RIDALOT
+@using System.Threading;
 @inherits LoginControl
 @inject NavigationManager NavMan
 
@@ -117,7 +118,6 @@ else
 			</div>
 
 		</table>
-		<p>This is a suggested price, making it lower reduces the chances of finding a courier</p>
 	</p>
 
 
@@ -224,7 +224,7 @@ else
 		newPost.Pay = pay;
 		newPost.Worker = null;
 		// Save the result
-		var result = @Service.CreatePostAsync(newPost);
+		var result = Service.CreatePostAsync(newPost);
 
 		foreach (string image in imgUrls)
 		{
@@ -233,7 +233,7 @@ else
 			img.Posts = newPost;
 			var result2 = @Service.CreateImageAsync(img);
 		}
-		popup = true;
+			popup = true;
 	}
 
 	private async Task ClosePopup()
@@ -241,12 +241,16 @@ else
 		popup = false;
 		StateHasChanged();
 		NavMan.NavigateTo("/");
+
+		await Task.CompletedTask;
 	}
 
 	private async Task FixPopup()
 	{
 		popup2 = false;
 		StateHasChanged();
+		
+		await Task.CompletedTask;
 	}
 
 	protected void OnMouseOver(MouseEventArgs mouseEvent)

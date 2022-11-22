@@ -6,53 +6,37 @@ namespace ridalot2._0.Data
     public class DBService
     {
         private Lazy<RIDALOTContext> _context;
-        public RIDALOTContext context
-        {
-            get
-            {
-                return _context.Value;
-            }
-        }
+        public RIDALOTContext context { get{return _context.Value;} }
 
         public DBService(RIDALOTContext context)
         {
             _context = new Lazy<RIDALOTContext>(() => context);
         }
-        public async Task<List<Posts>>
-            GetAllPostsAsync()
+
+        public async Task<List<Posts>> GetAllPostsAsync()
         {
             return await _context.Value.Posts
                  .AsNoTracking().ToListAsync();
         }
-        public async Task<List<Posts>>
-            GetMyPostsAsync(string strCurrentUser)
+        public async Task<List<Posts>> GetMyPostsAsync(string strCurrentUser)
         {
             return await _context.Value.Posts
                  .Where(x => x.User == strCurrentUser)
                  .AsNoTracking().ToListAsync();
         }
-        public async Task<List<Images>>
-            GetImagesAsync()
-        {
-            return await _context.Value.Images.Include(p => p.Posts)
-                 .AsNoTracking().ToListAsync();
-        }
-        public async Task<List<Posts>>
-            GetMyTasksAsync(string strCurrentUser)
+        public async Task<List<Posts>> GetMyTasksAsync(string strCurrentUser)
         {
             return await _context.Value.Posts
                  .Where(x => x.Worker == strCurrentUser)
                  .AsNoTracking().ToListAsync();
         }
-        public async Task<List<Posts>>
-            GetFeedPostsAsync(Status strCurrentUser)
+        public async Task<List<Posts>> GetFeedPostsAsync()
         {
             return await _context.Value.Posts
-                 .Where(x => x.Status == strCurrentUser)
+                 .Where(x => x.Status == 0)
                  .AsNoTracking().ToListAsync();
         }
-        public Task<bool>
-            CreatePostAsync(Posts post)
+        public async Task<Posts> CreatePostAsync(Posts post)
         {
             _context.Value.Posts.Add(post);
             _context.Value.SaveChanges();
@@ -75,8 +59,7 @@ namespace ridalot2._0.Data
             return Task.FromResult(true);
         }
 
-        public Task<bool> //TODO
-           DeletePostAsync(Posts post)
+        public Task<bool> DeletePostAsync(Posts post)
         {
             var ExistingPost =
                 _context.Value.Posts
@@ -93,9 +76,7 @@ namespace ridalot2._0.Data
             }
             return Task.FromResult(true);
         }
-
-        public Task<bool>
-            UpdatePostAsync(Posts post)
+        public Task<bool> UpdatePostAsync(Posts post)
         {
             var ExistingPost =
                 _context.Value.Posts
@@ -103,10 +84,8 @@ namespace ridalot2._0.Data
                 .FirstOrDefault();
             if (ExistingPost != null)
             {
-                ExistingPost.Status =
-                    post.Status;
-                ExistingPost.Worker =
-                    post.Worker;
+                ExistingPost.Status = post.Status;
+                ExistingPost.Worker = post.Worker;
                 _context.Value.SaveChanges();
             }
             else
@@ -115,13 +94,27 @@ namespace ridalot2._0.Data
             }
             return Task.FromResult(true);
         }
-
-        public async Task<List<Workers>>
-            GetAllWorkersAsync()
+        public async Task<List<Images>> GetImagesAsync()
+        {
+            return await _context.Value.Images.Include(p => p.Posts)
+                 .AsNoTracking().ToListAsync();
+        }
+        public Task<Images> CreateImageAsync(Images img)
+        {
+            _context.Value.Images.Add(img);
+            _context.Value.SaveChanges();
+            return Task.FromResult(img);
+        }
+        public async Task<List<Workers>> GetAllWorkersAsync()
         {
             return await _context.Value.Workers
                  .AsNoTracking().ToListAsync();
         }
-
+        public Task<Workers> CreateWorkerAsync(Workers worker)
+        {
+            _context.Value.Workers.Add(worker);
+            _context.Value.SaveChanges();
+            return Task.FromResult(worker);
+        }
     }
 }

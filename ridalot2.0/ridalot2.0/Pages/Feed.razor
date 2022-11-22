@@ -79,7 +79,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageService.posts = await DBservice.GetFeedPostsAsync(Status.Waiting);
+		pageService.posts = await DBservice.GetFeedPostsAsync();
 		pageService.img = await DBservice.GetImagesAsync();
 	}
 
@@ -123,7 +123,7 @@
 		filterDimensions.widthTo = 0;
 		filterDimensions.lengthFrom = 0;
 		filterDimensions.lengthTo = 0;
-		pageservice.posts = await Service.GetAllPostsAsync();
+		pageService.posts = await DBservice.GetAllPostsAsync();
 		filter_popup = false;
 	}
 }

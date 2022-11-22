@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="CreateAnAddTests\" />
     <Folder Include="FeedTests\" />
     <Folder Include="PageServiceTests\" />
   </ItemGroup>

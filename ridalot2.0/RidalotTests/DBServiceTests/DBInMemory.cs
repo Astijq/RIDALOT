@@ -35,8 +35,8 @@ FROM Blogs;"
                 viewCommand.ExecuteNonQuery();
             }
             context.AddRange(
-                new Posts { Id = 1, Status = 0, User = "user1", Worker = "worker1" },
-                new Posts { Id = 2, Status = 1, User = "user2", Worker = "worker2" });
+                new Posts { Id = 1, Status = Status.Waiting, User = "user1", Worker = "worker1" },
+                new Posts { Id = 2, Status = Status.InProgress, User = "user2", Worker = "worker2" });
             context.SaveChanges();
         }
 

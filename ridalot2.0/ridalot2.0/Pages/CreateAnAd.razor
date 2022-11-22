@@ -76,7 +76,7 @@ else
 		<table>	
 			<tr>
 				<td align="right">Floor:</td>
-				<td align="left"><input type="number" @bind="floor" onblur="@CalculatePayment(10.1f, floor)"/></td>
+				<td align="left"><input type="number" @bind="floor" onblur="@CalculatePayment"/></td>
 			</tr>
 			<tr>
 				<td align="right">Height (cm):</td>
@@ -150,6 +150,7 @@ else
 	double lat;
 	double lng;
 	public delegate double MyDelegate(float distance, int floor);
+	MyDelegate del = Payment.CalculatePay;
 
 	void OnMapClick(GoogleMapClickEventArgs args)
 	{
@@ -187,17 +188,16 @@ else
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		MyDelegate del = CalculatePayment;
-		del(10.1f, floor);
+		pay = del(10.1f, floor);
 	}
-	public double CalculatePayment(float d, int f)
+	public void CalculatePayment()
 	{
-		pay = Payment.CalculatePay(d, f);
-		return pay;
+		pay = del(10.1f, floor);
 	}
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)
 	{
+		
 		foreach (IBrowserFile imgFile in e.GetMultipleFiles(5))
 		{
 			var buffers = new byte[imgFile.Size];

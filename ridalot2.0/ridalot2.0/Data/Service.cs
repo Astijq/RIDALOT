@@ -5,65 +5,73 @@ namespace ridalot2._0.Data
 {
     public class Service
     {
-        private readonly RIDALOTContext _context;
+        private Lazy<RIDALOTContext> _context = null;
+        public RIDALOTContext context
+        {
+            get
+            {
+                return _context.Value;
+            }
+        }
+        //private readonly RIDALOTContext _context;
         public Service(RIDALOTContext context)
         {
-            _context = context;
+            _context = new Lazy<RIDALOTContext>(() => context);
         }
         public async Task<List<Posts>>
             GetAllPostsAsync()
         {
-            return await _context.Posts
+            return await _context.Value.Posts
                  .AsNoTracking().ToListAsync();
         }
         public async Task<List<Posts>>
             GetMyPostsAsync(string strCurrentUser)
         {
-            return await _context.Posts
+            return await _context.Value.Posts
                  .Where(x => x.User == strCurrentUser)
                  .AsNoTracking().ToListAsync();
         }
         public async Task<List<Images>>
             GetImagesAsync()
         {
-            return await _context.Images.Include(p => p.Posts)
+            return await _context.Value.Images.Include(p => p.Posts)
                  .AsNoTracking().ToListAsync();
         }
         public async Task<List<Posts>>
             GetMyTasksAsync(string strCurrentUser)
         {
-            return await _context.Posts
+            return await _context.Value.Posts
                  .Where(x => x.Worker == strCurrentUser)
                  .AsNoTracking().ToListAsync();
         }
         public async Task<List<Posts>>
             GetFeedPostsAsync(int strCurrentUser)
         {
-            return await _context.Posts
+            return await _context.Value.Posts
                  .Where(x => x.Status == strCurrentUser)
                  .AsNoTracking().ToListAsync();
         }
         public Task<Posts>
             CreatePostAsync(Posts post)
         {
-            _context.Posts.Add(post);
-            _context.SaveChanges();
+            _context.Value.Posts.Add(post);
+            _context.Value.SaveChanges();
             return Task.FromResult(post);
         }
 
         public Task<Workers>
              CreateWorkerAsync(Workers worker)
         {
-            _context.Workers.Add(worker);
-            _context.SaveChanges();
+            _context.Value.Workers.Add(worker);
+            _context.Value.SaveChanges();
             return Task.FromResult(worker);
         }
 
         public Task<Images>
              CreateImageAsync(Images img)
         {
-            _context.Images.Add(img);
-            _context.SaveChanges();
+            _context.Value.Images.Add(img);
+            _context.Value.SaveChanges();
             return Task.FromResult(img);
         }
 
@@ -71,13 +79,13 @@ namespace ridalot2._0.Data
            DeletePostAsync(Posts post)
         {
             var ExistingPost =
-                _context.Posts
+                _context.Value.Posts
                 .Where(x => x.Id == post.Id)
                 .FirstOrDefault();
             if (ExistingPost != null)
             {
-                _context.Posts.Remove(ExistingPost);
-                _context.SaveChanges();
+                _context.Value.Posts.Remove(ExistingPost);
+                _context.Value.SaveChanges();
             }
             else
             {
@@ -90,7 +98,7 @@ namespace ridalot2._0.Data
             UpdatePostAsync(Posts post)
         {
             var ExistingPost =
-                _context.Posts
+                _context.Value.Posts
                 .Where(x => x.Id == post.Id)
                 .FirstOrDefault();
             if (ExistingPost != null)
@@ -99,7 +107,7 @@ namespace ridalot2._0.Data
                     post.Status;
                 ExistingPost.Worker =
                     post.Worker;
-                _context.SaveChanges();
+                _context.Value.SaveChanges();
             }
             else
             {
@@ -111,7 +119,7 @@ namespace ridalot2._0.Data
         public async Task<List<Workers>>
             GetAllWorkersAsync()
         {
-            return await _context.Workers
+            return await _context.Value.Workers
                  .AsNoTracking().ToListAsync();
         }
 

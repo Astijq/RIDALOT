@@ -121,7 +121,7 @@
 		filterDimensions.widthTo = 0;
 		filterDimensions.lengthFrom = 0;
 		filterDimensions.lengthTo = 0;
-		pageservice.posts = await Service.GetAllPostsAsync();
+		pageService.posts = await DBservice.GetAllPostsAsync();
 		filter_popup = false;
 	}
 }

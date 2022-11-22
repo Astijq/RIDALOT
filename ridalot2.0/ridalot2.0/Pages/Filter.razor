@@ -1,0 +1,72 @@
+﻿@using Data
+<div class="modal fade show" id="myModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Filter</h4>
+					<button type="button" class="close" @onclick="@Cancel">&times;</button>
+				</div>
+				<div class="modal-body">
+					<table>
+						<tr>
+							<td colspan="2">Weight:</td>
+						</tr>
+						<tr>
+							<td align="right"><input type="number" alt="from" @bind="d.weightFrom" /></td>
+							<td align="left"><input type="number" alt="to" @bind="d.weightTo" /></td>
+						</tr>
+						<tr>
+							<td colspan="2">Height:</td>
+						</tr>
+						<tr>
+							<td align="right"><input type="number" alt="from" @bind="d.heightFrom" /></td>
+							<td align="left"><input type="number" alt="to" @bind="d.heightTo" /></td>
+						</tr>
+						<tr>
+							<td colspan="2">Width:</td>
+						</tr>
+						<tr>
+							<td align="right"><input type="number" alt="from" @bind="d.widthFrom" /></td>
+							<td align="left"><input type="number" alt="to" @bind="d.widthTo" /></td>
+						</tr>
+						<tr>
+							<td colspan="2">Length:</td>
+						</tr>
+						<tr>
+							<td align="right"><input type="number" alt="from" @bind="d.lengthFrom" /></td>
+							<td align="left"><input type="number" alt="to" @bind="d.lengthTo" /></td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn" @onclick="@Cancel">Cancel</button>
+					<button type="button" class="btn btn-primary" @onclick=@Filters>OK</button>
+					<button type="button" class="btn" style="background-color: Black; color: white;" @onclick=@Remove>Remove</button>
+				</div>
+			</div>
+		</div>
+	</div>
+@code {
+	[Parameter]
+	public FilterDimensions d { get; set; }
+	[Parameter]
+	public EventCallback<bool> OnClose { get; set; }
+	[Parameter]
+	public EventCallback<bool> OnFilter { get; set; }
+	[Parameter]
+	public EventCallback<bool> OnRemove { get; set; }
+
+	private Task Cancel()
+	{
+		return OnClose.InvokeAsync(false);
+	}
+	private Task Remove()
+	{
+		return OnRemove.InvokeAsync(true);
+	}
+	private Task Filters()
+	{
+		return OnFilter.InvokeAsync(true);
+	}
+
+}

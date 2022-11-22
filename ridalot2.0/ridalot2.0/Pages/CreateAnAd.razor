@@ -193,7 +193,7 @@ else
 		pay = Payment.CalculatePay(10.1f, floor);
 	}
 
-	public async Task OnFileSelection(InputFileChangeEventArgs e)
+	private async Task OnFileSelection(InputFileChangeEventArgs e)
 	{
 		foreach (IBrowserFile imgFile in e.GetMultipleFiles(5))
 		{

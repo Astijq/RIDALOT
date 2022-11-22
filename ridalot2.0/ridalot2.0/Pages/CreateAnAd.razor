@@ -3,7 +3,6 @@
 @using Pages
 @using Data
 @using ridalot2._0.Data.RIDALOT
-@using System.Threading;
 @inherits LoginControl
 @inject NavigationManager NavMan
 
@@ -14,34 +13,8 @@
    target="_top">Login</a>
 }
 else
-{
+{ 
 	<h3>Create an Ad</h3>
-	<style>
-		.container {
-			position: relative;
-			width: fit-content;
-			height: 200px
-		}
-
-		.middle {
-			transition: .5s ease;
-			opacity: 0;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			-ms-transform: translate(-50%, -50%);
-			text-align: center;
-		}
-
-		.container:hover .image {
-			opacity: 0.3;
-		}
-
-		.container:hover .middle {
-			opacity: 1;
-		}
-	</style>
 
 	<div>
 		<InputFile OnChange="@OnFileSelection" multiple></InputFile>
@@ -49,10 +22,10 @@ else
 			@foreach (string imgUrl in imgUrls)
 			{
 				<div class="container">
-					<img src="@imgUrl" style="height:200px; max-width: 300px; transition: .5s ease; opacity: @op"
+					<img src="@imgUrl" style="height:200px; max-width: 300px; transition: .5s ease; opacity: @imageOpacity"
 				 @onmouseout="@OnMouseOut" @onmouseover="@OnMouseOver" />
 					<div class="middle">
-						<button class="btn btn-success" @onclick="() => DeletePhoto(imgUrl)" style="position:center; transition: .5s ease; opacity: @opButton "
+						<button class="btn btn-success" @onclick="() => imgUrls.Remove(imgUrl)" style="position:center; transition: .5s ease; opacity: @buttonOpacity "
 						@onmouseout="@OnMouseOut" @onmouseover="@OnMouseOver">
 							Delete
 						</button>
@@ -122,33 +95,33 @@ else
 
 
 	<p>
-		<button type="submit" class="btn btn-success" style=@Constants.button onclick="@Clicked">Submit</button>
+		<button type="submit" class="btn btn-success" style=@Constants.button onclick="@SavePost">Submit</button>
 	</p>
 
 }
 
-@if (popup)
+@if (popupPostedSuccessfully)
 {
 	<AdPopUp Title="Posted"
 		 Text="Ad posted succesfully!"
-		 OnClose="@ClosePopup"
+		 OnClose="@(()=>{popupPostedSuccessfully = false; NavMan.NavigateTo("/");})"
 		 DialogType="AdPopUp.ModalDialogType.Ok">
 	</AdPopUp>
 }
-@if (popup2)
+@if (popupNotPosted)
 {
 	<AdPopUp Title="Not posted"
-		 Text="Address isn't correct"
-		 OnClose="@FixPopup"
+		 Text="Ad was not posted due to unforseen issue"
+		 OnClose="@(()=>popupNotPosted = false)"
 		 DialogType="AdPopUp.ModalDialogType.Ok">
 	</AdPopUp>
 }
 
 @code {
-	int zoom = 7;
-	string clickedPosition = "";
-	double lat;
-	double lng;
+	private int zoom = 7;
+	private string clickedPosition = "";
+	private double lat;
+	private double lng;
 
 	void OnMapClick(GoogleMapClickEventArgs args)
 	{
@@ -162,32 +135,27 @@ else
 		clickedPosition = $"Map {args.Title} Clicked LAT : {args.Position.Lat}, LNG : {args.Position.Lng}";
 	}
 
-	public struct Dimensions
-	{
-		public int height { get; set; }
-		public int width { get; set; }
-		public int length { get; set; }
-		public int weight { get; set; }
-	}
-	Dimensions d;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public double pay { get; set; }
-	public int floor { get; set; }
-	public String description = "write here";
-	public String file = "PostInfo.json";
-	public List<string> imgUrls = new List<string>();
-	public bool popup { get; set; } = false;
-	public bool popup2 { get; set; } = false;
-	public bool isHovering { get; set; } = false;
-	public double op { get; set; } = 1;
-	public double opButton { get; set; } = 0;
+	private Dimensions d;
+
+	private double pay { get; set; }
+	private int floor { get; set; }
+	private String description = "write here";
+	private List<string> imgUrls = new List<string>();
+
+	private bool popupPostedSuccessfully { get; set; } = false;
+	private bool popupNotPosted { get; set; } = false;
+	private bool isHovering { get; set; } = false;
+	private double imageOpacity { get; set; } = 1;
+	private double buttonOpacity { get; set; } = 0;
 
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
 		CalculatePay();
 	}
-	public void CalculatePay()
+	private void CalculatePay()
 	{
 		Payment p = new Payment();
 		pay = Math.Round(p.CalculatePay(10.1f, floor), 1);
@@ -207,11 +175,11 @@ else
 	}
 
 
-	private void Clicked()
+	private void SavePost()
 	{
 		var newPost = new Posts();
 		newPost.Date = System.DateTime.Now.ToUniversalTime();
-		newPost.Status = Convert.ToInt32(Status.Waiting);
+		newPost.Status = Status.Waiting;
 		newPost.User = c.Email;
 		newPost.Description = description;
 		newPost.Height = d.height;
@@ -231,54 +199,26 @@ else
 			var img = new Images();
 			img.ImagePath = image;
 			img.Posts = newPost;
-			var result2 = @Service.CreateImageAsync(img);
+			var result2 = Service.CreateImageAsync(img);
 		}
-			popup = true;
+
+		popupPostedSuccessfully = true;
 	}
 
-	private async Task ClosePopup()
-	{
-		popup = false;
-		StateHasChanged();
-		NavMan.NavigateTo("/");
-
-		await Task.CompletedTask;
-	}
-
-	private async Task FixPopup()
-	{
-		popup2 = false;
-		StateHasChanged();
-		
-		await Task.CompletedTask;
-	}
-
-	protected void OnMouseOver(MouseEventArgs mouseEvent)
+	private void OnMouseOver(MouseEventArgs mouseEvent)
 	{
 		if (!isHovering)
 		{
 			isHovering = true;
-			op = 0.3;
-			opButton = 0.7;
-			StateHasChanged();
+			imageOpacity = 0.3;
+			buttonOpacity = 0.7;
 		}
 	}
 
-	protected void OnMouseOut(MouseEventArgs mouseEvent)
+	private void OnMouseOut(MouseEventArgs mouseEvent)
 	{
-		op = 1;
-		opButton = 0;
+		imageOpacity = 1;
+		buttonOpacity = 0;
 		isHovering = false;
-		StateHasChanged();
-	}
-	public void DeletePhoto(string imgUrl)
-	{
-		for (int i = 0; i < imgUrls.Count; i++)
-		{
-			if (imgUrls[i] == imgUrl)
-			{
-				imgUrls.RemoveAt(i);
-			}
-		}
 	}
 }

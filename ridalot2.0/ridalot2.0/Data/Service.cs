@@ -13,7 +13,6 @@ namespace ridalot2._0.Data
                 return _context.Value;
             }
         }
-        //private readonly RIDALOTContext _context;
         public Service(RIDALOTContext context)
         {
             _context = new Lazy<RIDALOTContext>(() => context);

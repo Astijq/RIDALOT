@@ -47,7 +47,7 @@
 		pageservice.img = await Service.GetImagesAsync();
 	}
 
-	async Task Clicked(Posts post)
+	private async Task Clicked(Posts post)
 	{
 		await Service.DeletePostAsync(post);
 		pageservice.posts = await Service.GetMyPostsAsync(c.Email);

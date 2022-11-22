@@ -14,13 +14,6 @@ namespace RidalotTests
             Assert.Equal(expected, test);
         }
         [Fact]
-        public void TestRegex()
-        {
-            var test = Constants.addressMatch("Didlaukio g. 47");
-            var expected = true;
-            Assert.Equal(expected, test);
-        }
-        [Fact]
         public void TestDeletePhoto()
         {
             CreateAnAd ca = new CreateAnAd();

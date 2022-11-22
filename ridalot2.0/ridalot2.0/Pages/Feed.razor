@@ -17,7 +17,8 @@
 				<th>Description</th>
 				<th>Measurements</th>
 				<th>Estimated price (€)</th>
-				<th>Address</th>
+				<th>Lat</th>
+				<th>Lng</th>
 				<th>Take tasks</th>
 			</tr>
 		</thead>
@@ -35,7 +36,8 @@
 						Length: @post.Length<br />
 					</td>
 					<td>@post.Pay</td>
-					<td>@post.AddressLat @post.AddressLng</td>
+					<td>@post.AddressLat</td>
+					<td>@post.AddressLng</td>
 					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Accept the task</button></td>
 				</tr>
 			</tbody>

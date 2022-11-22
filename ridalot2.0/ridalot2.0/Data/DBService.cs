@@ -40,8 +40,25 @@ namespace ridalot2._0.Data
         {
             _context.Value.Posts.Add(post);
             _context.Value.SaveChanges();
-            return await Task.FromResult(post);
+            return Task.FromResult(true);
         }
+
+        public Task<bool>
+             CreateWorkerAsync(Workers worker)
+        {
+            _context.Value.Workers.Add(worker);
+            _context.Value.SaveChanges();
+            return Task.FromResult(true);
+        }
+
+        public Task<bool>
+             CreateImageAsync(Images img)
+        {
+            _context.Value.Images.Add(img);
+            _context.Value.SaveChanges();
+            return Task.FromResult(true);
+        }
+
         public Task<bool> DeletePostAsync(Posts post)
         {
             var ExistingPost =

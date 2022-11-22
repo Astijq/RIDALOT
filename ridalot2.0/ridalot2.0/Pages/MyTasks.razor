@@ -33,9 +33,9 @@
 				<td><img src="@pageService.getImages(post)" style="height:100px; max-width: 200px;" /></td>
 			</tr>
 			<tr>
-				<th>Adress:</th>
-                <td>@post.AddressLat</td>
-                <td>@post.AddressLng</td>
+				<th>Adress: </th>
+                <td>Lat: @post.AddressLat</td>
+                <td>Lng: @post.AddressLng</td>
 			</tr>
 			<tr>
 				<a class="btn btn success" style=@Constants.button href="https://www.google.com/search?q=" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google maps</a>

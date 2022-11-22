@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -23,6 +23,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ridalot2.0\ridalot2.0.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FeedTests\" />
+    <Folder Include="DBServiceTests\" />
+    <Folder Include="PageServiceTests\" />
   </ItemGroup>
 
 </Project>

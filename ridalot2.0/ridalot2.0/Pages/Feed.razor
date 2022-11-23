@@ -79,18 +79,44 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageService.posts = await DBservice.GetFeedPostsAsync();
-		pageService.img = await DBservice.GetImagesAsync();
+		try
+		{
+		  pageService.posts = await DBservice.GetFeedPostsAsync();
+		}
+		catch(Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Failed to load posts! Try again later!", ex);
+		}
+		try
+		{
+  		pageService.img = await DBservice.GetImagesAsync();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Failed to load image! Try again later!", ex);
+		}
 	}
 
 	private async void Clicked(Posts post)
 	{
 		popupTaskAccepted = true;
-		post.Status = Status.InProgress;
 		post.Worker = Email;
+		post.Status = Status.InProgress;
 		await DBservice.UpdatePostAsync(post);
-
-		pageService.posts = await DBservice.GetAllPostsAsync();
+		try
+		{
+		  pageService.posts = await DBservice.GetAllPostsAsync();
+		}
+		catch(Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Can't take the task right now! Try again later!", ex);
+		}
 	}
 
 	private async Task Filter()

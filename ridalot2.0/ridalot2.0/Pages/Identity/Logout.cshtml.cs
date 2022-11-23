@@ -19,7 +19,7 @@ namespace ridalot2._0.Pages.Identity
                     .SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 string error = ex.Message;
             }

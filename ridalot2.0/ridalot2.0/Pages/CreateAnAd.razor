@@ -158,12 +158,20 @@ else
 	}
 	public void CalculatePayment()
 	{
-		pay = del(10.1f, floor);
+		try
+		{
+			pay = del(10.1f, floor);
+		}
+		catch(System.Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Failed to load posts! Try again later!", ex);
+		}
 	}
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)
 	{
-		
 		foreach (IBrowserFile imgFile in e.GetMultipleFiles(5))
 		{
 			var buffers = new byte[imgFile.Size];
@@ -176,7 +184,7 @@ else
 
 
 	private void SavePost()
-	{
+  {
 		var newPost = new Posts();
 		newPost.Date = System.DateTime.Now.ToUniversalTime();
 		newPost.Status = Status.Waiting;
@@ -191,19 +199,36 @@ else
 		newPost.Floor = floor;
 		newPost.Pay = pay;
 		newPost.Worker = null;
-		// Save the result
-		var result = DBservice.CreatePostAsync(newPost);
+    
+			try
+			{
+				var result = DBservice.CreatePostAsync(newPost);
+			}
+			catch(Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				ErrorLog.LogError(ex);
+				throw new ArgumentException("Failed to create your post! Try again later!", ex);
+			}
 
-		foreach (string image in imgUrls)
-		{
-			var img = new Images();
-			img.ImagePath = image;
-			img.Posts = newPost;
-			var result2 = DBservice.CreateImageAsync(img);
-		}
-
-		popupPostedSuccessfully = true;
-	}
+			foreach (string image in imgUrls)
+			{
+				var img = new Images();
+				img.ImagePath = image;
+				img.Posts = newPost;
+				try
+				{
+					var result2 = DBservice.CreateImageAsync(img);
+				}
+				catch(Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					ErrorLog.LogError(ex);
+					throw new ArgumentException("Failed to load your image! Try again later!", ex);
+				}
+			}
+		  popupPostedSuccessfully = true;
+	  }
 
 	private void OnMouseOver(MouseEventArgs mouseEvent)
 	{

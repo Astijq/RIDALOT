@@ -196,15 +196,17 @@ else
 		{
 			pay = del(10.1f, floor);
 		}
-		catch(Exception ex)
+		catch(System.Exception ex)
 		{
 			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Failed to load posts! Try again later!", ex);
 		}
 	}
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)
 	{
-		
+
 		foreach (IBrowserFile imgFile in e.GetMultipleFiles(5))
 		{
 			var buffers = new byte[imgFile.Size];
@@ -242,15 +244,33 @@ else
 			newPost.Pay = pay;
 			newPost.Worker = null;
 			// Save the result
-			var result =
-			@Service.CreatePostAsync(newPost);
+			try
+			{
+				var result =
+				@Service.CreatePostAsync(newPost);
+			}
+			catch(Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				ErrorLog.LogError(ex);
+				throw new ArgumentException("Failed to create your post! Try again later!", ex);
+			}
 
 			foreach (string image in imgUrls)
 			{
 				var img = new Images();
 				img.ImagePath = image;
 				img.Posts = newPost;
-				var result2 = @Service.CreateImageAsync(img);
+				try
+				{
+					var result2 = @Service.CreateImageAsync(img);
+				}
+				catch(Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					ErrorLog.LogError(ex);
+					throw new ArgumentException("Failed to load your image! Try again later!", ex);
+				}
 			}
 			popup = true;
 		}

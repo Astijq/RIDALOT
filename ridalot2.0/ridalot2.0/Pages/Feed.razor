@@ -118,8 +118,26 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageservice.posts = await Service.GetFeedPostsAsync(Convert.ToInt32(Status.Waiting));
-		pageservice.img = await Service.GetImagesAsync();
+		try
+		{
+			pageservice.posts = await Service.GetFeedPostsAsync(Convert.ToInt32(Status.Waiting));
+		}
+		catch(Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Failed to load posts! Try again later!", ex);
+		}
+		try
+		{
+			pageservice.img = await Service.GetImagesAsync();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Failed to load image! Try again later!", ex);
+		}
 	}
 
 	async Task Clicked(Posts post)
@@ -128,8 +146,16 @@
 		post.Worker = c.Email;
 		post.Status = Convert.ToInt32(Status.InProgress);
 		await Service.UpdatePostAsync(post);
-
-		pageservice.posts = await Service.GetAllPostsAsync();
+		try
+		{
+			pageservice.posts = await Service.GetAllPostsAsync();
+		}
+		catch(Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Can't take the task right now! Try again later!", ex);
+		}
 	}
 	public int weightFrom = 0, weightTo = 0, heightFrom = 0, heightTo = 0;
 	public int widthFrom = 0, widthTo = 0, lengthFrom = 0, lengthTo = 0;
@@ -173,7 +199,7 @@
 		lengthFrom = 0;
 		lengthTo = 0;
 		pageservice.posts = await @Service.GetAllPostsAsync();
-		filter_popup = false;
+	filter_popup = false;
 		StateHasChanged();
 	}
 }

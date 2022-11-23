@@ -1,6 +1,7 @@
 ﻿@page "/myposts"
 @using Data
 @using ridalot2._0.Data.RIDALOT
+@using System.IO;
 @inherits LoginControl
 @inject PageService pageservice
 
@@ -8,6 +9,7 @@
 	<table class="table">
 		<thead>
 			<tr>
+
 				<th>Posted</th>
 				<th>Image</th>
 				<th>Description</th>
@@ -44,8 +46,17 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageservice.posts = await Service.GetMyPostsAsync(c.Email);
-		pageservice.img = await Service.GetImagesAsync();
+		try
+		{
+			pageservice.posts = await Service.GetMyPostsAsync(c.Email);
+			pageservice.img = await Service.GetImagesAsync();
+		}
+		catch (System.Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Can't load your posts right now! Try again later", ex);
+		}
 	}
 
 	async Task Clicked(Posts post)
@@ -58,8 +69,10 @@
 		catch(Exception ex)
 		{
 			Console.WriteLine(ex.Message);
-			throw new ArgumentException("The post can't be deleted right now! Our team is fixing that!", ex);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Can not remove the post right now! Try again later", ex);
 		}
 	}
+	
 
 }

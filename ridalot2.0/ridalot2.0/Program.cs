@@ -38,6 +38,7 @@ builder.Services.AddDbContext<ridalot2._0.Data.RIDALOT.RIDALOTContext>(options =
 
 builder.Services.AddScoped<DBService>();
 builder.Services.AddScoped<PageService>();
+builder.Services.AddScoped<FilterDimensions>();
 
 var app = builder.Build();
 //middleware after here

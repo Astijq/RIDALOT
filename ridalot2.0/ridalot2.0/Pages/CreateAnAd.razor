@@ -123,8 +123,8 @@ else
 	string clickedPosition = "";
 	double lat;
 	double lng;
-	public delegate double MyDelegate(float distance, int floor);
-	MyDelegate del = Payment.CalculatePay;
+	public delegate double MyDelegate<T>(T distance, int floor);
+	MyDelegate<float> del = Payment.CalculatePay;
 
 	void OnMapClick(GoogleMapClickEventArgs args)
 	{

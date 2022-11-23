@@ -4,7 +4,7 @@
     {
         public int weightFrom
         {
-            get; set; 
+            get; set;
         }
         public int weightTo
         {

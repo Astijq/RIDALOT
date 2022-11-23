@@ -3,7 +3,8 @@
 @using ridalot2._0.Data.RIDALOT
 @using System.IO;
 @inherits LoginControl
-@inject PageService pageservice
+@inject PageService pageService
+@inject DBService DBservice
 
 <h3>MyPosts</h3>
 	<table class="table">
@@ -21,11 +22,11 @@
 			</tr>
 		</thead>
 
-		<Virtualize Context="post" Items="@pageservice.posts">
+		<Virtualize Context="post" Items="@pageService.posts">
 			<tbody>
 				<tr>
 					<td>@post.Date</td>
-				<td><img src="@pageservice.getImages(post)" style="height:100px; max-width: 200px;" /></td>
+				<td><img src="@pageService.getImages(post)" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
 					<td>
 						Weight: @post.Weight<br />
@@ -48,8 +49,8 @@
 	{
 		try
 		{
-			pageservice.posts = await Service.GetMyPostsAsync(c.Email);
-			pageservice.img = await Service.GetImagesAsync();
+  		pageService.posts = await DBservice.GetMyPostsAsync(Email);
+  		pageService.img = await DBservice.GetImagesAsync();
 		}
 		catch (System.Exception ex)
 		{
@@ -59,12 +60,12 @@
 		}
 	}
 
-	async Task Clicked(Posts post)
+	private async Task Clicked(Posts post)
 	{
 		try
 		{
-			await Service.DeletePostAsync(post);
-			pageservice.posts = await Service.GetMyPostsAsync(c.Email);
+		  await DBservice.DeletePostAsync(post);
+  		pageService.posts = await DBservice.GetMyPostsAsync(Email);
 		}
 		catch(Exception ex)
 		{
@@ -73,6 +74,4 @@
 			throw new ArgumentException("Can not remove the post right now! Try again later", ex);
 		}
 	}
-	
-
 }

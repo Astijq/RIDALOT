@@ -6,6 +6,7 @@
 @inject NavigationManager NavMan
 @inject PageService pageService
 @inject DBService DBservice
+@inject FilterDimensions filterDimensions
 
 <h1>Feed</h1>
 <input type="button" value="Filter" @onclick="()=> filter_popup = true" style="@Constants.button; float: right">
@@ -72,25 +73,50 @@
 
 
 @code {
-	FilterDimensions filterDimensions = new FilterDimensions();
 	public bool popupTaskAccepted { get; set; } = false;
 	public bool popupTaskNotAccepted { get; set; } = false;
 	public bool filter_popup { get; set; } = false;
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageService.posts = await DBservice.GetFeedPostsAsync();
-		pageService.img = await DBservice.GetImagesAsync();
+		try
+		{
+		  pageService.posts = await DBservice.GetFeedPostsAsync();
+		}
+		catch(Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Failed to load posts! Try again later!", ex);
+		}
+		try
+		{
+  		pageService.img = await DBservice.GetImagesAsync();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Failed to load image! Try again later!", ex);
+		}
 	}
 
 	private async void Clicked(Posts post)
 	{
 		popupTaskAccepted = true;
-		post.Status = Status.InProgress;
 		post.Worker = Email;
+		post.Status = Status.InProgress;
 		await DBservice.UpdatePostAsync(post);
-
-		pageService.posts = await DBservice.GetAllPostsAsync();
+		try
+		{
+		  pageService.posts = await DBservice.GetAllPostsAsync();
+		}
+		catch(Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Can't take the task right now! Try again later!", ex);
+		}
 	}
 
 	private async Task Filter()

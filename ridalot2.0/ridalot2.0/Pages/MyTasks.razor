@@ -70,7 +70,16 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		pageService.posts = await DBservice.GetMyTasksAsync(Email);
-		pageService.img = await DBservice.GetImagesAsync();
+		try
+		{
+  		pageService.posts = await DBservice.GetMyTasksAsync(Email);
+  		pageService.img = await DBservice.GetImagesAsync();
+		}
+		catch(System.Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Can't load your tasks right now! Try again later", ex);
+		}
 	}
 }

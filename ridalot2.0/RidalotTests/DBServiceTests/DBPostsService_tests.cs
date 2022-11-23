@@ -1,10 +1,5 @@
 ﻿using ridalot2._0.Data.RIDALOT;
 using ridalot2._0.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 
 namespace RidalotTests.DBServiceTests
@@ -68,7 +63,7 @@ namespace RidalotTests.DBServiceTests
 
             var post = new Posts();
 
-            //Assert.True(await service.CreatePostAsync(post));
+            Assert.True(await service.CreatePostAsync(post));
         }
         [Fact]
         public async Task test_DeletePostIsSuccess()
@@ -116,8 +111,6 @@ namespace RidalotTests.DBServiceTests
             post.Id = 5;
 
             Assert.False(await service.UpdatePostAsync(post));
-
         }
-
     }
 }

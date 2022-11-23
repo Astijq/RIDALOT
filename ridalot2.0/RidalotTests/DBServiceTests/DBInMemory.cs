@@ -36,7 +36,12 @@ FROM Blogs;"
             }
             context.AddRange(
                 new Posts { Id = 1, Status = Status.Waiting, User = "user1", Worker = "worker1" },
-                new Posts { Id = 2, Status = Status.InProgress, User = "user2", Worker = "worker2" });
+                new Posts { Id = 2, Status = Status.InProgress, User = "user2", Worker = "worker2" },
+                new Images { Id = 1, ImagePath = "firstPath"},
+                new Images { Id = 2, ImagePath = "secondPath"},
+                new Workers { Email = "worker1"},
+                new Workers { Email = "worker2"}
+                );
             context.SaveChanges();
         }
 

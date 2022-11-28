@@ -1,6 +1,6 @@
 ﻿using ridalot2._0.Data.RIDALOT;
 
-namespace ridalot2._0.Pages
+namespace ridalot2._0.Data
 {
     public class PageService
     {
@@ -10,7 +10,10 @@ namespace ridalot2._0.Pages
         {
             List<Images> temp = new List<Images>();
 
-            temp = img.Where(x => x.Posts.Id == post.Id).ToList();
+            if (post != null)
+            {
+                temp = img.Where(x => x.Posts.Id == post.Id).ToList();
+            }
 
             if (temp.Count > 0)
             {

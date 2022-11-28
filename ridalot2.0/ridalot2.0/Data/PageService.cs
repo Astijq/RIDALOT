@@ -1,6 +1,6 @@
 ﻿using ridalot2._0.Data.RIDALOT;
 
-namespace ridalot2._0.Pages
+namespace ridalot2._0.Data
 {
     public class PageService
     {

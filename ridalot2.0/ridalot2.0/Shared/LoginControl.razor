@@ -27,62 +27,57 @@ else
 	public string? Avatar { get; set; }
 	public string? Email { get; set; }
 
-	public ClaimsPrincipal getUser()
-	{
-		User = _httpContextAccessor.HttpContext.User;
-		return User;
-	}
-
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
+		if (_httpContextAccessor.HttpContext != null)
+			try
+			{
+				// Set the user to determine if they are logged in
 
-		try
-		{
-			// Set the user to determine if they are logged in
-			User = _httpContextAccessor.HttpContext.User;
-			//email
-			var givenEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email);
-			if (givenEmail != null)
-			{
-				Email = givenEmail.Value;
+				User = _httpContextAccessor.HttpContext.User;
+				//email
+				var givenEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email);
+				if (givenEmail != null)
+				{
+					Email = givenEmail.Value;
+				}
+				else
+				{
+					Email = "";
+				}
+				// Try to get the GivenName
+				var givenName = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.GivenName);
+				if (givenName != null)
+				{
+					GivenName = givenName.Value;
+				}
+				else
+				{
+					GivenName = User.Identity.Name;
+				}
+				// Try to get the Surname
+				var surname = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Surname);
+				if (surname != null)
+				{
+					Surname = surname.Value;
+				}
+				else
+				{
+					Surname = "";
+				}
+				// Try to get Avatar
+				var avatar = _httpContextAccessor.HttpContext.User.FindFirst("urn:google:image");
+				if (avatar != null)
+				{
+					Avatar = avatar.Value;
+				}
+				else
+				{
+					Avatar = "";
+				}
 			}
-			else
-			{
-				Email = "";
-			}
-			// Try to get the GivenName
-			var givenName = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.GivenName);
-			if (givenName != null)
-			{
-				GivenName = givenName.Value;
-			}
-			else
-			{
-				GivenName = User.Identity.Name;
-			}
-			// Try to get the Surname
-			var surname = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Surname);
-			if (surname != null)
-			{
-				Surname = surname.Value;
-			}
-			else
-			{
-				Surname = "";
-			}
-			// Try to get Avatar
-			var avatar = _httpContextAccessor.HttpContext.User.FindFirst("urn:google:image");
-			if (avatar != null)
-			{
-				Avatar = avatar.Value;
-			}
-			else
-			{
-				Avatar = "";
-			}
-		}
-		catch { }
+			catch { }
 	}
 
 }

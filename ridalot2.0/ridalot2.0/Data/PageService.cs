@@ -10,10 +10,7 @@ namespace ridalot2._0.Data
         {
             List<Images> temp = new List<Images>();
 
-            if (post != null)
-            {
-                temp = img.Where(x => x.Posts.Id == post.Id).ToList();
-            }
+            temp = img.Where(x => x.Posts.Id == post.Id).ToList();
 
             if (temp.Count > 0)
             {

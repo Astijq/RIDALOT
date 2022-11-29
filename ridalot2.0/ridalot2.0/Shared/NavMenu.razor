@@ -1,4 +1,7 @@
-﻿<!-- NavMenu Header(name and home button) -->
+﻿@using Data
+@inherits LoginControl
+@inject DBService DBservice
+<!-- NavMenu Header(name and home button) -->
 <div class="top-row ps-3 navbar navbar-dark">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="">RIDALOT</a>
@@ -16,25 +19,30 @@
 			</NavLink>
 		</div>
 		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="createad">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> Create an ad
-			</NavLink>
-		</div>
-		<div class="nav-item px-3">
 			<NavLink class="nav-link" href="feed">
 				<span class="oi oi-list-rich" aria-hidden="true"></span> Feed
 			</NavLink>
 		</div>
 		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="createad">
+				<span class="oi oi-list-rich" aria-hidden="true"></span> Create an ad
+			</NavLink>
+		</div>
+
+		<div class="nav-item px-3">
 			<NavLink class="nav-link" href="myposts">
 				<span class="oi oi-list-rich" aria-hidden="true"></span> My Posts
 			</NavLink>
 		</div>
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="mytasks">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> My Tasks
-			</NavLink>
-		</div>
+		@if (DBservice.CheckIfWorker(Email))
+		{
+			<div class="nav-item px-3">
+				<NavLink class="nav-link" href="mytasks">
+					<span class="oi oi-list-rich" aria-hidden="true"></span> My Tasks
+				</NavLink>
+			</div>
+		}
+
 	</nav>
 </div>
 

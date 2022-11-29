@@ -11,46 +11,46 @@
 
 <h1>Feed</h1>
 <input type="button" value="Filter" @onclick="()=> filter_popup = true" style="@Constants.button; float: right">
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Date uploaded</th>
-				<th>Image</th>
-				<th>Description</th>
-				<th>Measurements</th>
-				<th>Estimated price (€)</th>
-				<th>Lat</th>
-				<th>Lng</th>
-				<th>Take tasks</th>
-			</tr>
-		</thead>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Date uploaded</th>
+			<th>Image</th>
+			<th>Description</th>
+			<th>Measurements</th>
+			<th>Estimated price (€)</th>
+			<th>Lat</th>
+			<th>Lng</th>
+			<th>Take tasks</th>
+		</tr>
+	</thead>
 
-		<Virtualize Context="post" Items="@pageService.posts">
-			<tbody>
-				<tr>
-					<td>@post.Date</td>
+	<Virtualize Context="post" Items="@pageService.posts">
+		<tbody>
+			<tr>
+				<td>@post.Date</td>
 				<td><img src="@pageService.getImages(post)" style="height:100px; max-width: 200px;" /></td>
-					<td>@post.Description</td>
-					<td>
-						Weight: @post.Weight<br />
-						Height: @post.Height<br />
-						Width: @post.Width<br />
-						Length: @post.Length<br />
-					</td>
-					<td>@post.Pay</td>
-					<td>@post.AddressLat</td>
-					<td>@post.AddressLng</td>
-					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Accept the task</button></td>
-				</tr>
-			</tbody>
-		</Virtualize>
-	</table>
-@if(filter_popup)
+				<td>@post.Description</td>
+				<td>
+					Weight: @post.Weight<br />
+					Height: @post.Height<br />
+					Width: @post.Width<br />
+					Length: @post.Length<br />
+				</td>
+				<td>@post.Pay</td>
+				<td>@post.AddressLat</td>
+				<td>@post.AddressLng</td>
+				<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Accept the task</button></td>
+			</tr>
+		</tbody>
+	</Virtualize>
+</table>
+@if (filter_popup)
 {
 	<Filter d="@filterDimensions"
-		    OnClose="@(()=>filter_popup = false)"
-			OnFilter="@Filter"
-			OnRemove="@Remove">
+		OnClose="@(()=>filter_popup = false)"
+		OnFilter="@Filter"
+		OnRemove="@Remove">
 	</Filter>
 }
 @if (popupTaskAccepted)
@@ -82,9 +82,9 @@
 	{
 		try
 		{
-		  pageService.posts = await DBservice.GetFeedPostsAsync();
+			pageService.posts = await DBservice.GetFeedPostsAsync();
 		}
-		catch(Exception ex)
+		catch (Exception ex)
 		{
 			Console.WriteLine(ex.Message);
 			ErrorLog.LogError(ex);
@@ -92,7 +92,7 @@
 		}
 		try
 		{
-  		pageService.img = await DBservice.GetImagesAsync();
+			pageService.img = await DBservice.GetImagesAsync();
 		}
 		catch (Exception ex)
 		{
@@ -104,19 +104,26 @@
 
 	private async void Clicked(Posts post)
 	{
-		popupTaskAccepted = true;
-		post.Worker = Email;
-		post.Status = Status.InProgress;
-		await DBservice.UpdatePostAsync(post);
-		try
+		if (!DBservice.CheckIfWorker(Email))
 		{
-		  pageService.posts = await DBservice.GetAllPostsAsync();
+			popupTaskNotAccepted = true;
 		}
-		catch(Exception ex)
+		else
 		{
-			Console.WriteLine(ex.Message);
-			ErrorLog.LogError(ex);
-			throw new ArgumentException("Can't take the task right now! Try again later!", ex);
+			popupTaskAccepted = true;
+			post.Worker = Email;
+			post.Status = Status.InProgress;
+			await DBservice.UpdatePostAsync(post);
+			try
+			{
+				pageService.posts = await DBservice.GetAllPostsAsync();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				ErrorLog.LogError(ex);
+				throw new ArgumentException("Can't take the task right now! Try again later!", ex);
+			}
 		}
 	}
 
@@ -124,7 +131,7 @@
 	{
 		pageService.posts = await DBservice.GetAllPostsAsync();
 
-		if(filterDimensions.weightTo != 0)
+		if (filterDimensions.weightTo != 0)
 			pageService.posts = pageService.posts.Where(d => d.Weight >= filterDimensions.weightFrom
 											&& d.Weight <= filterDimensions.weightTo).ToList();
 		if (filterDimensions.heightTo != 0)

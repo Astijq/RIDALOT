@@ -1,0 +1,13 @@
+Time: 29-11-2022 05:06:20 popiet
+-----------------------------------------------------------
+Message: A second operation was started on this context instance before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext. For more information on how to avoid threading issues with DbContext, see https://go.microsoft.com/fwlink/?linkid=2097913.
+StackTrace:    at Microsoft.EntityFrameworkCore.Infrastructure.Internal.ConcurrencyDetector.EnterCriticalSection()
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at ridalot2._0.Data.DBService.GetMyTasksAsync(String strCurrentUser) in C:\Users\User\source\repos\RIDALOT\ridalot2.0\ridalot2.0\Data\DBService.cs:line 29
+   at ridalot2._0.Pages.MyTasks.OnInitializedAsync() in C:\Users\User\source\repos\RIDALOT\ridalot2.0\ridalot2.0\Pages\MyTasks.razor:line 75
+Source: Microsoft.EntityFrameworkCore
+TargetSite: Microsoft.EntityFrameworkCore.Infrastructure.ConcurrencyDetectorCriticalSectionDisposer EnterCriticalSection()
+-----------------------------------------------------------
+

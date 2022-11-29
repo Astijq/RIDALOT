@@ -7,9 +7,8 @@ namespace ridalot2._0.Pages.Identity
 {
     public class LogoutModel : PageModel
     {
-        public string ReturnUrl { get; private set; }
-        public async Task<IActionResult> OnGetAsync(
-            string returnUrl = null)
+        public string? ReturnUrl { get; private set; }
+        public async Task<IActionResult> OnGetAsync(string? returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             // Clear the existing external cookie

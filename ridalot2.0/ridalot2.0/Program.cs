@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ridalot2._0.Data;
-using ridalot2._0.Pages;
 using ridalot2._0.Shared;
 
 var builder = WebApplication.CreateBuilder(args);

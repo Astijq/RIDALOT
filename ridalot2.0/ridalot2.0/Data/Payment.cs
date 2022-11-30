@@ -7,7 +7,7 @@
         const float baseFloorPay = 1.5f;
         const float basePay = 5.0f;
         static float fuelPriceKM { get { return (avgFuelConsumption * avgFuelPrice) / 100; } }
-        static public double CalculatePay(float distance, int floor)
+        static public double CalculatePay(double distance, int floor)
         {
             floor = Math.Abs(floor);
             return Math.Round((distance * fuelPriceKM) + (floor * baseFloorPay) + basePay, 1);

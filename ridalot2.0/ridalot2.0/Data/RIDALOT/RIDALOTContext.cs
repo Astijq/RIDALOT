@@ -41,6 +41,8 @@ namespace ridalot2._0.Data.RIDALOT
                 entity.Property(e => e.User).HasMaxLength(50);
 
                 entity.Property(e => e.Worker).HasMaxLength(50);
+
+                entity.Property(e => e.Distance).HasMaxLength(30);
             });
 
             modelBuilder.Entity<Images>(entity =>

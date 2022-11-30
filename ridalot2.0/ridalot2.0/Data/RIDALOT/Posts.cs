@@ -23,5 +23,7 @@ namespace ridalot2._0.Data.RIDALOT
         public int? Floor { get; set; }
         public double? Pay { get; set; }
         public string Worker { get; set; }
-    }
+        public double Distance { get; set; }
+     
 }
+    }

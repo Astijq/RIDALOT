@@ -1,0 +1,23 @@
+﻿@page "/post/{id:int}"
+@using System.Collections
+@using Data
+@using ridalot2._0.Data.RIDALOT
+@using ridalot2._0.Pages.PageSupport
+@inherits LoginControl
+@inject NavigationManager NavMan
+@inject PageService pageService
+@inject DBService DBservice
+
+<h3>Description</h3>
+
+
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    public void OnInitialized(){
+
+    }
+
+}

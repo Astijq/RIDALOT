@@ -6,7 +6,15 @@
 @inject PageService pageService
 @inject DBService DBservice
 
-<h3>MyPosts</h3>
+@if (!User.Identity.IsAuthenticated)
+{
+	<a class="ml-md-auto btn btn-primary"
+   href="/Identity/Login"
+   target="_top">Login</a>
+}
+else
+{
+	<h3>MyPosts</h3>
 	<table class="table">
 		<thead>
 			<tr>
@@ -26,7 +34,7 @@
 			<tbody>
 				<tr>
 					<td>@post.Date</td>
-				<td><img src="@pageService.getImages(post)" style="height:100px; max-width: 200px;" /></td>
+					<td><img src="@pageService.getImages(post)" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
 					<td>
 						Weight: @post.Weight<br />
@@ -42,15 +50,15 @@
 			</tbody>
 		</Virtualize>
 	</table>
-
+}
 @code {
 
 	protected override async Task OnInitializedAsync()
 	{
 		try
 		{
-  		pageService.posts = await DBservice.GetMyPostsAsync(Email);
-  		pageService.img = await DBservice.GetImagesAsync();
+			pageService.posts = await DBservice.GetMyPostsAsync(Email);
+			pageService.img = await DBservice.GetImagesAsync();
 		}
 		catch (System.Exception ex)
 		{
@@ -64,10 +72,10 @@
 	{
 		try
 		{
-		  await DBservice.DeletePostAsync(post);
-  		pageService.posts = await DBservice.GetMyPostsAsync(Email);
+			await DBservice.DeletePostAsync(post);
+			pageService.posts = await DBservice.GetMyPostsAsync(Email);
 		}
-		catch(Exception ex)
+		catch (Exception ex)
 		{
 			Console.WriteLine(ex.Message);
 			ErrorLog.LogError(ex);

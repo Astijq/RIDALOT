@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ridalot2._0.Data;
 using ridalot2._0.Shared;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,16 +31,14 @@ builder.Services.AddScoped<HttpClient>();
 
 // Read the connection string from the appsettings.json file
 // Set the database connection for the EndtoEndContext
-/*builder.Services.AddDbContext<ridalot2._0.Data.RIDALOT.RIDALOTContext>(options =>
-options.UseSqlServer(
-                                    builder.Configuration.GetConnectionString("DefaultConnection")));*/
-
 builder.Services.AddDbContext<ridalot2._0.Data.RIDALOT.RIDALOTContext>(options =>
     options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<DBService>();
 builder.Services.AddScoped<PageService>();
 builder.Services.AddScoped<FilterDimensions>();
+
+builder.Services.AddBlazorise(options => { options.Immediate = true; }).AddBootstrapProviders().AddFontAwesomeIcons();
 
 var app = builder.Build();
 //middleware after here

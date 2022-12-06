@@ -1,6 +1,8 @@
 ﻿@page "/mytasks"
 @using Data
 @using ridalot2._0.Data.RIDALOT
+@using Radzen
+@using Radzen.Blazor
 @inherits LoginControl
 @inject PageService pageService
 @inject DBService DBservice
@@ -38,6 +40,10 @@
                 <td>Lng: @post.AddressLng</td>
 			</tr>
 			<tr>
+				<th>Distance:</th>
+				<td>@post.Distance</td>
+			</tr>
+			<tr>
 				<a class="btn btn success" style=@Constants.button href="https://www.google.com/search?q=" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google maps</a>
 				<a class="btn btn success" style=@Constants.button href="https://www.google.com/maps/dir//" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google dir</a>
 				<table>
@@ -48,6 +54,7 @@
 							<RadzenGoogleMap style="height:600px;width:500px;" Zoom="@zoom" ApiKey="AIzaSyBZ4535dtJv01oQ5jTzBPOJkdz2WVtzOPY" Center="@(new GoogleMapPosition() {  Lat = @post.AddressLat, Lng = post.AddressLng })">
 								<Markers>
 									<RadzenGoogleMapMarker Title="Pick Up Location" Label="Pick Up Location" Position="@(new GoogleMapPosition() { Lat = post.AddressLat, Lng = post.AddressLng })" />
+									<RadzenGoogleMapMarker style = "10" Title="Savartynas" Label="Savartynas" Position="@(new GoogleMapPosition() { Lat = 54.69110901324764, Lng = 25.466429088366166})" />
 								</Markers>
 							</RadzenGoogleMap>
 
@@ -55,7 +62,9 @@
 					</div>
 				</table>
 			</tr>
-
+			<tr>
+		<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Delete</button></td>
+			</tr>
 		</tbody>
 	</Virtualize>
 
@@ -80,6 +89,20 @@
 			Console.WriteLine(ex.Message);
 			ErrorLog.LogError(ex);
 			throw new ArgumentException("Can't load your tasks right now! Try again later", ex);
+		}
+	}
+	private async Task Clicked(Posts post)
+	{
+		try
+		{
+			await DBservice.DeletePostAsync(post);
+			pageService.posts = await DBservice.GetMyPostsAsync(Email);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			ErrorLog.LogError(ex);
+			throw new ArgumentException("Can not finish the task right now! Try again later", ex);
 		}
 	}
 }

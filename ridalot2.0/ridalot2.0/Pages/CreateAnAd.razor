@@ -2,6 +2,8 @@
 @using Microsoft.Extensions.Logging
 @using Pages
 @using Data
+@using Radzen
+@using Radzen.Blazor
 @using ridalot2._0.Data.RIDALOT
 @using ridalot2._0.Pages.PageSupport
 @inherits LoginControl
@@ -71,11 +73,16 @@ else
 				<td align="left"><input type="number" @bind="d.weight" /></td>
 			</tr>
 			<tr>
+				<td align="right">Distance (km):</td>
+				<td align="left"><input type="text" @bind="distance" /></td>
+			</tr>
+			<tr>
 				<td align="right">Pay (€):</td>
 				<td align="left"><input type="text" @bind="pay" /></td>
 			</tr>
 		</table>
-		<p>This is a suggested price, making it lower reduces the chances of finding a courier</p>
+	<p>This is a suggested price, making it lower reduces the chances of finding a courier</p>
+		
 	</p>
 	<p>
 		<table>
@@ -85,7 +92,7 @@ else
 					</h3>
 					<RadzenGoogleMap style="height:600px;width:500px;" Zoom="@zoom" ApiKey="AIzaSyBZ4535dtJv01oQ5jTzBPOJkdz2WVtzOPY" Center="@(new GoogleMapPosition() { Lat = 55.260903771231035, Lng = 24.05798398437499 })" MapClick="@OnMapClick" MarkerClick="OnMarkerClick">
 						<Markers>
-							<RadzenGoogleMapMarker Title="Pick Up Location" Label="Pick Up Location" Position="@(new GoogleMapPosition() { Lat = lat, Lng = lng })" />
+							<RadzenGoogleMapMarker Title="Pick Up Location" Label="Pick Up Location" Position="@(new GoogleMapPosition() { Lat = lat, Lng = lng })"/>
 						</Markers>
 					</RadzenGoogleMap>
 
@@ -125,13 +132,15 @@ else
 	double lat;
 	double lng;
 	public delegate double MyDelegate<T>(T distance, int floor);
-	MyDelegate<float> del = Payment.CalculatePay;
+	MyDelegate<double> del = Payment.CalculatePay;
 
 	void OnMapClick(GoogleMapClickEventArgs args)
 	{
 		clickedPosition = $"Map clicked LAT : {args.Position.Lat}, LNG : {args.Position.Lng}";
 		lat = args.Position.Lat;
 		lng = args.Position.Lng;
+		distance = DistanceFrom.GetDistance(lat, lng, 54.69110901324764, 25.466429088366166);
+		CalculatePayment();
 
 	}
 	void OnMarkerClick(RadzenGoogleMapMarker args)
@@ -141,7 +150,8 @@ else
 
 	private Dimensions d;
 
-	private double pay { get; set; }
+	private double? pay { get; set; }
+	public double distance { get; set; }
 	private int floor { get; set; }
 	private String description = "write here";
 	private List<string> imgUrls = new List<string>();
@@ -155,13 +165,13 @@ else
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		pay = del(10.1f, floor);
+
 	}
 	public void CalculatePayment()
 	{
 		try
 		{
-			pay = del(10.1f, floor);
+			pay = del(distance, floor);
 		}
 		catch(System.Exception ex)
 		{
@@ -169,6 +179,11 @@ else
 			ErrorLog.LogError(ex);
 			throw new ArgumentException("Failed to load posts! Try again later!", ex);
 		}
+	}
+	public void CalculateDistance()
+	{
+		distance = DistanceFrom.GetDistance(lat, lng, 54.69110901324764, 25.466429088366166);
+		Console.WriteLine(distance);
 	}
 
 	private async Task OnFileSelection(InputFileChangeEventArgs e)
@@ -183,9 +198,8 @@ else
 		}
 	}
 
-
 	private void SavePost()
-  {
+	{
 		var newPost = new Posts();
 		newPost.Date = System.DateTime.Now.ToUniversalTime();
 		newPost.Status = Status.Waiting;
@@ -200,18 +214,15 @@ else
 		newPost.Floor = floor;
 		newPost.Pay = pay;
 		newPost.Worker = null;
-    
-			try
-			{
-				var result = DBservice.CreatePostAsync(newPost);
-			}
-			catch(Exception ex)
-			{
-				Console.WriteLine(ex.Message);
-				ErrorLog.LogError(ex);
-				throw new ArgumentException("Failed to create your post! Try again later!", ex);
-			}
+		newPost.Distance = distance;
+		//double Distance = DistanceFrom.GetDistance(lat, lng, 54.69110901324764, 25.466429088366166)/1000;
+		
 
+		
+			
+				var result = DBservice.CreatePostAsync(newPost);
+			
+		
 			foreach (string image in imgUrls)
 			{
 				var img = new Images();

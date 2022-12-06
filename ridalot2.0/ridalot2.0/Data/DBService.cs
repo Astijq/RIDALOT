@@ -99,5 +99,15 @@ namespace ridalot2._0.Data
             return await _context.Value.Workers
                  .AsNoTracking().ToListAsync();
         }
+        public bool CheckIfWorker(string email)
+        {
+            var result = _context.Value.Workers.Where(x => x.Email == email).ToList();
+            if (result.Count == 0)
+            {
+                return false;
+            }
+            return true;
+
+        }
     }
 }

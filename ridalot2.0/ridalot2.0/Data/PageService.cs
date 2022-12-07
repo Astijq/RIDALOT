@@ -6,21 +6,13 @@ namespace ridalot2._0.Data
     {
         public List<Posts> posts = new List<Posts>();
         public List<Images> img = new List<Images>();
-        public string getImages(Posts post)
+        public List<Images> getImages(Posts post)
         {
             List<Images> temp = new List<Images>();
 
             temp = img.Where(x => x.Posts.Id == post.Id).ToList();
 
-            if (temp.Count > 0)
-            {
-                return temp.First().ImagePath;
-            }
-            else
-            {
-                return "";
-            }
-
+            return temp;
         }
     }
 }

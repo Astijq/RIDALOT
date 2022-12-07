@@ -1,5 +1,6 @@
 ﻿using ridalot2._0.Data.RIDALOT;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace ridalot2._0.Data
 {
@@ -17,6 +18,12 @@ namespace ridalot2._0.Data
         {
             return await _context.Value.Posts
                  .AsNoTracking().ToListAsync();
+        }
+        public Posts GetThisPostsAsync(int id)
+        {
+            return _context.Value.Posts
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
         }
         public async Task<List<Posts>> GetMyPostsAsync(string strCurrentUser)
         {
@@ -87,6 +94,12 @@ namespace ridalot2._0.Data
         {
             return await _context.Value.Images.Include(p => p.Posts)
                  .AsNoTracking().ToListAsync();
+        }
+        public async Task<List<Images>> GetThisImagesAsync(Posts post)
+        {
+            return await _context.Value.Images.Include(p => p.Posts)
+                .Where(x => x.Id == post.Id)
+                .AsNoTracking().ToListAsync();
         }
         public Task<bool> CreateWorkerAsync(Workers worker)
         {

@@ -34,7 +34,7 @@ else
 			<tbody>
 				<tr>
 					<td>@post.Date</td>
-					<td><img src="@pageService.getImages(post)" style="height:100px; max-width: 200px;" /></td>
+					<td><img src="@pageService.getImages(post).First().ImagePath" style="height:100px; max-width: 200px;" /></td>
 					<td>@post.Description</td>
 					<td>
 						Weight: @post.Weight<br />

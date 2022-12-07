@@ -14,11 +14,12 @@
 		<div class="row">
 			<Virtualize Context="post" Items="@pageService.posts">
 				<div class="col-4 col-sm-3" style="padding: 20px">
-						<Card Style="height: 350px; max-width: 300px;" onclick="@(()=>NavMan.NavigateTo($"/post/{post.Id}"))">
-							<CardImage Source="@pageService.getImages(post)" Alt="Post's image" Style="height:150px; max-width: 300px;"></CardImage>
+						<Card Style="height: 350px; max-width: 300px;" >
+							<CardImage Source="@pageService.getImages(post).First().ImagePath" Alt="Post's image" Style="height:150px; max-width: 300px;"></CardImage>
 							<CardBody>
 								<CardTitle Size="4"><b>@post.Description</b></CardTitle>
 								<CardSubtitle Size="5">@post.Pay €</CardSubtitle>
+								<a href="/Post/@post.Id">link</a>
 								<CardText Style="font-size:14px">
 									Height: @post.Height
 									Width: @post.Width

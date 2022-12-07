@@ -6,12 +6,15 @@ using ridalot2._0.Shared;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
 // Google Auth
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 builder.Services.AddAuthentication().AddGoogle(options =>

@@ -50,6 +50,11 @@ namespace ridalot2._0.Data
                 .FirstOrDefault();
             if (ExistingPost != null)
             {
+                ExistingPost.Floor = post.Floor;
+                ExistingPost.Height = post.Height;
+                ExistingPost.Width = post.Width;
+                ExistingPost.Length = post.Length;
+                ExistingPost.Weight = post.Weight;
                 ExistingPost.Status = post.Status;
                 ExistingPost.Worker = post.Worker;
                 _context.Value.SaveChanges();

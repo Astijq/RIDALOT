@@ -131,15 +131,38 @@ else
 	string clickedPosition = "";
 	double lat;
 	double lng;
+	double lat1;
+	double lng1;
 	public delegate double MyDelegate<T>(T distance, int floor);
 	MyDelegate<double> del = Payment.CalculatePay;
 
 	void OnMapClick(GoogleMapClickEventArgs args)
 	{
+		double maxlat = 999;
+		double maxlng = 999;
+		double minlat = 0;
+		double minlng = 0;
 		clickedPosition = $"Map clicked LAT : {args.Position.Lat}, LNG : {args.Position.Lng}";
 		lat = args.Position.Lat;
 		lng = args.Position.Lng;
-		distance = DistanceFrom.GetDistance(lat, lng, 54.69110901324764, 25.466429088366166);
+		double[] wastelatlng = { 54.69110901324764, 25.466429088366166, 54.879319, 23.9988232, 55.704232, 21.171010};
+		for(int i =0; i < wastelatlng.Count(); i++)
+		{
+			lat1 = wastelatlng[i];
+			i++;
+			lng1 = wastelatlng[i];
+			Console.WriteLine(lat1);
+			Console.WriteLine(lng1);
+			if (Math.Abs(lat - lat1) < maxlat && Math.Abs(lng - lng1) < maxlng)
+			{
+				maxlat = Math.Abs(lat - lat1);
+				maxlng = Math.Abs(lng - lng1);
+				minlat = lat1;
+				minlng = lng1;
+			}
+
+		}
+		distance = DistanceFrom.GetDistance(lat, lng, minlat, minlng);
 		CalculatePayment();
 
 	}

@@ -1,10 +1,12 @@
 ﻿@page "/myposts"
 @using Data
 @using ridalot2._0.Data.RIDALOT
+@using ridalot2._0.Pages.PageSupport
 @using System.IO;
 @inherits LoginControl
 @inject PageService pageService
 @inject DBService DBservice
+@inject NavigationManager NavMan
 
 @if (!User.Identity.IsAuthenticated)
 {
@@ -14,6 +16,10 @@
 }
 else
 {
+	
+	
+
+	
 	<h3>MyPosts</h3>
 	<table class="table">
 		<thead>
@@ -46,12 +52,71 @@ else
 					<td>@post.AddressLat</td>
 					<td>@post.AddressLng</td>
 					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Delete</button></td>
+					<td>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+						Edit
+						</button>
+					</td>
+					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Update(post))">Apply changes</button></td>
+
+
 				</tr>
 			</tbody>
+			
+					<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+									<table>
+										<tr>
+											<td align="right">Floor:</td>
+											<td align="left"><input type="number" @bind="Floor" /></td>
+										</tr>
+										<tr>
+											<td align="right">Height (cm):</td>
+											<td align="left"><input type="number" @bind="Height" /></td>
+										</tr>
+										<tr>
+											<td align="right">Width (cm):</td>
+											<td align="left"><input type="number" @bind="Width" /></td>
+										</tr>
+										<tr>
+											<td align="right">Length (cm):</td>
+											<td align="left"><input type="number" @bind="Length" /></td>
+										</tr>
+										<tr>
+											<td align="right">Weight (kg):</td>
+											<td align="left"><input type="number" @bind="Weight" /></td>
+										</tr>
+									</table>
+							</div>
+							<div class="modal-footer">
+
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div>
 		</Virtualize>
 	</table>
+
+		
 }
+
 @code {
+	public int Floor;
+	public int Height;
+	public int Weight;
+	public int Length;
+	public int Width;
+	public bool popup { get; set; } = true;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -67,13 +132,21 @@ else
 			throw new ArgumentException("Can't load your posts right now! Try again later", ex);
 		}
 	}
-
+	private async Task Update(Posts post)
+	{
+		post.Floor = Floor;
+		post.Height = Height;
+		post.Width = Width;
+		post.Weight = Weight;
+		await DBservice.UpdatePostAsync(post);
+	}
 	private async Task Clicked(Posts post)
 	{
 		try
 		{
 			await DBservice.DeletePostAsync(post);
 			pageService.posts = await DBservice.GetMyPostsAsync(Email);
+			
 		}
 		catch (Exception ex)
 		{

@@ -10,5 +10,6 @@
         public int widthTo { get; set; }
         public int lengthFrom { get; set; }
         public int lengthTo { get; set; }
+
     }
 }

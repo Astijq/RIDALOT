@@ -69,9 +69,14 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		
 		try
 		{
 			pageService.posts = await DBservice.GetFeedPostsAsync();
+			foreach (var post in pageService.posts)
+			{
+				post.Height = 5;
+			}
 		}
 		catch (Exception ex)
 		{
@@ -119,6 +124,7 @@
 	private async Task Filter()
 	{
 		pageService.posts = await DBservice.GetAllPostsAsync();
+		
 
 		if (filterDimensions.weightTo != 0)
 			pageService.posts = pageService.posts.Where(d => d.Weight >= filterDimensions.weightFrom

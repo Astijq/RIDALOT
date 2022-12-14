@@ -41,6 +41,12 @@
     
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
-</body>
+    <script>
+        $('#myCarousel').carousel();
+        $('.carousel-indicators li').click(function () {
+            $('#myCarousel').carousel(parseInt($(this).attr('data-slide-to')));
+        });
+    </script>
+    </body>
 </html>
 

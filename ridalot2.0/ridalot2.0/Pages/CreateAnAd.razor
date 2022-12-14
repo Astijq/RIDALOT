@@ -9,6 +9,7 @@
 @inherits LoginControl
 @inject NavigationManager NavMan
 @inject DBService DBservice
+@inject CustomerMail customerMail
 
 @if (!User.Identity.IsAuthenticated)
 {
@@ -200,7 +201,7 @@ else
 		newPost.Pay = pay;
 		newPost.Worker = null;
 		newPost.Distance = distance;
-
+		customerMail.sendMail();
 		var result = DBservice.CreatePostAsync(newPost);
 
 		if (imgUrls.Count == 0)

@@ -95,10 +95,10 @@ namespace ridalot2._0.Data
             return await _context.Value.Images.Include(p => p.Posts)
                  .AsNoTracking().ToListAsync();
         }
-        public async Task<List<Images>> GetThisImagesAsync(Posts post)
+        public async Task<List<Images>> GetThisImagesAsync(int id)
         {
             return await _context.Value.Images.Include(p => p.Posts)
-                .Where(x => x.Id == post.Id)
+                .Where(x => x.Posts.Id == id)
                 .AsNoTracking().ToListAsync();
         }
         public Task<bool> CreateWorkerAsync(Workers worker)

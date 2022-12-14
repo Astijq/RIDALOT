@@ -19,16 +19,18 @@
 							<CardBody>
 								<CardTitle Size="4"><b>@post.Description</b></CardTitle>
 								<CardSubtitle Size="5">@post.Pay €</CardSubtitle>
-								<a href="/Post/@post.Id">link</a>
+								
 								<CardText Style="font-size:14px">
 									Height: @post.Height
 									Width: @post.Width
 									Length: @post.Length
 									Weight: @post.Weight
 								</CardText>
+					<a href="/Post/@post.Id" class="stretched-link"></a>
+
 							</CardBody>
 							<CardFooter>
-								<button type="submit" class="button" @onclick="(()=>Clicked(post))">Accept the task</button>
+					<button type="submit" class="button" style="z-index: 2; position:relative;" @onclick="(()=>Clicked(post))">Accept the task</button>
 							</CardFooter>
 						</Card>
 				</div>

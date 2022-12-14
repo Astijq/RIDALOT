@@ -6,6 +6,7 @@ using ridalot2._0.Shared;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using ridalot2._0.Pages.PageSupport;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,7 @@ builder.Services.AddDbContext<ridalot2._0.Data.RIDALOT.RIDALOTContext>(options =
 builder.Services.AddScoped<DBService>();
 builder.Services.AddScoped<PageService>();
 builder.Services.AddScoped<FilterDimensions>();
+builder.Services.AddScoped<CustomerMail>();
 
 builder.Services.AddBlazorise(options => { options.Immediate = true; }).AddBootstrapProviders().AddFontAwesomeIcons();
 

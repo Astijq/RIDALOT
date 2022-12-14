@@ -9,6 +9,7 @@
 @inherits LoginControl
 @inject NavigationManager NavMan
 @inject DBService DBservice
+@inject CustomerMail customerMail
 
 @if (!User.Identity.IsAuthenticated)
 {
@@ -216,8 +217,8 @@ else
 		newPost.Worker = null;
 		newPost.Distance = distance;
 		//double Distance = DistanceFrom.GetDistance(lat, lng, 54.69110901324764, 25.466429088366166)/1000;
-		CustomerMail cm = new CustomerMail();
-		cm.sendMail();
+		
+		customerMail.sendMail();
 
 			
 				var result = DBservice.CreatePostAsync(newPost);

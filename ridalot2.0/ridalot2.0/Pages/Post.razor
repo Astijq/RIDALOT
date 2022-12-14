@@ -73,6 +73,7 @@
     double lng;
     private string selectedSlide = "2";
 
+
     protected override async Task OnInitializedAsync()
     {
         var uri = NavMan.ToAbsoluteUri(NavMan.Uri);
@@ -84,5 +85,6 @@
 
         post = DBservice.GetThisPostsAsync(id);
         pageService.img = await DBservice.GetThisImagesAsync(id);
+
     }
 }

@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ridalot2._0.Data;
-using ridalot2._0.Shared;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using ridalot2._0.Pages.PageSupport;
 using Microsoft.AspNetCore.Mvc;
+using ridalot2._0.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,21 +42,20 @@ builder.Services.AddScoped<DBService>();
 builder.Services.AddScoped<PageService>();
 builder.Services.AddScoped<FilterDimensions>();
 builder.Services.AddScoped<CustomerMail>();
-
 builder.Services.AddBlazorise(options => { options.Immediate = true; }).AddBootstrapProviders().AddFontAwesomeIcons();
 
 var app = builder.Build();
 //middleware after here
 
 
-// Configure the HTTP request pipeline. //kas skaitys tas gaidys
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
+app.UseMiddleware<StatisticsMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCookiePolicy();

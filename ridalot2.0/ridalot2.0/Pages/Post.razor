@@ -76,6 +76,7 @@
     protected override async Task OnInitializedAsync()
     {
         var uri = NavMan.ToAbsoluteUri(NavMan.Uri);
+
         if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("Value", out var value))
         {
             id = int.Parse((string)value.First());

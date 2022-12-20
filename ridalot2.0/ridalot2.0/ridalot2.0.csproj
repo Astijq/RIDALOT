@@ -9,9 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ErrorLog.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="GeoCoordinate" Version="2.0.1" />
     <PackageReference Include="Blazorise.Bootstrap" Version="1.1.4.1" />
     <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.1.4.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
@@ -19,13 +24,31 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Radzen.Blazor" Version="4.3.4" />
+    <PackageReference Include="SendGrid" Version="9.28.1" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.10.*" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="4.10.*" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.10.*" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.10.*" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.10.*" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\AdInformations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MailService\MailService.csproj" />
   </ItemGroup>
 
 </Project>

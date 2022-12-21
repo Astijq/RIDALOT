@@ -13,7 +13,7 @@
 
 @if (!User.Identity.IsAuthenticated)
 {
-	<a class="ml-md-auto btn btn-primary"
+	<a class="button"
    href="/Identity/Login"
    target="_top">Login</a>
 }
@@ -24,7 +24,7 @@ else
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-6">
-				<InputFile OnChange="@OnFileSelection" multiple></InputFile>
+				<InputFile OnChange="@OnFileSelection" multiple ></InputFile>
 				<div class="row">
 					@foreach (string imgUrl in imgUrls)
 					{
@@ -41,12 +41,12 @@ else
 					}
 				</div>
 			<p>
-
+				<br/>
 				Description:
 			</p>
 
 			<label>
-				<textarea type="text" style=" min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;" @bind="description" />
+				<textarea type="text" placeholder='write here' style="min-width:500px; max-width:100%;min-height:50px;height:100%;width:100%;"  @bind="description" />
 			</label>
 
 			<table>	
@@ -81,7 +81,7 @@ else
 			</table>
 				<p>This is a suggested price, making it lower reduces the chances of finding a courier</p>
 		<p>
-			<button type="submit" class="btn btn-success" style=@Constants.button @onclick="@SavePost">Submit</button>
+			<button type="submit" class="button" @onclick="@SavePost">Submit</button>
 		</p>
 	</div>
 		<div class="col-sm-6">
@@ -139,7 +139,7 @@ else
 	private double? pay { get; set; }
 	public double distance { get; set; }
 	private int floor { get; set; }
-	private String description = "write here";
+	private String description;
 	private List<string> imgUrls = new List<string>();
 
 	private bool popupPostedSuccessfully { get; set; } = false;

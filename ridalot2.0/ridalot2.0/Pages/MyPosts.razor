@@ -26,7 +26,7 @@ else
 				<th>Estimated price</th>
 				<th>Lat</th>
 				<th>Lng</th>
-				<th>Edit post</th>
+				<th>Delete</th>
 			</tr>
 		</thead>
 
@@ -45,7 +45,7 @@ else
 					<td>@post.Pay</td>
 					<td>@post.AddressLat</td>
 					<td>@post.AddressLng</td>
-					<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Delete</button></td>
+					<td><button type="submit" class="button" @onclick="(()=>Clicked(post))">Delete</button></td>
 				</tr>
 			</tbody>
 		</Virtualize>

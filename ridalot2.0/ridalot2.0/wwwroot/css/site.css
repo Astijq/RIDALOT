@@ -9,7 +9,10 @@ h1:focus {
 }
 
 a, .btn-link {
-    color: #0071c1;
+    color: inherit;
+}
+a:hover {
+    color:white;
 }
 
 .btn-primary {
@@ -89,9 +92,13 @@ h4 {
 }
 
 .jumbotron {
-    background-image:src("../images/RIDALOT.png");
-    height: 400px;
-    width:auto;
+    background-color: rgba(246,246,233,1);
+    background-image: url(/images/RIDALOT_index.png);
+    background-repeat: no-repeat;
+    background-size: 500px;
+    background-position: center;
+    height: 500px;
+    width: auto;
     padding: 100px 25px;
     font-family: Montserrat, sans-serif;
 }
@@ -185,7 +192,6 @@ h4 {
 footer .glyphicon {
     font-size: 20px;
     margin-bottom: 20px;
-    color: #f4511e;
 }
 
 .slideanim {

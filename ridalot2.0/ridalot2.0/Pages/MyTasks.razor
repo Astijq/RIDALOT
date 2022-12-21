@@ -6,66 +6,46 @@
 @inherits LoginControl
 @inject PageService pageService
 @inject DBService DBservice
+@inject NavigationManager NavMan
 
 <h3>MyTasks</h3>
 
 <table class="table">
-
 	<Virtualize Context="post" Items="@pageService.posts">
 		<tbody>
-			
-			<tr>
-				<th>Phone number:</th>
-				<td></td>
-			</tr>
-			<tr>
-				<th>Email:</th>
-				<td>@post.User</td>
-			</tr>
-			<tr>
-				<th>Description:</th>
-				<td>@post.Description</td>
-			</tr>
-			<tr>
-				<th>Measurements:</th>
-				<td>Weight: @post.Weight Height: @post.Height Width: @post.Width Length: @post.Length</td>
-			</tr>
-			<tr>
-				<th>Picture:</th>
-				<td><img src="@pageService.getImages(post).First().ImagePath" style="height:100px; max-width: 200px;" /></td>
-			</tr>
-			<tr>
-				<th>Adress: </th>
-                <td>Lat: @post.AddressLat</td>
-                <td>Lng: @post.AddressLng</td>
-			</tr>
-			<tr>
-				<th>Distance:</th>
-				<td>@post.Distance</td>
-			</tr>
-			<tr>
-				<a class="btn btn success" style=@Constants.button href="https://www.google.com/search?q=" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google maps</a>
-				<a class="btn btn success" style=@Constants.button href="https://www.google.com/maps/dir//" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google dir</a>
-				<table>
-					<div class="row">
-						<div class="col-xl-6">
-							<h3>
-							</h3>
-							<RadzenGoogleMap style="height:600px;width:500px;" Zoom="@zoom" ApiKey="AIzaSyBZ4535dtJv01oQ5jTzBPOJkdz2WVtzOPY" Center="@(new GoogleMapPosition() {  Lat = @post.AddressLat, Lng = post.AddressLng })">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-6">
+						<Image Source="@pageService.getImages(post).First().ImagePath" Alt="Post's image"></Image>
+						<p><b>@post.Pay €</b></p>
+
+						<p>Description: @post.Description</p>
+
+						<li> Height: @post.Height </li>
+						<li> Width: @post.Width </li>
+						<li> Length: @post.Length </li>
+						<li> Weight: @post.Weight </li>
+						<br />
+						<p> Email: @post.User</p>
+						<p> Distance: @post.Distance</p>
+						<br />
+						<button class="button" style="background-color:rgb(237,91,45); border-color: rgb(237,91,45);" @onclick="(()=>Clicked(post))">Finished</button>
+					</div>
+					<div class="col-sm-6">
+						<RadzenGoogleMap style="height:500px;width:500px;" Zoom="@zoom" ApiKey="AIzaSyBZ4535dtJv01oQ5jTzBPOJkdz2WVtzOPY" Center="@(new GoogleMapPosition() {  Lat = @post.AddressLat, Lng = post.AddressLng })">
 								<Markers>
 									<RadzenGoogleMapMarker Title="Pick Up Location" Label="Pick Up Location" Position="@(new GoogleMapPosition() { Lat = post.AddressLat, Lng = post.AddressLng })" />
 									<RadzenGoogleMapMarker style = "10" Title="Savartynas" Label="Savartynas" Position="@(new GoogleMapPosition() { Lat = 54.69110901324764, Lng = 25.466429088366166})" />
 								</Markers>
-							</RadzenGoogleMap>
-
-						</div>
+						</RadzenGoogleMap>
+						<br />
+						<a class="button" href="https://www.google.com/search?q=" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google maps</a>
+						<a class="button" href="https://www.google.com/maps/dir//" onclick="location.href=this.href+'@post.AddressLat '+'@post.AddressLng';return false;">Open in google dir</a>
 					</div>
-				</table>
-			</tr>
-			<tr>
-		<td><button type="submit" class="btn btn-info btn-sm" style=@Constants.button @onclick="(()=>Clicked(post))">Delete</button></td>
-			</tr>
+				</div>
+			</div>
 		</tbody>
+		<br />
 	</Virtualize>
 
 </table>
@@ -81,8 +61,8 @@
 	{
 		try
 		{
-  		pageService.posts = await DBservice.GetMyTasksAsync(Email);
-  		pageService.img = await DBservice.GetImagesAsync();
+			pageService.posts = await DBservice.GetMyTasksAsync(Email);
+			pageService.img = await DBservice.GetImagesAsync();
 		}
 		catch(System.Exception ex)
 		{
@@ -97,6 +77,7 @@
 		{
 			await DBservice.DeletePostAsync(post);
 			pageService.posts = await DBservice.GetMyPostsAsync(Email);
+			NavMan.NavigateTo("/");
 		}
 		catch (Exception ex)
 		{
@@ -104,5 +85,6 @@
 			ErrorLog.LogError(ex);
 			throw new ArgumentException("Can not finish the task right now! Try again later", ex);
 		}
+		
 	}
 }

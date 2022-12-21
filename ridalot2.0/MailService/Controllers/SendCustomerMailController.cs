@@ -9,10 +9,9 @@ namespace MailService.Controllers
 	public class SendCustomerMailController : ControllerBase
 	{
 		[HttpGet]
-		public string sendMail(string custEmail, string ownerEmail, string subject, string text, string key)
+		public string send(string custEmail, string ownerEmail, string subject, string text, string key)
 		{
-			var apiKey = key;
-			var client = new SendGridClient(apiKey);
+			var client = new SendGridClient(key);
 			var msg = new SendGridMessage()
 			{
 				From = new EmailAddress(ownerEmail),

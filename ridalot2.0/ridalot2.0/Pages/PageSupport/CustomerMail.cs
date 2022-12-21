@@ -27,7 +27,7 @@ namespace ridalot2._0.Pages.PageSupport
             var client = new HttpClient();
             client.BaseAddress = new Uri("https://localhost:7027/");
 
-            var requestUrl = $"api/ApprovedPost?custEmail={custEmail}&ownerEmail={ownerEmail}" +
+            var requestUrl = $"api/SendCustomerMail?custEmail={custEmail}&ownerEmail={ownerEmail}" +
                 $"&subject={postCreatedSubject}&text={postCreatedText}&key={API}";
 
             // Make a GET request to the Web API's endpoint

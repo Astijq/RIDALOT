@@ -13,8 +13,19 @@
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
+
+            string action = context.Request.Path;
+
+            if (action.EndsWith(".css") || action.EndsWith(".jpg") || action.EndsWith(".png"))
+            {
+                // Call the next middleware in the pipeline
+                await _next(context);
+
+                // Return early
+                return;
+            }
             // Create a stopwatch to measure the elapsed time
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -27,8 +38,7 @@
             stopwatch.Stop();
             var elapsed = stopwatch.Elapsed;
 
-            // Log the elapsed time and the action name
-            var action = context.Request.Path;
+
             if (action == "/")
             {
                 action = "/LoadProgram";
@@ -36,7 +46,7 @@
             var message = $"{action} took {elapsed.TotalMilliseconds} milliseconds";
             using (StreamWriter writer = new StreamWriter("LoadTimeLog.txt", true))
             {
-                writer.WriteLine(message);
+                await writer.WriteLineAsync(message);
                 writer.Close();
             }
         }

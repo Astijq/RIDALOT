@@ -201,7 +201,7 @@ else
 		newPost.Pay = pay;
 		newPost.Worker = null;
 		newPost.Distance = distance;
-		customerMail.sendMail();
+		customerMail.sendPostMail(Email);
 		var result = DBservice.CreatePostAsync(newPost);
 
 		if (imgUrls.Count == 0)

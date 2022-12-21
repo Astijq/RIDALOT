@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using ridalot2._0.Pages.PageSupport;
+@inject CustomerMail customerMail
 
 <div class="jumbotron text-center">
 </div>
@@ -90,7 +92,7 @@
 </div>
 
 <div id="contact" class="container-fluid">
-    <br />
+  <br />
   <h2 class="text-center">CONTACT</h2>
   <div class="row">
     <div class="col-sm-5">
@@ -101,18 +103,24 @@
     <div class="col-sm-7 slideanim">
       <div class="row">
         <div class="col-sm-6 form-group">
-          <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+          <input bind="@name" class="form-control" id="name" name="name" placeholder="Name" type="text" required>
         </div>
         <div class="col-sm-6 form-group">
-          <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+          <input class="form-control" id="email" name="email" placeholder="Email" type="email" bind="@email" required>
         </div>
       </div>
-      <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea><br>
+      <textarea class="form-control" id="comments" name="comments" placeholder="Comment" bind="@text" rows="5"></textarea><br>
       <div class="row">
         <div class="col-sm-12 form-group">
-          <button class="button" type="submit" style="align-content:end">Send</button>
+            <button class="button" type="submit" style="align-content:end" onclick="@(()=>customerMail.sendPostMail("ridalot.info@gmail.com","Customer email",name + '\n' + text))">Send</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+@code {
+    string? name { get; set; }
+    string? email { get; set; }
+    string? text { get; set; }
+}

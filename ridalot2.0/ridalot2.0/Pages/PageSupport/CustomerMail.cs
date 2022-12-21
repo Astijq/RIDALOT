@@ -6,10 +6,10 @@ namespace ridalot2._0.Pages.PageSupport
     public class CustomerMail
     {
 
-        string custEmail = "astijusmc@gmail.com";
-        string ownerEmail = "ridalot.info@gmail.com";
-        string postCreatedSubject = "Post Created Successfully";
-        string postCreatedText = "Your post has been added, wait for someone to contact you about the pickup";
+        string custEmail;
+        const string ownerEmail = "ridalot.info@gmail.com";
+        const string postSubject = "Post Created Successfully";
+        const string postText = "Your post has been added, wait for someone to contact you about the pickup";
         string? API
         {
             get
@@ -20,8 +20,9 @@ namespace ridalot2._0.Pages.PageSupport
                 return configuration["sgAPI"];
             }
         }
-        public async void sendMail()
+        public async void sendPostMail(string recipient, string postCreatedSubject = postSubject, string postCreatedText = postText)
         {
+            custEmail = recipient;
 
             // Create an instance of the HttpClient class
             var client = new HttpClient();

@@ -6,6 +6,10 @@ using ridalot2._0.Shared;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using ridalot2._0.Data.RIDALOT;
+using Castle.DynamicProxy;
+using Autofac;
+using Microsoft.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +32,8 @@ builder.Services.AddScoped<HttpContextAccessor>();
 // Required for HttpClient support in the Blazor Client project
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<HttpClient>();
+builder.Services.AddControllers();
+builder.Services.AddScoped<IInterceptor, ExceptionInterceptor>();
 
 // Read the connection string from the appsettings.json file
 // Set the database connection for the EndtoEndContext
